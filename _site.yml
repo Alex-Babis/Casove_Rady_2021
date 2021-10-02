@@ -6,8 +6,8 @@ navbar:
       href: index.html
     - text: "Journal"
       menu:
-        - text: "Cvicenie1"
-          href: Journal.html
+        - text: "Cvičenie 1"
+          href: Cvicenie1.html
         - text: "Cvicenie2"
           href: Journal.html
     - text: "Links"
