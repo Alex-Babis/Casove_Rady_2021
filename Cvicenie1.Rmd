@@ -80,7 +80,7 @@ ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
 ## Testovanie nulovostí autokorelácií - Ljung-Boxov test
 
 Otestujte Ljung-Boxovým testom, že autokorelácie rádu 1,2,3,4 sú súčasne nulové ($\rho_1=\rho_2=\rho_3=\rho_4=0$)
-```{r echo = FALSE}
+```{r}
 Box.test(x, lag = 4, type = "Ljung-Box")
 ```
 
@@ -96,8 +96,8 @@ V cykle vypočítajte p-hodnoty zodpovedajúce testovaniu hypotézy, že prvých
 
 Oplatí sa nastaviť y-ovú os na interval (0, 1), aby bol skript univerzálny pre všetky dáta, aby sa vždy (aj pri vysokých p hodnotách) dala vidieť vyznačená hodnota 0.05, s ktorou p hodnoty porovnávame.
 
-```{r, echo = FALSE, fig.align="center"}
-k <- 10
+```{r fig.align="center"}
+k <- 10 
 p.values <- c()
 for(i in 1:k)
 {
@@ -195,7 +195,7 @@ ggplot(data = acf.vynosy, aes(x = Lag, ymax=ACF, ymin=0))+
 Zistite, či výnosy firmy Netflix sú nekorelované. Použite výberovú autokorelačnú funkciu a Ljung-Boxov test.
 
 (Výsledok)
-```{r echo = FALSE, fig.align="center"}
+```{r fig.align="center"}
 k <- 10
 p.values <- c()
 for(i in 1:k)
@@ -484,6 +484,29 @@ coef(Bass.nls)
 coef(Bass.nls)["P"]
 ```
 
+```{r warning=FALSE}
+M <- coef(Bass.nls)["M"]
+P <- coef(Bass.nls)["P"]
+Q <- coef(Bass.nls)["Q"]
+T <- 0:14
+# 4 roky predikcii
+Bass.pred <- M*(((P+Q)^2/P)*exp(-(P+Q)*T))/(1+(Q/P)*exp(-(P+Q)*T))^2
+
+Bass.df <- data.frame(Values = c(Bass.pred,c(0,Sales,rep(NA,4))),
+                      Time = rep(0:14,2),
+                      Grp = c(rep("Bass",15),
+                              rep("Sales",15))
+                      )
+
+ggplot(data = Bass.df, aes(x = Time, y = Values, linetype = Grp))+
+  geom_line()+
+  scale_linetype_manual(values = c("Bass" = "dotdash", 
+                                   "Sales" = "solid")) +
+  geom_point(data = Bass.df[Bass.df$Grp=="Bass", ],
+             color = c(rep("black",11),rep("red",4)))
+  
+```
+
 Použite Bassov model na modelovanie nasledovných dát: [Sales volume of smartphones to private consumers in Germany from 2005 to 2019](https://www.statista.com/statistics/460113/smartphones-sales-revenue-germany/).  Zobrazte do jedného obrázku priebeh dáta a hladkú krivku fitovaných hodnôt (aj pre nasledujúce časy - t. j. predikcie do budúcnosti).
 ```{r}
 Mobile <- c(268,297,291,540,1117,2710,5144,6806,8086,8830,9832,9566,10004,11252,10860,11223)
@@ -538,6 +561,31 @@ Sales <- c(150139984,92233724,52192378,20100138,15302761,9109110,7300394,5612861
 
 Pomocou knižnice `manipulate` napíšte skript, ktorý nakreslí reálne dáta ako body a hodnoty z modelu ako hladkú krivku. Zmenou hodnôt parametrov takto potom môžeme nájsť vhodné štartovacie hodnoty pre nelineárnu metódu najmenších štvorcov.
 
+```{r}
+Sales <- c(840,1470,2110,4000,7590,10950,10530,9470,7790,5890)
+
+grafy2 <- function(p,q,M) {
+  
+  t <- seq(from=0,to=length(Sales),by=0.01)
+  
+  Bass.f <- M*((p+q)^2/p)*exp(-(p+q)*t)/(1+(q/p)*exp(-(p+q)*t))^2
+  
+  ggplot(data = NULL)+
+  geom_line( aes(x = t, y = Bass.f), color = "black")+
+  geom_point(data = NULL, 
+             aes(x = 1:length(Sales), y = Sales),shape=1,size=3) +
+  ylab("Bass.f")+
+  xlab("t")
+
+}
+```
+
+```{r}
+#manipulate(grafy2(p,q,M),
+#  p=slider(min=0.001, max=0.1, step=0.001),
+#  q=slider(min=0.1, max=1, step=0.01),
+#  M=slider(min=60000, max=80000, step=500))
+```
 
 # Rmarkdown
 

@@ -27,3 +27,32 @@ Vítajte na stránke pre cvičenia z časových radov 2021.
 V záložke Tutorials nájdete materiály k cvičeniam. 
 
 V záložke Homeworks nájdete zadania domácich úloh.
+
+```{r include = FALSE}
+
+cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
+                       Datum = c("27.09.-01.09.2021",
+                                 "18.10.-22.10.2021",
+                                 "25.10.-29.10.2021",
+                                 "08.11.-12.11.2021",
+                                 "22.11.-26.11.2021",
+                                 "29.11.-03.12.2021"),
+                       Domaca_uloha = c("Áno","Nie",
+                                        "Áno","Áno",
+                                        "Áno","Áno"),
+                       Poznamka = c("M-208",
+                                    "M-208",
+                                    "M-X",
+                                    "M-208",
+                                    "M-208",
+                                    "M-208"))
+colnames(cvicenia) <- c("Poradie","Dátum",
+                        "Domáca úloha",
+                        "Miestnosť")
+```
+
+```{r echo = FALSE, results='asis'}
+library(knitr)
+kable(cvicenia, caption = "Tabuľka cvičení")
+```
+
