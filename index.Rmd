@@ -46,7 +46,7 @@ cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
                                     "M-208",
                                     "M-208",
                                     "M-208"))
-colnames(cvicenia) <- c("Poradie","Dátum",
+colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Domáca úloha",
                         "Miestnosť")
 ```
