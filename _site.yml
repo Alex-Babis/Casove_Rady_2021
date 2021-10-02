@@ -1,6 +1,6 @@
-name: "MyLabJournal"
+name: "Časové rady 2021"
 navbar:
-  title: "MyLabJournal"
+  title: "Alex Babiš"
   left:
     - text: "Home"
       href: index.html
