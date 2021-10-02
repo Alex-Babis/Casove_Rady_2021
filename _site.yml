@@ -4,12 +4,14 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Journal"
+    - text: "Tutorials"
       menu:
-        - text: "Cvičenie 1"
+        - text: "Tutorial 1"
           href: Cvicenie1.html
-        - text: "Cvicenie2"
-          href: Journal.html
-    - text: "Links"
-      href: Links.html
+        - text: "Tutorial 2"
+          href: 
+    - text: "Homeworks"
+      menu:
+        - text: "Homework 1"
+          href: Domaca_uloha1.html
 output_dir: "docs"

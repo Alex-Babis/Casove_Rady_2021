@@ -1,6 +1,9 @@
 ---
 title: "Casove Rady 2021"
-output: html_document
+output: 
+  html_document:
+    theme: flatly
+    highlight: zenburn
 ---
 
 <style type="text/css">

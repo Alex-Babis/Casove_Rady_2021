@@ -364,7 +364,7 @@ $$
     + (Návod: rozklad na parciálne zlomky)
 $$
 \begin{aligned}
- \frac{1}{(1-F(t)(p+qF(t))} = \frac{A}{(1-F(t)}+\frac{B}{p+qF(t)}
+ \frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
 \end{aligned}
 $$
 * Dokážte, že ak $q>p>0$, tak funkcia $f(t)$ nadobúda maximum v čase
