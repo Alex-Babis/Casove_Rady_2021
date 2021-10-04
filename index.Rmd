@@ -40,19 +40,25 @@ cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
                        Domaca_uloha = c("Áno","Nie",
                                         "Áno","Áno",
                                         "Áno","Áno"),
-                       Poznamka = c("M-208",
+                       Miestnost = c("M-208",
                                     "M-208",
                                     "M-X",
                                     "M-208",
                                     "M-208",
-                                    "M-208"))
+                                    "M-208"),
+                       Deadline = c("15.10.2021-24:00",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    ""))
 colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Domáca úloha",
-                        "Miestnosť")
+                        "Miestnosť", "Deadline pre DÚ")
 ```
 
 ```{r echo = FALSE, results='asis'}
 library(knitr)
-kable(cvicenia, caption = "Tabuľka cvičení")
+kable(cvicenia[,c(1,2,4,3,5)], caption = "Tabuľka cvičení")
 ```
 
