@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Potrebé knižnice pre cvičenie 2
-```{r include=FALSE}
+```{r include=FALSE, fig.align="center"}
 library(astsa)
 library(ggfortify)
 library(ggplot2)
@@ -26,7 +26,7 @@ library(forecast)
 library(zoo)
 ```
 
-```{r eval=FALSE}
+```{r eval=FALSE, fig.align="center"}
 library(astsa)
 library(ggfortify)
 library(ggplot2)
@@ -43,7 +43,7 @@ library(zoo)
 Modelujeme rozdiel medzi dlhodobou a krátkodobou úrokovou mierou
 
 Načítajte dáta a vytvorte premennú `spread`
-```{r}
+```{r, fig.align="center"}
 rs <- read.table("http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/RSQ.txt")   # short term rate
 r20 <- read.table("http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/R20Q.txt") # 20Y rate
 spread <- r20 - rs
@@ -60,7 +60,7 @@ Použitie funkcie `ts`:
 Napríklad zoberieme mesačnú frekvenciu - `frequency = 12`, `start = c(2020, 3)` označuje čas prvého pozorovania rovný 01.03.2020 \
 (V prípade denných dát, frekvencia 356, špecifikujeme konkrétny deň, napríklad 19.10.2020 = c(2020,292) )
 
-```{r}
+```{r, fig.align="center"}
 spread <- ts(data = spread,             # data su premennej spread
              frequency = 4,        # su kvartalne
              start = c(1952,1))    # zacinaju v 1. kvartali roku 1952
@@ -71,19 +71,19 @@ class(spread)  # budeme vidiet, ze uz je to casovy rad
 Vykreslíme teraz priebeh - na x-ovej osi budú správne časy:
 Knižnica `ggfortify` nám umožní kresliť grafy pre object `ts` pomocnou knižnice `ggplot2`. Funkcia `autoplot(ts)`
 
-```{r}
+```{r, fig.align="center"}
 autoplot(spread)
 ```
 
 **Úloha:** Zobrazte výberovú autokorelačnú funkciu.
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 acf1(spread)
 ```
 
 Na prednáške sme videli, že hoci sa podobá na ACF procesu AR(1), nie je to dobrý model pre dáta. Zopakujeme to - odhadneme model a skontrolujeme rezíduá.
 
 **Použitie funkcie sarima:**
-```{r eval=FALSE}
+```{r eval=FALSE, fig.align="center"}
 sarima(data, p, k, 0) # AR(p) model pre k-te diferencie premennej data
 
 sarima(data, p, 0, 0)  # AR(p) model pre premennu data
@@ -123,20 +123,20 @@ sarima(spread,2,0,0, details = FALSE)
 ## Cvičenie: Modelovanie prietoku Nílu
 V knižnici `datasets` je viacero zaujímavých časových radov, my sa teraz pozrieme na prietok Nílu:
 
-```{r}
+```{r, fig.align="center"}
 x <- Nile
 # podrobnejsi popis v helpe: ?Nile
 ```
 
 Konkrétne sa zameriame na vyznačenú časť tohto časového radu - od roku 1910 do roku 1960.
 
-```{r echo = FALSE, warning=FALSE}
+```{r echo = FALSE, warning=FALSE, fig.align="center"}
 library(dygraphs)
 dygraph(x)  %>% dySeries(label="Annual flow", color="black") %>% dyRangeSelector()%>% dyShading(from = "1910-1-1", to = "1960-1-1",color = "#c5ffef") 
 ```
 
 Aby sme získali časť časového radu, použijeme funkciu `window`:
-```{r}
+```{r, fig.align="center"}
 x <- window(x, start=1910, end=1960)
 ```
 
@@ -178,7 +178,7 @@ autoplot(x)
 
 Odhadneme AR(1) model:
 
-```{r eval=FALSE }
+```{r eval=FALSE , fig.align="center"}
 sarima(x,1,0,0, details = FALSE)
 ```
 
@@ -186,7 +186,7 @@ sarima(x,1,0,0, details = FALSE)
 mo2 = capture.output(sarima(x,1,0,0))
 ```
 
-```{r echo = FALSE }
+```{r echo = FALSE, fig.align="center" }
 sarima(x,1,0,0, details = FALSE)
 ```
 
@@ -212,7 +212,7 @@ Kničnica
 `ggplot2` - pekné grafy :)
 
 ## Vyhľadávanie dát vo WDI
-```{r eval=FALSE}
+```{r eval=FALSE, fig.align="center"}
 # hladame indikatory, ktore maju v nazve gdp
 WDIsearch('gdp') 
 ```
@@ -222,19 +222,19 @@ Kto pozná regulárne výrazy (regular expressions)
 + dajú sa používať aj tie
 + na ukážku - hľadajme indikátory, ktoré hovoria o HDP na obyvateľa - vypíšme si tie, ktoré obsahujú gdp a capita
 
-```{r eval=FALSE}
+```{r eval=FALSE, fig.align="center"}
 WDIsearch('gdp.*capita')
 ```
 
 Ak je veľa výsledkov, môžeme chciet vypísať niekoľko prvých:
-```{r}
+```{r, fig.align="center"}
 WDIsearch('gdp.*capita')[1:3,]
 ```
 
 ## Načítanie dát
 Pomocou funkcie `WDI`, ukážka použitia:
 
-```{r}
+```{r, fig.align="center"}
 data.hdp <- WDI(indicator = 'NY.GNP.PCAP.CD',
                 country = c('FI','US','FR', 'DE'),
                 start = 1975)
@@ -245,7 +245,7 @@ data.hdp <- WDI(indicator = 'NY.GNP.PCAP.CD',
 + defaultný `start` je 1960 a defaultný `end` je 2020, môžeme ich takto zmeniť
 + `iso2c` kódy štátov sa dajú nájsť napríklad tu: https://datahub.io/core/country-list alebo pomocou knižnice `countrycode` v R-ku (https://cran.r-project.org/web/packages/countrycode/)
 
-```{r}
+```{r, fig.align="center"}
 head(data.hdp)
 ```
 
@@ -262,7 +262,7 @@ ggplot(data.hdp, aes(year, NY.GNP.PCAP.CD, color = country)) +
 + `color=country` - grafy budú odlíšené farebne (preto color) podľa premennej country
 
 ## AR(1) model pre rýchlosť rastu HDP
-```{r}
+```{r, fig.align="center"}
 # GDP per capita (constant 2010 US$) 
 data <- WDI(indicator = 'NY.GNP.PCAP.KD',
             country= c ('FR'),
@@ -300,7 +300,7 @@ Pre všeobecný AR(p) proces je v prednáškach odvodená podmienka stacionarity
 
 Výpočet v R-ku: Hľadáme korene (a ich absolútne hodnoty) polynómu $(1−0.9L+0.6L^{2})$, teda:
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 polyroot(c(1, -0.9, 0.6))
 abs(polyroot(c(1, -0.9, 0.6)))
 ```
@@ -342,14 +342,14 @@ Hodnoty koeficientov však nemusíme odpisovať, tak by sme navyše dostali iba 
 
 Napríklad ak odhadneme model:
 
-```{r}
+```{r, fig.align="center"}
 model.ar3 <- sarima(spread, 3,0,0, details=FALSE)
 ```
 
 Pozrite si `str(model.ar3)` - štruktúru objektu `model.ar3` - a potom vyberte z` model.ar3` vektor odhadnutých parametrov modelu.
 
 Z tohto chceme tie zložky vektora, ktorých názvy obsahujú `ar`:
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 model.ar3$fit$coef
 ```
 
@@ -357,30 +357,30 @@ Dá sa spraviť `koef[1:p]`, ak je to AR(p) model
 
 Budeme mať aj všeobecnejšie modely (koeficienty budú s názvami `ma1`, `ma2`, … neskôr aj napríklad `sar1`, `sma1`), napríklad:
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 koef.zlozitejsie
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 koef.zlozitejsie <- c(1.3167189, -0.7961300,  0.3590080, -0.1168011,  0.3801231,  0.9967049,-0.9797410,  1.0584042 )
 names(koef.zlozitejsie) <- c("ar1","ar2","ar3","ma1","ma2","sar1", "sma1","xmean" )
 koef.zlozitejsie
 ```
 
 Počet členov jednotlivých typov je daný našou špecifikáciou modelu, takže sa znovu dá spočítať, ktoré zložky zodpovedajú členom `ar`, ktor `ma` atď. Alternatívou je použiť regulárne výrazy a automaticky vybrať napríklad zložky, ktorých názov začína `ar`, zložky, ktorých názov začína `ma` atď. Ak by sme chceli indexy tých, ktoré obsahujú `ma`, spravili by sme:
-```{r}
+```{r, fig.align="center"}
 grep("ma",                     # co sa ma hladat
     names(koef.zlozitejsie))   # kde sa to ma hladat
 ```
 
 My ale checeme iba tie, ktoré začínajú `ma` (lebo je tam aj `sma1` koeficient, ktorý necheme). Tu prichádzajú na rad regulárne výrazy:
-```{r}
+```{r, fig.align="center"}
 grep("^ma",                     # co sa ma hladat
     names(koef.zlozitejsie))   # kde sa to ma hladat
 ```
 
 Príslušné koeficienty potom sú
-```{r}
+```{r, fig.align="center"}
 koef.zlozitejsie[grep("^ma",names(koef.zlozitejsie))]
 ```
 
@@ -397,14 +397,14 @@ Na prednáške sme videli, že ak pre dáta v premennej `spread` odhadneme AR(2)
 Cieľom modelovania je často konštrukcia predikcií do budúcnosti.
 
 *Funkcia v R-ku:** `sarima.for`
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 sarima.for(data, n, p, 0, 0)  # predikcie pre n pozorovani z AR(p) modelu
 sarima.for(data, n, p, k, 0)  # predikcie pre n pozorovani premennej data, ak jej k-te diferencie modelujeme ako AR(p) 
 ```
 
 Úloha: Pomocou AR(2) modelu pre dáta `spread` spravte predikcie na nasledujúce dva roky (máme kvartálne dáta, takže 2 roky predstavujú 8 pozorovaní)
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 sarima.for(spread, 8, 2, 0, 0)
 ```
 
@@ -420,7 +420,7 @@ Ak uložíme výstup funkcie `sarima.for` napr. do premennej `predikcie`, tak m�
 
 + Nakreslite do jedného grafu farebne odlíšené: dáta použité na odhadovanie modelu, predikcie, predikcie +/- 2 ′× štandardná odchýlka, skutočný vývoj v posledných dvoch rokoch. Na to sa dá dobre využiť funkcia `ts.plot`, môžeme spraviť napríklad:
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
  ts.plot(data1, data2, data3,
         gpars=list(xlab="time", ylab="popis dat",
                   col=c("red","blue","black"))
@@ -428,7 +428,7 @@ Ak uložíme výstup funkcie `sarima.for` napr. do premennej `predikcie`, tak m�
 ```
 Pritom jednotlivé dáta nemusia mať rovnaký rozsah časov, pre ktoré sú dostupné, R-ko sa postará aj o rozsah y-ovej osi (čo nie je zaručené pri kreslení pomocou `plot` a potom `lines`).
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 stare.data <- window(spread, start = c(1952,1), end = c(2003,4))
 nove.data <- window(spread, start = c(2004,1), end = c(2005,4))
 predikcie <- sarima.for(stare.data, 8, 2, 0, 0)
@@ -436,7 +436,7 @@ UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
  ts.plot(predikcie$pred, nove.data, stare.data,UB,LB,
         gpars=list(xlab="time", ylab="popis dat",
                   col=c("red","blue","black","gray","gray"))
@@ -450,7 +450,7 @@ Iný postup (len doplnenie dát do obrázku zo `sarima.for`): Po vykreslení gra
 **Návod:** Dokreslovanie pre funkciu ts.plot  https://stats.stackexchange.com/questions/154346/fitted-confidence-intervals-forecast-function-r
 
 Krajšie grafy pomocou funkcie `autoplot` a `autolayer`:
-```{r warning = FALSE}
+```{r warning = FALSE, fig.align="center"}
 pallete <-  c("#D55E00","#009E73", "gray", "gray")
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
@@ -466,7 +466,7 @@ autoplot(window(spread, start = c(1952,1), end = c(2003,4))) +
 ```
 \
 Zoom:
-```{r warning = FALSE, echo = FALSE}
+```{r warning = FALSE, echo = FALSE, fig.align="center"}
 pallete <-  c("#D55E00","#009E73", "gray", "gray")
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
@@ -484,7 +484,7 @@ autoplot(window(spread, start = c(1990,1), end = c(2003,4))) +
 
 Vyfarbené intevaly spoľahlivosti:
 
-```{r warning = FALSE, echo = FALSE}
+```{r warning = FALSE, echo = FALSE, fig.align="center"}
 pallete <-  c("#D55E00","#009E73", "gray", "gray")
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
@@ -524,13 +524,13 @@ Postup:
 
 + V cykle vypočítame nasledjúce hodnoty ACF
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 rho <- rep(0, times=10)
 rho <- ....                   # prve tri zlozky ako riesenie sustavy
 for (i in 4:10) rho[i] <- ... # z diferencnej rovnice
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 rho <- rep(0, times=10)
 alpha1 <- 1.5
 alpha2 <- -0.8
@@ -548,10 +548,10 @@ print(rho)
 ## Funkcia v R-ku
 Použite funkciu `ARMAacf` pre náš proces
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 ARMAacf(ar=c(...), lag.max=10)
 ```
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 ARMAacf(ar=c(alpha1,alpha2,alpha3), lag.max=10)
 ```
 a porovnajte výsledky z oboch postupov. Funkcia `ARMAacf` by už nemala byť “čiernou skrinkou” ;-)
@@ -570,7 +570,7 @@ Nájdeme autokorelačnú funkciu AR(3) procesu
 $$x_t=1.5x_{t−1}−0.8x_{t−2}+0.2x_{t−3}+u_t,$$
 Podobne ako v prípade ACF, aj teraz použijeme funkciu `ARMAacf`, ale pridáme parameter `pacf=TRUE`:
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 ARMAacf(ar=c(...), lag.max=10, pacf=TRUE)
 ```
 
@@ -586,12 +586,12 @@ a ktoré
 + majú hodnoty, ktoré konvergujú k nule, ale neexistuje index, od ktorého by boli nulové?
 
 **Príklad 1**
-```{r}
+```{r, fig.align="center"}
 acf.pr1 <- ARMAacf(ar=c(0.05,-0.2), lag.max=10)
 acf.pr1
 ```
 
-```{r}
+```{r, fig.align="center"}
 acf.pr1 <- data.frame(
   name= as.factor(as.numeric(names(acf.pr1))) ,  
   value= acf.pr1 )
@@ -601,12 +601,12 @@ geom_bar(stat = "identity")
 ```
 
 **Príklad 2**
-```{r}
+```{r, fig.align="center"}
 pacf.pr1 <-ARMAacf(ar=c(0.3,0.05), lag.max=10, pacf=TRUE)
 pacf.pr1
 ```
 
-```{r}
+```{r, fig.align="center"}
 pacf.pr1 <- data.frame(
   name= as.factor(1:length(pacf.pr1)) ,  
   value= pacf.pr1 )
@@ -621,14 +621,14 @@ Môžeme
 
 + pomocou funkcie `acf2` z knižnice astsa vykresliť naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu pre lag 0, ktorá sa vždy rovná 1)
 
-```{r}
+```{r, fig.align="center"}
 x <- rnorm(100)
 
 # moznost 1
 pacf(x)
 ```
 
-```{r}
+```{r, fig.align="center"}
 # moznost 2
 acf2(x)
 ```
@@ -640,7 +640,7 @@ acf2(x)
 
 **Skúsime najskôr numericky:** Pre nejaký rozsah parametra `k` nájdeme absolútnu hodnotu koreňov (pomocou `polyroot`).
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 k <- seq(-2,2, by = 0.1)
 
 arma.roots <- c()
@@ -690,7 +690,7 @@ Uvažujme proces
 $x_t=δ+α_1x_{t−1}+α_2x_{t−2}+u_t$.
 Má dva paramametre, takže ich môžeme znázorniť do roviny a odlíšiť tie, ktoré zodpovedajú stacionárnemu a tie, ktoré zodpovedajú nestacionárnemu AR(2) procesu.
 
-```{r}
+```{r, fig.align="center"}
 n <- 100          # najskor menej, po odladeni napr. týchto 2000
 set.seed(123)
 alpha1 <- runif(n, min = -2.5, max = 2.5) # rovnomerne na (min, max)
@@ -702,13 +702,13 @@ head(df)
 
 Napíšte funkciu, ktorá rozhodne, či je AR(2) proces so zadanými parametrami stacionárny. Napríklad `stat.ar.2(c(1,1))` vráti `FALSE`.
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 stat.ar.2 <- function(koef) # doplnte definiciu funkcie
 {
 }
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 stat.ar.2 <- function(koef) 
 {
     roots <- abs(polyroot(c(1,-koef[1],-koef[2])))
@@ -719,7 +719,7 @@ stat.ar.2 <- function(koef)
 
 Nebudeme používať cyklus, ale využijeme funkciu `apply`
 
-```{r eval = FALSE}
+```{r eval = FALSE, fig.align="center"}
 # Predpokladame fungujucu funkciu stac.ar.2, ktora ma ako vstup dvojzlozkovy vektor a vystup TRUE/FALSE
 
 apply(df[, 1:2],        # vstupne data = 1. a 2. stlpec df
@@ -727,7 +727,7 @@ apply(df[, 1:2],        # vstupne data = 1. a 2. stlpec df
       FUN = stac.ar.2)   # aplikuje sa funkcia stac.ar.2
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align="center"}
 df$stationary <- apply(df[,1:2],1,stat.ar.2)
 ```
 
@@ -756,7 +756,7 @@ Takisto je na skúške na výber širšia trieda modelov, ako sú AR modely. V n
 ## Ceny benzínu
 
 Dáta z knižnice `astsa`, z popisu v helpe: *New York Harbor conventional regular gasoline weekly spot price FOB (in cents per gallon) from 2000 to mid-2010*. Zoberieme dáta od roku 2006.
-```{r}
+```{r, fig.align="center"}
 gas <- astsa::gas
 x <- window(gas, start=c(2006,1))
 ```
@@ -765,7 +765,7 @@ Nájdite model pre premennú `x` tak, že budete jej diferencie modelovať AR pr
 ## Indikátor od Boxa a Jenkinsa
 Dáta z knižnice `astsa`, z popisu v helpe: *Leading indicator, 150 months; taken from Box and Jenkins (1970)*.
 
-```{r}
+```{r, fig.align="center"}
 lead <- astsa::lead
 x <- lead
 ```

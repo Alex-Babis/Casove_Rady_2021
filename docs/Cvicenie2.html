@@ -516,8 +516,8 @@ Napríklad zoberieme mesačnú frekvenciu - <code>frequency = 12</code>, <code>s
 <pre><code>## [1] &quot;ts&quot;</code></pre>
 <p>Vykreslíme teraz priebeh - na x-ovej osi budú správne časy: Knižnica <code>ggfortify</code> nám umožní kresliť grafy pre object <code>ts</code> pomocnou knižnice <code>ggplot2</code>. Funkcia <code>autoplot(ts)</code></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">autoplot</span>(spread)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p><strong>Úloha:</strong> Zobrazte výberovú autokorelačnú funkciu. <img src="Cvicenie2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Úloha:</strong> Zobrazte výberovú autokorelačnú funkciu. <img src="Cvicenie2_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>##  [1]  0.91  0.79  0.67  0.58  0.49  0.41  0.34  0.28  0.24  0.23  0.22  0.20
 ## [13]  0.16  0.12  0.07  0.02 -0.02 -0.03 -0.01  0.01  0.02  0.02  0.04  0.06
 ## [25]  0.07</code></pre>
@@ -860,7 +860,7 @@ Napríklad zoberieme mesačnú frekvenciu - <code>frequency = 12</code>, <code>s
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">sarima.for</span>(data, n, p, <span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># predikcie pre n pozorovani z AR(p) modelu</span></a>
 <a class="sourceLine" id="cb36-2" title="2"><span class="kw">sarima.for</span>(data, n, p, k, <span class="dv">0</span>)  <span class="co"># predikcie pre n pozorovani premennej data, ak jej k-te diferencie modelujeme ako AR(p) </span></a></code></pre></div>
 <p>Úloha: Pomocou AR(2) modelu pre dáta <code>spread</code> spravte predikcie na nasledujúce dva roky (máme kvartálne dáta, takže 2 roky predstavujú 8 pozorovaní)</p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>## $pred
 ##             Qtr1        Qtr2        Qtr3        Qtr4
 ## 2006 -0.11864092  0.03883299  0.19265253  0.32884850
@@ -883,8 +883,8 @@ Napríklad zoberieme mesačnú frekvenciu - <code>frequency = 12</code>, <code>s
 <a class="sourceLine" id="cb38-3" title="3">                  <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;black&quot;</span>))</a>
 <a class="sourceLine" id="cb38-4" title="4">)</a></code></pre></div>
 <p>Pritom jednotlivé dáta nemusia mať rovnaký rozsah časov, pre ktoré sú dostupné, R-ko sa postará aj o rozsah y-ovej osi (čo nie je zaručené pri kreslení pomocou <code>plot</code> a potom <code>lines</code>).</p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Iný postup (len doplnenie dát do obrázku zo <code>sarima.for</code>): Po vykreslení grafu do neho štandardným spôsobom môžeme pridávať <code>lines</code>, <code>points</code> a pod.</p>
 <p><strong>Nepovinné rozšírenie:</strong> Zvoľte si vlastný rozsah použitých dát, ktoré chcete zobraziť (teda nie nutne 100, resp. všetky). Namiesto čiar, ktoré ohraničujú predikčné intervaly spravte vyfarbenú oblasť:</p>
 <p><strong>Návod:</strong> Dokreslovanie pre funkciu ts.plot <a href="https://stats.stackexchange.com/questions/154346/fitted-confidence-intervals-forecast-function-r" class="uri">https://stats.stackexchange.com/questions/154346/fitted-confidence-intervals-forecast-function-r</a></p>
@@ -899,11 +899,11 @@ Napríklad zoberieme mesačnú frekvenciu - <code>frequency = 12</code>, <code>s
 <a class="sourceLine" id="cb39-8" title="8"><span class="st">  </span><span class="kw">autolayer</span>(LB, <span class="dt">series=</span><span class="st">&quot;LB&quot;</span>)<span class="op">+</span></a>
 <a class="sourceLine" id="cb39-9" title="9"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span>pallete)<span class="op">+</span></a>
 <a class="sourceLine" id="cb39-10" title="10"><span class="st">   </span><span class="kw">theme</span>(<span class="dt">axis.title.y=</span><span class="kw">element_blank</span>())</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-41-1.png" width="672" /><br />
-Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" /><br />
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /><br />
+Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /><br />
 </p>
 <p>Vyfarbené intevaly spoľahlivosti:</p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Cvičenie:</strong> Modelovali sme rýchlosť rastu HDP autoregresným procesom. Vynechajte teraz z dát posledných 5 rokov. Odhadnite vhodný model a použitím nájdeného modelu spravte predikcie pre:</p>
 <ul>
 <li>logaritmus HDP</li>
@@ -979,7 +979,7 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <a class="sourceLine" id="cb47-4" title="4"></a>
 <a class="sourceLine" id="cb47-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> acf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
 <a class="sourceLine" id="cb47-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Príklad 2</strong></p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">pacf.pr1 &lt;-<span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(<span class="fl">0.3</span>,<span class="fl">0.05</span>), <span class="dt">lag.max=</span><span class="dv">10</span>, <span class="dt">pacf=</span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb48-2" title="2">pacf.pr1</a></code></pre></div>
@@ -991,7 +991,7 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <a class="sourceLine" id="cb50-4" title="4"></a>
 <a class="sourceLine" id="cb50-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> pacf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
 <a class="sourceLine" id="cb50-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="výberová-pacf-z-dát" class="section level2">
 <h2><span class="header-section-number">8.4</span> Výberová PACF z dát</h2>
@@ -1003,10 +1003,10 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <a class="sourceLine" id="cb51-2" title="2"></a>
 <a class="sourceLine" id="cb51-3" title="3"><span class="co"># moznost 1</span></a>
 <a class="sourceLine" id="cb51-4" title="4"><span class="kw">pacf</span>(x)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># moznost 2</span></a>
 <a class="sourceLine" id="cb52-2" title="2"><span class="kw">acf2</span>(x)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>##       [,1]  [,2] [,3]  [,4] [,5]  [,6] [,7] [,8]  [,9] [,10] [,11] [,12] [,13]
 ## ACF  -0.09 -0.13 0.04 -0.20 0.08 -0.18 0.02 0.15 -0.06  0.17 -0.13 -0.03  0.14
 ## PACF -0.09 -0.14 0.01 -0.22 0.05 -0.25 0.01 0.03 -0.01  0.12 -0.11  0.02  0.08
@@ -1021,7 +1021,7 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <h2><span class="header-section-number">9.1</span> Stacionarita a parameter procesu</h2>
 <p><strong>Zadanie:</strong> Urcte všetky hodnoty parametra <code>k</code>, pre ktoré je stacionárny AR(2) proces <span class="math inline">\(x_t=x_{t−1}+kx_{t−2}+u_t\)</span>.</p>
 <p><strong>Skúsime najskôr numericky:</strong> Pre nejaký rozsah parametra <code>k</code> nájdeme absolútnu hodnotu koreňov (pomocou <code>polyroot</code>).</p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Otázky k nasledujúcemu obrázku:</strong></p>
 <ul>
 <li><p>Preco pre niektoré <code>k</code> je len jedna absolútna hodnota (napríklad <code>k = -1.5</code> - prerušovaná oranžová čiara), kým pre iné sú dve (<code>k = -0.2</code>,<code>k = 0.5</code> - prerušovaná zelená čiara)?</p></li>
