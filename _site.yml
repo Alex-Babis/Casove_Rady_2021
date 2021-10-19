@@ -9,7 +9,7 @@ navbar:
         - text: "Tutorial 1"
           href: Cvicenie1.html
         - text: "Tutorial 2"
-          href: 
+          href: Cvicenie2.html
     - text: "Homeworks"
       menu:
         - text: "Homework 1"
