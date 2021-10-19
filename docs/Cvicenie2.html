@@ -928,11 +928,17 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">rho &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dt">times=</span><span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb40-2" title="2">rho &lt;-<span class="st"> </span>....                   <span class="co"># prve tri zlozky ako riesenie sustavy</span></a>
 <a class="sourceLine" id="cb40-3" title="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">4</span><span class="op">:</span><span class="dv">10</span>) rho[i] &lt;-<span class="st"> </span>... <span class="co"># z diferencnej rovnice</span></a></code></pre></div>
+<pre><code>##  [1] 0.9178082 0.7602740 0.6061644 0.4845890 0.3940068 0.3245719 0.2685702
+##  [8] 0.2219991 0.1830569 0.1507001</code></pre>
 </div>
 <div id="funkcia-v-r-ku" class="section level2">
 <h2><span class="header-section-number">7.2</span> Funkcia v R-ku</h2>
 <p>Použite funkciu <code>ARMAacf</code> pre náš proces</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(...), <span class="dt">lag.max=</span><span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(...), <span class="dt">lag.max=</span><span class="dv">10</span>)</a></code></pre></div>
+<pre><code>##         0         1         2         3         4         5         6         7 
+## 1.0000000 0.9178082 0.7602740 0.6061644 0.4845890 0.3940068 0.3245719 0.2685702 
+##         8         9        10 
+## 0.2219991 0.1830569 0.1507001</code></pre>
 <p>a porovnajte výsledky z oboch postupov. Funkcia <code>ARMAacf</code> by už nemala byť “čiernou skrinkou” ;-)</p>
 </div>
 </div>
@@ -948,7 +954,7 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <div id="výpočet-v-r-ku" class="section level2">
 <h2><span class="header-section-number">8.2</span> Výpočet v R-ku</h2>
 <p>Nájdeme autokorelačnú funkciu AR(3) procesu <span class="math display">\[x_t=1.5x_{t−1}−0.8x_{t−2}+0.2x_{t−3}+u_t,\]</span> Podobne ako v prípade ACF, aj teraz použijeme funkciu <code>ARMAacf</code>, ale pridáme parameter <code>pacf=TRUE</code>:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(...), <span class="dt">lag.max=</span><span class="dv">10</span>, <span class="dt">pacf=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(...), <span class="dt">lag.max=</span><span class="dv">10</span>, <span class="dt">pacf=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="kontrolná-otázka" class="section level2">
 <h2><span class="header-section-number">8.3</span> Kontrolná otázka</h2>
@@ -959,33 +965,33 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <li><p>majú hodnoty, ktoré konvergujú k nule, ale neexistuje index, od ktorého by boli nulové?</p></li>
 </ul>
 <p><strong>Príklad 1</strong></p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">acf.pr1 &lt;-<span class="st"> </span><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(<span class="fl">0.05</span>,<span class="op">-</span><span class="fl">0.2</span>), <span class="dt">lag.max=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb43-2" title="2">acf.pr1</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">acf.pr1 &lt;-<span class="st"> </span><span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(<span class="fl">0.05</span>,<span class="op">-</span><span class="fl">0.2</span>), <span class="dt">lag.max=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb45-2" title="2">acf.pr1</a></code></pre></div>
 <pre><code>##             0             1             2             3             4 
 ##  1.0000000000  0.0416666667 -0.1979166667 -0.0182291667  0.0386718750 
 ##             5             6             7             8             9 
 ##  0.0055794271 -0.0074554036 -0.0014886556  0.0014166479  0.0003685635 
 ##            10 
 ## -0.0002649014</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">acf.pr1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb45-2" title="2">  <span class="dt">name=</span> <span class="kw">as.factor</span>(<span class="kw">as.numeric</span>(<span class="kw">names</span>(acf.pr1))) ,  </a>
-<a class="sourceLine" id="cb45-3" title="3">  <span class="dt">value=</span> acf.pr1 )</a>
-<a class="sourceLine" id="cb45-4" title="4"></a>
-<a class="sourceLine" id="cb45-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> acf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
-<a class="sourceLine" id="cb45-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">acf.pr1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb47-2" title="2">  <span class="dt">name=</span> <span class="kw">as.factor</span>(<span class="kw">as.numeric</span>(<span class="kw">names</span>(acf.pr1))) ,  </a>
+<a class="sourceLine" id="cb47-3" title="3">  <span class="dt">value=</span> acf.pr1 )</a>
+<a class="sourceLine" id="cb47-4" title="4"></a>
+<a class="sourceLine" id="cb47-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> acf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
+<a class="sourceLine" id="cb47-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <p><strong>Príklad 2</strong></p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">pacf.pr1 &lt;-<span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(<span class="fl">0.3</span>,<span class="fl">0.05</span>), <span class="dt">lag.max=</span><span class="dv">10</span>, <span class="dt">pacf=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb46-2" title="2">pacf.pr1</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">pacf.pr1 &lt;-<span class="kw">ARMAacf</span>(<span class="dt">ar=</span><span class="kw">c</span>(<span class="fl">0.3</span>,<span class="fl">0.05</span>), <span class="dt">lag.max=</span><span class="dv">10</span>, <span class="dt">pacf=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb48-2" title="2">pacf.pr1</a></code></pre></div>
 <pre><code>##  [1]  3.157895e-01  5.000000e-02 -3.863413e-18  3.927096e-19 -4.622862e-19
 ##  [6] -1.450362e-19 -4.829267e-20  6.640242e-20  5.131096e-20 -2.263719e-20</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">pacf.pr1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb48-2" title="2">  <span class="dt">name=</span> <span class="kw">as.factor</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(pacf.pr1)) ,  </a>
-<a class="sourceLine" id="cb48-3" title="3">  <span class="dt">value=</span> pacf.pr1 )</a>
-<a class="sourceLine" id="cb48-4" title="4"></a>
-<a class="sourceLine" id="cb48-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> pacf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
-<a class="sourceLine" id="cb48-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1">pacf.pr1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb50-2" title="2">  <span class="dt">name=</span> <span class="kw">as.factor</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(pacf.pr1)) ,  </a>
+<a class="sourceLine" id="cb50-3" title="3">  <span class="dt">value=</span> pacf.pr1 )</a>
+<a class="sourceLine" id="cb50-4" title="4"></a>
+<a class="sourceLine" id="cb50-5" title="5"><span class="kw">ggplot</span>(<span class="dt">data=</span> pacf.pr1, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> value))<span class="op">+</span></a>
+<a class="sourceLine" id="cb50-6" title="6"><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 </div>
 <div id="výberová-pacf-z-dát" class="section level2">
 <h2><span class="header-section-number">8.4</span> Výberová PACF z dát</h2>
@@ -993,14 +999,14 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <ul>
 <li>pomocou funkcie <code>acf2</code> z knižnice astsa vykresliť naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu pre lag 0, ktorá sa vždy rovná 1)</li>
 </ul>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb49-2" title="2"></a>
-<a class="sourceLine" id="cb49-3" title="3"><span class="co"># moznost 1</span></a>
-<a class="sourceLine" id="cb49-4" title="4"><span class="kw">pacf</span>(x)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># moznost 2</span></a>
-<a class="sourceLine" id="cb50-2" title="2"><span class="kw">acf2</span>(x)</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb51-2" title="2"></a>
+<a class="sourceLine" id="cb51-3" title="3"><span class="co"># moznost 1</span></a>
+<a class="sourceLine" id="cb51-4" title="4"><span class="kw">pacf</span>(x)</a></code></pre></div>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># moznost 2</span></a>
+<a class="sourceLine" id="cb52-2" title="2"><span class="kw">acf2</span>(x)</a></code></pre></div>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <pre><code>##       [,1]  [,2] [,3]  [,4] [,5]  [,6] [,7] [,8]  [,9] [,10] [,11] [,12] [,13]
 ## ACF  -0.09 -0.13 0.04 -0.20 0.08 -0.18 0.02 0.15 -0.06  0.17 -0.13 -0.03  0.14
 ## PACF -0.09 -0.14 0.01 -0.22 0.05 -0.25 0.01 0.03 -0.01  0.12 -0.11  0.02  0.08
@@ -1015,7 +1021,7 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <h2><span class="header-section-number">9.1</span> Stacionarita a parameter procesu</h2>
 <p><strong>Zadanie:</strong> Urcte všetky hodnoty parametra <code>k</code>, pre ktoré je stacionárny AR(2) proces <span class="math inline">\(x_t=x_{t−1}+kx_{t−2}+u_t\)</span>.</p>
 <p><strong>Skúsime najskôr numericky:</strong> Pre nejaký rozsah parametra <code>k</code> nájdeme absolútnu hodnotu koreňov (pomocou <code>polyroot</code>).</p>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p><strong>Otázky k nasledujúcemu obrázku:</strong></p>
 <ul>
 <li><p>Preco pre niektoré <code>k</code> je len jedna absolútna hodnota (napríklad <code>k = -1.5</code> - prerušovaná oranžová čiara), kým pre iné sú dve (<code>k = -0.2</code>,<code>k = 0.5</code> - prerušovaná zelená čiara)?</p></li>
@@ -1039,13 +1045,13 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <div id="simulačné-a-analytické-zistenie-podmienky-stacionarity-pre-ar2-proces" class="section level2">
 <h2><span class="header-section-number">9.3</span> Simulačné a analytické zistenie podmienky stacionarity pre AR(2) proces</h2>
 <p>Uvažujme proces <span class="math inline">\(x_t=δ+α_1x_{t−1}+α_2x_{t−2}+u_t\)</span>. Má dva paramametre, takže ich môžeme znázorniť do roviny a odlíšiť tie, ktoré zodpovedajú stacionárnemu a tie, ktoré zodpovedajú nestacionárnemu AR(2) procesu.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">n &lt;-<span class="st"> </span><span class="dv">100</span>          <span class="co"># najskor menej, po odladeni napr. týchto 2000</span></a>
-<a class="sourceLine" id="cb52-2" title="2"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb52-3" title="3">alpha1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="fl">-2.5</span>, <span class="dt">max =</span> <span class="fl">2.5</span>) <span class="co"># rovnomerne na (min, max)</span></a>
-<a class="sourceLine" id="cb52-4" title="4">alpha2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="fl">-2.5</span>, <span class="dt">max =</span> <span class="fl">2.5</span>)</a>
-<a class="sourceLine" id="cb52-5" title="5">stationary &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>,n)</a>
-<a class="sourceLine" id="cb52-6" title="6">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(alpha1, alpha2, stationary)</a>
-<a class="sourceLine" id="cb52-7" title="7"><span class="kw">head</span>(df)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">n &lt;-<span class="st"> </span><span class="dv">100</span>          <span class="co"># najskor menej, po odladeni napr. týchto 2000</span></a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb54-3" title="3">alpha1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="fl">-2.5</span>, <span class="dt">max =</span> <span class="fl">2.5</span>) <span class="co"># rovnomerne na (min, max)</span></a>
+<a class="sourceLine" id="cb54-4" title="4">alpha2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="fl">-2.5</span>, <span class="dt">max =</span> <span class="fl">2.5</span>)</a>
+<a class="sourceLine" id="cb54-5" title="5">stationary &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>,n)</a>
+<a class="sourceLine" id="cb54-6" title="6">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(alpha1, alpha2, stationary)</a>
+<a class="sourceLine" id="cb54-7" title="7"><span class="kw">head</span>(df)</a></code></pre></div>
 <pre><code>##       alpha1      alpha2 stationary
 ## 1 -1.0621124  0.49994480         NA
 ## 2  1.4415257 -0.83588230         NA
@@ -1054,19 +1060,19 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 ## 5  2.2023364 -0.08548801         NA
 ## 6 -2.2722175  1.95175111         NA</code></pre>
 <p>Napíšte funkciu, ktorá rozhodne, či je AR(2) proces so zadanými parametrami stacionárny. Napríklad <code>stat.ar.2(c(1,1))</code> vráti <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">stat.ar<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(koef) <span class="co"># doplnte definiciu funkcie</span></a>
-<a class="sourceLine" id="cb54-2" title="2">{</a>
-<a class="sourceLine" id="cb54-3" title="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1">stat.ar<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(koef) <span class="co"># doplnte definiciu funkcie</span></a>
+<a class="sourceLine" id="cb56-2" title="2">{</a>
+<a class="sourceLine" id="cb56-3" title="3">}</a></code></pre></div>
 <p>Nebudeme používať cyklus, ale využijeme funkciu <code>apply</code></p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co"># Predpokladame fungujucu funkciu stac.ar.2, ktora ma ako vstup dvojzlozkovy vektor a vystup TRUE/FALSE</span></a>
-<a class="sourceLine" id="cb55-2" title="2"></a>
-<a class="sourceLine" id="cb55-3" title="3"><span class="kw">apply</span>(df[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],        <span class="co"># vstupne data = 1. a 2. stlpec df</span></a>
-<a class="sourceLine" id="cb55-4" title="4">      <span class="dt">MARGIN =</span> <span class="dv">1</span>,        <span class="co"># znamena, ze sa budu brat po riadkoch</span></a>
-<a class="sourceLine" id="cb55-5" title="5">      <span class="dt">FUN =</span> stac.ar<span class="fl">.2</span>)   <span class="co"># aplikuje sa funkcia stac.ar.2</span></a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="co"># Predpokladame fungujucu funkciu stac.ar.2, ktora ma ako vstup dvojzlozkovy vektor a vystup TRUE/FALSE</span></a>
+<a class="sourceLine" id="cb57-2" title="2"></a>
+<a class="sourceLine" id="cb57-3" title="3"><span class="kw">apply</span>(df[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],        <span class="co"># vstupne data = 1. a 2. stlpec df</span></a>
+<a class="sourceLine" id="cb57-4" title="4">      <span class="dt">MARGIN =</span> <span class="dv">1</span>,        <span class="co"># znamena, ze sa budu brat po riadkoch</span></a>
+<a class="sourceLine" id="cb57-5" title="5">      <span class="dt">FUN =</span> stac.ar<span class="fl">.2</span>)   <span class="co"># aplikuje sa funkcia stac.ar.2</span></a></code></pre></div>
 <p>Potom môžeme pomocou knižnice `ggplot2 kresliť:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1"><span class="kw">qplot</span>(alpha1, alpha2, <span class="dt">colour=</span>stationary, <span class="dt">data=</span>df)<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-2" title="2"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>))</a></code></pre></div>
-<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1"><span class="kw">qplot</span>(alpha1, alpha2, <span class="dt">colour=</span>stationary, <span class="dt">data=</span>df)<span class="op">+</span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>))</a></code></pre></div>
+<p><img src="Cvicenie2_files/figure-html/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Sformulujte tvrdenie o podmienke stacionarity AR(2) procesu (dá sa vyjadriť pomocou troch nerovností pre parametre, ktoré musia súčasne platiť) a dokážte ho. Z grafu môžeme získať hypotézu, ako vyzerá podmienka stacionarity pre AR(2) proces a následne sa ju snažiť dokázať. Alebo ho môžeme použiť ako skúšku správnosti našich výpočtov.</p>
 </div>
 <div id="hľadanie-vhodného-autoregresného-modelu-pre-zadané-dáta" class="section level2">
@@ -1083,15 +1089,15 @@ Zoom: <img src="Cvicenie2_files/figure-html/unnamed-chunk-42-1.png" width="672" 
 <div id="ceny-benzínu" class="section level2">
 <h2><span class="header-section-number">9.5</span> Ceny benzínu</h2>
 <p>Dáta z knižnice <code>astsa</code>, z popisu v helpe: <em>New York Harbor conventional regular gasoline weekly spot price FOB (in cents per gallon) from 2000 to mid-2010</em>. Zoberieme dáta od roku 2006.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">gas &lt;-<span class="st"> </span>astsa<span class="op">::</span>gas</a>
-<a class="sourceLine" id="cb57-2" title="2">x &lt;-<span class="st"> </span><span class="kw">window</span>(gas, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2006</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">gas &lt;-<span class="st"> </span>astsa<span class="op">::</span>gas</a>
+<a class="sourceLine" id="cb59-2" title="2">x &lt;-<span class="st"> </span><span class="kw">window</span>(gas, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2006</span>,<span class="dv">1</span>))</a></code></pre></div>
 <p>Nájdite model pre premennú <code>x</code> tak, že budete jej diferencie modelovať AR procesom.</p>
 </div>
 <div id="indikátor-od-boxa-a-jenkinsa" class="section level2">
 <h2><span class="header-section-number">9.6</span> Indikátor od Boxa a Jenkinsa</h2>
 <p>Dáta z knižnice <code>astsa</code>, z popisu v helpe: <em>Leading indicator, 150 months; taken from Box and Jenkins (1970)</em>.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1">lead &lt;-<span class="st"> </span>astsa<span class="op">::</span>lead</a>
-<a class="sourceLine" id="cb58-2" title="2">x &lt;-<span class="st"> </span>lead</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1">lead &lt;-<span class="st"> </span>astsa<span class="op">::</span>lead</a>
+<a class="sourceLine" id="cb60-2" title="2">x &lt;-<span class="st"> </span>lead</a></code></pre></div>
 <p>Nájdite model pre premennú <code>x</code> tak, že budete jej diferencie modelovať AR procesom.</p>
 </div>
 <div id="nájdenie-procesu-s-danou-vlastnosťou" class="section level2">

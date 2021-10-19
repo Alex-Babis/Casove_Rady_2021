@@ -530,13 +530,30 @@ rho <- ....                   # prve tri zlozky ako riesenie sustavy
 for (i in 4:10) rho[i] <- ... # z diferencnej rovnice
 ```
 
+```{r echo = FALSE}
+rho <- rep(0, times=10)
+alpha1 <- 1.5
+alpha2 <- -0.8
+alpha3 <- 0.2
+A <- matrix(c(1-alpha2,-alpha3,0,
+              -alpha1-alpha3,1,0,
+              -alpha2,-alpha1,1),3,3)
+A <- t(A)
+b <- c(alpha1,alpha2,alpha3)
+rho <- solve(A,b)                   # prve tri zlozky ako riesenie sustavy
+for (i in 4:10) rho[i] <- alpha1*rho[i-1]+ alpha2*rho[i-2]+alpha3*rho[i-3]
+ # z diferencnej rovnice
+print(rho)
+```
 ## Funkcia v R-ku
 Použite funkciu `ARMAacf` pre náš proces
 
 ```{r eval = FALSE}
 ARMAacf(ar=c(...), lag.max=10)
 ```
-
+```{r echo = FALSE}
+ARMAacf(ar=c(alpha1,alpha2,alpha3), lag.max=10)
+```
 a porovnajte výsledky z oboch postupov. Funkcia `ARMAacf` by už nemala byť “čiernou skrinkou” ;-)
 
 # Parciálna autokorelačná funkcia AR procesu
