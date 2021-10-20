@@ -618,6 +618,7 @@ geom_bar(stat = "identity")
 
 ## Výberová PACF z dát
 Môžeme
+
 + použiť funkciu `pacf`
 
 + pomocou funkcie `acf2` z knižnice astsa vykresliť naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu pre lag 0, ktorá sa vždy rovná 1)
