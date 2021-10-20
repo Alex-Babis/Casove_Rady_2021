@@ -283,7 +283,8 @@ log.y <- ts(log.y, start = 1975, frequency = 1)
 + Z priebehu dát vidíme, ze nie sú stacionárne, pretovbudeme pracovat s diferenciami
 + Zoberieme diferencie logaritmov - to je rýchlost rastu HDP.
 + Vyskúšajte, či je AR(1) model dobrým modelom pre rýchlosť rastu HDP.
-+ Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či sa rýchlosť rastu nedá modelovať ako posunutý biely šum. Ak +AR(1) nevyhovuje, vyskúšajte AR modely vyššieho rádu.
++ Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či sa rýchlosť rastu nedá modelovať ako posunutý biely šum. 
++ Ak AR(1) nevyhovuje, vyskúšajte AR modely vyššieho rádu.
 Zopakujte pre iný štát.
 
 # Overovanie stacionarity AR procesu v R-ku
@@ -336,7 +337,7 @@ Príklady tohto typu “nájdite príklad procesu, ktorý … a ukážte, že m�
 # Overenie stacionarity odhadnutého AR modelu
 ## Pristupovanie ku koeficientom modelu
 
-Samozrejme pri AR(1) modeli sme hneď videli, či je stacionárny alebo nie, pri modeloch vyššieho rádu použijeme funkciupolyroot
+Samozrejme pri AR(1) modeli sme hneď videli, či je stacionárny alebo nie, pri modeloch vyššieho rádu použijeme funkciu `polyroot`
 
 Hodnoty koeficientov však nemusíme odpisovať, tak by sme navyše dostali iba ich približné hodnoty
 
@@ -396,7 +397,7 @@ Na prednáške sme videli, že ak pre dáta v premennej `spread` odhadneme AR(2)
 
 Cieľom modelovania je často konštrukcia predikcií do budúcnosti.
 
-*Funkcia v R-ku:** `sarima.for`
+**Funkcia v R-ku:** `sarima.for`
 ```{r eval = FALSE, fig.align="center"}
 sarima.for(data, n, p, 0, 0)  # predikcie pre n pozorovani z AR(p) modelu
 sarima.for(data, n, p, k, 0)  # predikcie pre n pozorovani premennej data, ak jej k-te diferencie modelujeme ako AR(p) 
