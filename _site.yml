@@ -14,4 +14,6 @@ navbar:
       menu:
         - text: "Homework 1"
           href: Domaca_uloha1.html
+        - text: "Homework 2"
+          href: Domaca_uloha2.html
 output_dir: "docs"

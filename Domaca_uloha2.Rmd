@@ -1,0 +1,51 @@
+---
+title: "Domáca úloha 2"
+output: 
+    html_document:
+        theme: flatly
+        highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Pokyny
+
+* Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, **ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.**
+
+* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2021 - DU2 - priezvisko/priezviská** 
+
+* Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.
+
+* Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.
+
+* V druhom prípade pracuje každá skupina s inými dátami, rezervácia dát na stránke (píšte svoje meno/mená a názov výmenného kurzu) https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
+
+
+# Príklad 1: Procesy s danou vlastnosťou
+Uveďte príklad procesov s danými vlastnosťami. Ak nie je povedané inak, proces musí byť stacionárny. Pre každý proces dokážte, že má požadovanú vlastnosť (napríklad tak, že určite korene pre dané polynómy, vypočítate disperziu a podobne).
+
+* AR(2) proces so strednou hodnotou 15
+* Nestacionárny AR(3) proces.
+* MA(2) proces, ktorého disperzia je 2021
+* Invertovateľný MA(2) proces so strednou hodnotou 3.
+* AR(3) proces, ktorého ACF nie je monotónna.
+
+# Príklad 2: MA proces ako model pre percentuálnu zmenu výmenného kurzu
+
+Pomocou funkcie `getSymbols.oanda` z balíka `quantmod` si načítajte dáta zvoleného výmenného kurzu. Každý pracuje s iným výmenným kurzom.
+
+```{r eval=FALSE}
+# z prednasky
+library(quantmod)
+data <- getSymbols.oanda("GBP/USD", auto.assign = FALSE)
+```
+
+Budeme modelovať percentuálnu zmenu výmenného kurzu, teda premennú `diff(log(data))`. **Požiadavkou na dáta je, že sa táto premenná nespráva ako biely šum.** V tejto úlohe zistíme, či sa dá modelovať MA procesom.
+
+* Zdôvodnite, prečo sa `diff(log(data))` nedá považovať za biely šum.
+* Zobrazte výberovú **autokorelačnú funkciu.**
+* Viete na základe predchádzajúcej úlohy spraviť "tip", aký by mohol byť vhodný rád procesu? Ak áno, vyskúšajte ho, pozrite sa na rezíduá a spíšte výsledky. Ak výjdu dobre, máme model.
+* Ak model z predchádzajúceho bodu nevyšiel alebo sa nedal spraviť dobrý tip na základe ACF, odhadnite MA modely od rádu 1 do zvoleného maximálneho rádu (napríklad 5). Je niektorý z nich vyhovujúci?
+* Ak ste našli vhodný model, spravte z neho predikcie (podľa vlastného výberu to mmôžu byť predikcie pre `diff(log(data))` alebo `log(data)`).
