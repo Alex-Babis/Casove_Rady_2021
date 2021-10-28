@@ -48,7 +48,7 @@ cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
                                     "M-208"),
                        Deadline = c("15.10.2021-24:00",
                                     "",
-                                    "",
+                                    "12.11.2021-24:00",
                                     "",
                                     "",
                                     ""))
