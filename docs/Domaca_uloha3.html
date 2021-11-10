@@ -11,7 +11,7 @@
 
 
 
-<title>Domáca úloha 2</title>
+<title>Domáca úloha 3</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
 
@@ -321,6 +324,75 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -328,6 +400,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -395,50 +477,74 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Domáca úloha 2</h1>
+<h1 class="title toc-ignore">Domáca úloha 3</h1>
 
 </div>
 
 
 <div id="pokyny" class="section level1">
-<h1>Pokyny</h1>
+<h1><span class="header-section-number">1</span> Pokyny</h1>
 <ul>
 <li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU2 - priezvisko/priezviská</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU3 - priezvisko/priezviská</strong></p></li>
 <li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
-<li><p>V druhom prípade pracuje každá skupina s inými dátami, rezervácia dát na stránke (píšte svoje meno/mená a názov výmenného kurzu) <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. <strong>Tento krát by mala byť domáca úloha v tvare súvislého textu dopneného výstupmi z R, čo znamená, že každý krok treba dôkladne vysvetliť/okomentovať</strong></p></li>
+<li><p>Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou).</p></li>
+<li><p>Podmienka na dáta je, že <strong>nesmú byť modelovateľné ako biely šum posunutý o konštantu</strong> + nemôžu to byť dáta, ktoré už boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené bolo. Navyše vaše <strong>dáta musia byť bez pravidelnej sezónnosti.</strong> Pravidelnú sezónnosť majú napríklad mesačné hodnoty teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP, dáta <code>AirPassengers</code> zo začiatku semestra a pod. - je to na grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale <strong>mal dať nájsť nesezónny ARIMA model.</strong> Rezervácia tu: <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
 </ul>
 </div>
-<div id="príklad-1-procesy-s-danou-vlastnosťou" class="section level1">
-<h1>Príklad 1: Procesy s danou vlastnosťou</h1>
-<p>Uveďte príklad procesov s danými vlastnosťami. Ak nie je povedané inak, proces musí byť stacionárny. Pre každý proces dokážte, že má požadovanú vlastnosť (napríklad tak, že určite korene pre dané polynómy, vypočítate disperziu a podobne).</p>
+<div id="zadanie" class="section level1">
+<h1><span class="header-section-number">2</span> Zadanie</h1>
+<p>Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.</p>
 <ul>
-<li>AR(2) proces so strednou hodnotou 15</li>
-<li>Nestacionárny AR(3) proces.</li>
-<li>MA(2) proces, ktorého disperzia je 2021</li>
-<li>Invertovateľný MA(2) proces so strednou hodnotou 3.</li>
-<li>AR(3) proces, ktorého ACF nie je monotónna.</li>
-</ul>
-</div>
-<div id="príklad-2-ma-proces-ako-model-pre-percentuálnu-zmenu-výmenného-kurzu" class="section level1">
-<h1>Príklad 2: MA proces ako model pre percentuálnu zmenu výmenného kurzu</h1>
-<p>Pomocou funkcie <code>getSymbols.oanda</code> z balíka <code>quantmod</code> si načítajte dáta zvoleného výmenného kurzu. Každý pracuje s iným výmenným kurzom.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># z prednasky</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(quantmod)</a>
-<a class="sourceLine" id="cb1-3" title="3">data &lt;-<span class="st"> </span><span class="kw">getSymbols.oanda</span>(<span class="st">&quot;GBP/USD&quot;</span>, <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Budeme modelovať percentuálnu zmenu výmenného kurzu, teda premennú <code>diff(log(data))</code>. <strong>Požiadavkou na dáta je, že sa táto premenná nespráva ako biely šum.</strong> V tejto úlohe zistíme, či sa dá modelovať MA procesom.</p>
+<li><p>1 bod:</p>
 <ul>
-<li>Zdôvodnite, prečo sa <code>diff(log(data))</code> nedá považovať za biely šum.</li>
-<li>Zobrazte výberovú <strong>autokorelačnú funkciu.</strong></li>
-<li>Viete na základe predchádzajúcej úlohy spraviť “tip”, aký by mohol byť vhodný rád procesu? Ak áno, vyskúšajte ho, pozrite sa na rezíduá a spíšte výsledky. Ak výjdu dobre, máme model.</li>
-<li>Ak model z predchádzajúceho bodu nevyšiel alebo sa nedal spraviť dobrý tip na základe ACF, odhadnite MA modely od rádu 1 do zvoleného maximálneho rádu (napríklad 5). Je niektorý z nich vyhovujúci?</li>
-<li>Ak ste našli vhodný model, spravte z neho predikcie (podľa vlastného výberu to mmôžu byť predikcie pre <code>diff(log(data))</code> alebo <code>log(data)</code>).</li>
+<li>Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite ich priebeh.<br />
+<br />
+</li>
+</ul></li>
+<li><p>1 bod:</p>
+<ul>
+<li>Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená, že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, …) napíšete či ste ich diferencovali a prečo. Skončíte tým, že určitý časový rad nebude už treba ďalej diferencovať. Štýl zdôvodnenia by mal byť v tvare napríklad: “Dáta sme diferencovali, pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie dát sme následne diferencovali, pretože obsahovali jednotkový koreň. Druhú diferencie už nebolo treba diferencovať, pretože neobsahovali ani trend, ani jednotkový koreň.”<br />
+<br />
+</li>
+</ul></li>
+<li><p>5 bodov:</p>
+<ul>
+<li>Súčasťou predchádzajúceho bodu bolo testovanie jednotkového koreňa. V poslednom kroku (po prípadnom predchádzajúcom diferencovaní) nastala situácia, že v dátach nebol ani trend, ani jednotkový koreň, a preto ich nebolo potrebné diferencovať. Podrobne vysvetlite, čo sa tam dialo(za každú čast môžete získať 1 bod)<br />
+<br />
+</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Napíšte s akými parametrami ste dáta testovali a aká regresia sa odhadla. (Parametre, ktoré vkladate do funkcie ur.df a treba aj zdôvodniť, prečo tieto parametre. Regresiu napíšte v tvare podobne ako na prednáške a cvičení pre model, ktorý vám výjde, že sa v ADF teste odhadoval. Na cvičeniach bolo napríklad:</li>
+</ol>
+<p><span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Aká hypotéza o koeficientoch tejto regresie sa testuje?</p></li>
+<li><p>Ukážte, pre váš prípad, že táto hypotéza predstavuje hypotézu o jednotkovom koreni daného časového radu. (Analogicky ako bolo na cvičeniach pre vyššie spomenutú regresiu, alebo v prednáškach pre AR(3) proces).</p></li>
+<li><p>Kedy túto hypotézu zamietame? (ako vyzerá kritérium založené na testovacej štatistike a kritickej hodnote). Vypíšte aj testovaciu štatistiku a kritické hodnoty, s ktorými ju budete porovnávať.</p></li>
+<li><p>Čo vyšlo v vašom prípade (zamietate alebo nie) a čo to znamená pre diferencovanie vášho časového radu (diferencujete alebo nie)?</p></li>
+</ol></li>
+<li><p>2 body:</p>
+<ul>
+<li>Nájdite vhodný ARIMA model pre vaše <strong>pôvodné dáta</strong>, teda nie pre diferencie. Napríklad ak výjde, že dáta treba diferencovať namiesto <code>sarima(diff(data), p, 0, q)</code> použijete <code>sarima(data, p , 1, q)</code>. Ak si viete tipnúť na základe PACF/ACF grafov je to fajn, ale skúste porovnať viac modelov, napríklad aj zmiešané a rozhodnúť sa podľa informačných kritérií. Požiadavky sú: stacionarita, invertovateľnosť, p-hodnoty Ljung-Boxovho testu nad 5%. Zároveň si skontrolujte, v prípade zmiešaného ARMA modelu, či korene polynómov nevychádzajú blízko seba. Ak áno, analogicky cvičeniam, vyskúšajte znížiť rad p aj q o 1, teda namiesto ARMA(p,q), vyskúšajte ARMA(p-1,q-1). Odpoveď napíšte zapísaním parametrov funkcie sarima, ktorou model odhadnete:</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">sarima</span>(y, p, k, q)</a></code></pre></div>
+<ul>
+<li>1 bod:<br />
+<br />
+
+<ul>
+<li>Spravte predikcie do budúcna pre vaše <strong>pôvodné dáta</strong> a porovnajte ich so skutočnými pozorovanými hodnotami, ktoré ste na začiatku z dát vynechali. Zhodnodte váš model. Čo si o ňom myslíte?</li>
+</ul></li>
 </ul>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -471,6 +577,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

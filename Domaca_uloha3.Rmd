@@ -1,0 +1,71 @@
+---
+title: "Domáca úloha 3"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Pokyny
+
+* Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, **ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.**
+
+* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2021 - DU3 - priezvisko/priezviská** 
+
+* Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.
+
+* Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. **Tento krát by mala byť domáca úloha v tvare súvislého textu dopneného výstupmi z R, čo znamená, že každý krok treba dôkladne vysvetliť/okomentovať**
+
+* Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou). 
+
++ Podmienka na dáta je, že **nesmú byť modelovateľné ako biely šum posunutý o konštantu** + nemôžu to byť dáta, ktoré už boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené bolo. Navyše vaše **dáta musia byť bez pravidelnej sezónnosti.** Pravidelnú sezónnosť majú napríklad mesačné hodnoty teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP, dáta `AirPassengers` zo začiatku semestra a pod. - je to na grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale **mal dať nájsť nesezónny ARIMA model.** Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
+
+# Zadanie
+Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.
+
++ 1 bod:
+
+  + Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite ich priebeh.\
+  \
++ 1 bod:
+
+  + Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená, že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, ...) napíšete či ste ich diferencovali a prečo. Skončíte tým, že určitý časový rad nebude už treba ďalej diferencovať. Štýl zdôvodnenia by mal byť v tvare napríklad: "Dáta sme diferencovali, pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie dát sme následne diferencovali, pretože obsahovali jednotkový koreň. Druhú diferencie už nebolo treba diferencovať, pretože neobsahovali ani trend, ani jednotkový koreň."\
+  \
++ 5 bodov: 
+
+  + Súčasťou predchádzajúceho bodu bolo testovanie jednotkového koreňa. V poslednom kroku (po prípadnom predchádzajúcom diferencovaní) nastala situácia, že v dátach nebol ani trend, ani jednotkový koreň, a preto ich nebolo potrebné diferencovať. Podrobne vysvetlite, čo sa tam dialo(za každú čast môžete získať 1 bod)\
+  \
+  1. Napíšte s akými parametrami ste dáta testovali a aká regresia sa odhadla. (Parametre, ktoré vkladate do funkcie ur.df a treba aj zdôvodniť, prečo tieto parametre. Regresiu napíšte v tvare podobne ako na prednáške a cvičení pre model, ktorý vám výjde, že sa v ADF teste odhadoval. Na cvičeniach bolo napríklad:
+  
+  $$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
+  
+  2. Aká hypotéza o koeficientoch tejto regresie sa testuje?
+  
+  3. Ukážte, pre váš prípad, že táto hypotéza predstavuje hypotézu o jednotkovom koreni daného časového radu. (Analogicky ako bolo na cvičeniach pre vyššie spomenutú regresiu, alebo v prednáškach pre AR(3) proces).
+  
+  4. Kedy túto hypotézu zamietame? (ako vyzerá kritérium založené na testovacej štatistike a kritickej hodnote). Vypíšte aj testovaciu štatistiku a kritické hodnoty, s ktorými ju budete porovnávať.
+  
+  5. Čo vyšlo v vašom prípade (zamietate alebo nie) a čo to znamená pre diferencovanie vášho časového radu (diferencujete alebo nie)?
+  
++ 2 body: 
+
+  + Nájdite vhodný ARIMA model pre vaše **pôvodné dáta**, teda nie pre diferencie. Napríklad ak výjde, že dáta treba diferencovať namiesto `sarima(diff(data), p, 0, q)` použijete `sarima(data, p , 1, q)`. Ak si viete tipnúť na základe PACF/ACF grafov je to fajn, ale skúste porovnať viac modelov, napríklad aj zmiešané a rozhodnúť sa podľa informačných kritérií. Požiadavky sú: stacionarita, invertovateľnosť, p-hodnoty Ljung-Boxovho testu nad 5%. Zároveň si skontrolujte, v prípade zmiešaného ARMA modelu, či korene polynómov nevychádzajú blízko seba. Ak áno, analogicky cvičeniam, vyskúšajte znížiť rad p aj q o 1, teda namiesto ARMA(p,q), vyskúšajte ARMA(p-1,q-1). Odpoveď napíšte zapísaním parametrov funkcie sarima, ktorou model odhadnete:
+
+```{r eval= FALSE}
+sarima(y, p, k, q)
+```
+
++ 1 bod: \
+\
+  + Spravte predikcie do budúcna pre vaše **pôvodné dáta** a porovnajte ich so skutočnými pozorovanými hodnotami, ktoré ste na začiatku z dát vynechali. Zhodnodte váš model. Čo si o ňom myslíte?
+
+  
