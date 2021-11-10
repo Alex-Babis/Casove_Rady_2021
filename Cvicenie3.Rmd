@@ -1,0 +1,22 @@
+---
+title: "Cvičenie 3 - Teoretické cvičenie"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Zadanie príkladov na stránke (iba prvé 4 príklady):\
+https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1.pdf
+
+Riešenie:\
+https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1solns.pdf

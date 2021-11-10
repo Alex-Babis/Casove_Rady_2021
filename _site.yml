@@ -10,6 +10,8 @@ navbar:
           href: Cvicenie1.html
         - text: "Tutorial 2"
           href: Cvicenie2.html
+        - text: "Tutorial 3"
+          href: Cvicenie3.html
         - text: "Tutorial 4"
           href: Cvicenie4.html
     - text: "Homeworks"
