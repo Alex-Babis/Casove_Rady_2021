@@ -509,7 +509,7 @@ Napíšte s akými parametrami ADF testu ste dáta testovali a aká regresia sa 
 </ul>
 <p>Riešenie:</p>
 <ul>
-<li>Dáta podľa grafu nevykazujú prítomnosť trendu. To znamená, že dáta <code>y</code> otestujeme už iba na prítomnosť jednotkového koreňa. Stredná hodnota dát vyzerá byť niekde v okolí hodnoty 5, preto zvolíme <code>type = "drift"</code>. Počet lagov môžeme zvoliť ľubovoľne veľa (aj tak sa vyberie výsledný model na základe informáčného kritéria), ale je dôležité aby sa nám nestalo, že všetky lagy sa nám dostanú do výsledného modelu. V takom prípade nevieme, či je to najlepší možný model pre naše dáta podľa IC alebo sme ho dostali iba kvôli tomu, že sme väčší počet lagov nepovolili. V našom prípade zvolíme <code>lags = 4</code>. IC zvolíme napríklad <code>selectlags = "BIC"</code>.</li>
+<li>Dáta podľa grafu nevykazujú prítomnosť trendu. To znamená, že dáta <code>y</code> otestujeme už iba na prítomnosť jednotkového koreňa. Stredná hodnota dát vyzerá byť niekde v okolí hodnoty 5, preto zvolíme <code>type = "drift"</code>. Je dôležité zvoliť primeraný počet lagov,aby sa nám nestalo, že všetky lagy sa nám dostanú do výsledného modelu. V takom prípade nevieme, či je to najlepší možný model pre naše dáta podľa IC alebo sme ho dostali iba kvôli tomu, že sme väčší počet lagov nepovolili. V našom prípade zvolíme <code>lags = 4</code>. IC zvolíme napríklad <code>selectlags = "BIC"</code>.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">summary</span>(<span class="kw">ur.df</span>(y, <span class="dt">lags =</span> <span class="dv">5</span>, <span class="dt">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;drift&quot;</span>))</a></code></pre></div>
 <pre><code>## 
@@ -549,10 +549,10 @@ Napíšte s akými parametrami ADF testu ste dáta testovali a aká regresia sa 
 <ul>
 <li><p>V dátach teda nie je prítomný jednotkový koreň (test ho zamietol na hladine významnosti 5%), preto ich nebudeme ďalej diferencovať.</p></li>
 <li><p>Regresia, ktorá sa odhadla v teste <span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span></p></li>
-<li><p>Hypotéza, ktorá sa testuje pre koeficienty z regresie <span class="math display">\[ H_{0}: c_{i} = 0 \;vs\; H_{1}: c_{i} \neq 0 \]</span></p></li>
+<li><p>Hypotéza, ktorá sa testuje pre koeficienty z regresie <span class="math display">\[ H_{0}: Máme\; jednotkový\; koreň \;vs\; H_{1}: Dáta\; sú\; stacionárne \]</span></p></li>
 <li><p>Odvodenie, že hypotéza predstavuje aj hypotézu o jednotkovom koreni daného časového radu <span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span> <span class="math display">\[ z_{t}- z_{t-1}= \alpha + c_{1}z_{t-1}+c_{2}(z_{t-1}-z_{t-2}) + e_{t}\]</span> <span class="math display">\[ z_{t}= \alpha + (1+c_{1}+c_{2})z_{t-1}+(-c_{2})z_{t-2} + e_{t}\]</span> <span class="math display">\[ [1-(1+c_{1}+c_{2})L+c_{2}L^{2}]z_{t}= \alpha + e_{t}\]</span></p></li>
 </ul>
-<p>Ak by daný polynóm <span class="math inline">\(1-(1+c_{1}+c_{2})L+c_{2}L^{2}\)</span> mal jednotkový koreň, platilo by <span class="math display">\[1-(1+c_{1}+c_{2})+c_{2} = 0 \]</span> respektíve <span class="math display">\[-(1+c_{1}+c_{2})+c_{2} = 1 \]</span> z čoho po úprave dostávame, že <span class="math inline">\(c_{1} = 0\)</span>. Vidíme, že hypotéza o testovaní koeficientu <span class="math inline">\(c_{1}\)</span> z regresie, je totožná s hypotézou o testovaní jednotkového koreňa.</p>
+<p>Ak by daný polynóm <span class="math inline">\(1-(1+c_{1}+c_{2})L+c_{2}L^{2}\)</span> mal jednotkový koreň, platilo by <span class="math display">\[1-(1+c_{1}+c_{2})+c_{2} = 0 \]</span> respektíve <span class="math display">\[-(1+c_{1}+c_{2})+c_{2} = -1 \]</span> z čoho po úprave dostávame, že <span class="math inline">\(c_{1} = 0\)</span>. Vidíme, že hypotéza o testovaní koeficientu <span class="math inline">\(c_{1}\)</span> z regresie, je totožná s hypotézou o testovaní jednotkového koreňa.</p>
 <ul>
 <li><p>Hypotézu zamietame ak je testová štatistika (<code>test-statistic is: -3.4904</code>) menšia ako sú kritické hodnoty(pre náš prípad máme kritické hodnoty dané):<br />
 <code>##       1pct  5pct 10pct</code><br />

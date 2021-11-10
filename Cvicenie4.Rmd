@@ -54,7 +54,7 @@ Zadanie bude nasledovné:
 
 Riešenie:
 
-+ Dáta podľa grafu nevykazujú prítomnosť trendu. To znamená, že dáta `y` otestujeme už iba na prítomnosť jednotkového koreňa. Stredná hodnota dát vyzerá byť niekde v okolí hodnoty 5, preto zvolíme `type = "drift"`. Počet lagov môžeme zvoliť ľubovoľne veľa (aj tak sa vyberie výsledný model na základe informáčného kritéria), ale je dôležité aby sa nám nestalo, že všetky lagy sa nám dostanú do výsledného modelu. V takom prípade nevieme, či je to najlepší možný model pre naše dáta podľa IC alebo sme ho dostali iba kvôli tomu, že sme väčší počet lagov nepovolili. V našom prípade zvolíme `lags = 4`. IC zvolíme napríklad `selectlags = "BIC"`.
++ Dáta podľa grafu nevykazujú prítomnosť trendu. To znamená, že dáta `y` otestujeme už iba na prítomnosť jednotkového koreňa. Stredná hodnota dát vyzerá byť niekde v okolí hodnoty 5, preto zvolíme `type = "drift"`. Je dôležité zvoliť primeraný počet lagov,aby sa nám nestalo, že všetky lagy sa nám dostanú do výsledného modelu. V takom prípade nevieme, či je to najlepší možný model pre naše dáta podľa IC alebo sme ho dostali iba kvôli tomu, že sme väčší počet lagov nepovolili. V našom prípade zvolíme `lags = 4`. IC zvolíme napríklad `selectlags = "BIC"`.
 
 ```{r}
 summary(ur.df(y, lags = 5, selectlags = "BIC", type = "drift"))
@@ -66,7 +66,7 @@ summary(ur.df(y, lags = 5, selectlags = "BIC", type = "drift"))
 $$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
 
 + Hypotéza, ktorá sa testuje pre koeficienty z regresie
-$$ H_{0}: c_{i} = 0 \;vs\; H_{1}: c_{i} \neq 0 $$
+$$ H_{0}: Máme\; jednotkový\; koreň \;vs\; H_{1}: Dáta\; sú\; stacionárne $$
 
 + Odvodenie, že hypotéza predstavuje aj hypotézu o jednotkovom koreni daného časového radu
 $$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
@@ -77,7 +77,7 @@ $$ [1-(1+c_{1}+c_{2})L+c_{2}L^{2}]z_{t}= \alpha + e_{t}$$
 Ak by daný polynóm $1-(1+c_{1}+c_{2})L+c_{2}L^{2}$ mal jednotkový koreň, platilo by 
 $$1-(1+c_{1}+c_{2})+c_{2} = 0 $$
 respektíve 
-$$-(1+c_{1}+c_{2})+c_{2} = 1 $$
+$$-(1+c_{1}+c_{2})+c_{2} = -1 $$
 z čoho po úprave dostávame, že $c_{1} = 0$. Vidíme, že hypotéza o testovaní koeficientu $c_{1}$ z regresie, je totožná s hypotézou o testovaní jednotkového koreňa.
 
 + Hypotézu zamietame ak je testová štatistika (`test-statistic is: -3.4904`) menšia ako sú kritické hodnoty(pre náš prípad máme kritické hodnoty dané):\
