@@ -555,7 +555,7 @@ Napíšte s akými parametrami ADF testu ste dáta testovali a aká regresia sa 
 <ul>
 <li><p>V dátach teda nie je prítomný jednotkový koreň (test ho zamietol na hladine významnosti 5%), preto ich nebudeme ďalej diferencovať.</p></li>
 <li><p>Regresia, ktorá sa odhadla v teste <span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span></p></li>
-<li><p>Hypotéza, ktorá sa testuje pre koeficienty z regresie <span class="math display">\[ H_{0}: Máme\; jednotkový\; koreň \;vs\; H_{1}: Dáta\; sú\; stacionárne \]</span></p></li>
+<li><p>Hypotéza, ktorá sa testuje pre koeficienty z regresie <span class="math display">\[ H_{0}: c_{1} = 0 \;vs\; H_{1}: c_{1} &lt; 0 \]</span></p></li>
 <li><p>Odvodenie, že hypotéza predstavuje aj hypotézu o jednotkovom koreni daného časového radu <span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span> <span class="math display">\[ z_{t}- z_{t-1}= \alpha + c_{1}z_{t-1}+c_{2}(z_{t-1}-z_{t-2}) + e_{t}\]</span> <span class="math display">\[ z_{t}= \alpha + (1+c_{1}+c_{2})z_{t-1}+(-c_{2})z_{t-2} + e_{t}\]</span> <span class="math display">\[ [1-(1+c_{1}+c_{2})L+c_{2}L^{2}]z_{t}= \alpha + e_{t}\]</span></p></li>
 </ul>
 <p>Ak by daný polynóm <span class="math inline">\(1-(1+c_{1}+c_{2})L+c_{2}L^{2}\)</span> mal jednotkový koreň, platilo by <span class="math display">\[1-(1+c_{1}+c_{2})+c_{2} = 0 \]</span> respektíve <span class="math display">\[-(1+c_{1}+c_{2})+c_{2} = -1 \]</span> z čoho po úprave dostávame, že <span class="math inline">\(c_{1} = 0\)</span>. Vidíme, že hypotéza o testovaní koeficientu <span class="math inline">\(c_{1}\)</span> z regresie, je totožná s hypotézou o testovaní jednotkového koreňa.</p>

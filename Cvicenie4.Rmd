@@ -66,7 +66,7 @@ summary(ur.df(y, lags = 5, selectlags = "BIC", type = "drift"))
 $$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
 
 + Hypotéza, ktorá sa testuje pre koeficienty z regresie
-$$ H_{0}: Máme\; jednotkový\; koreň \;vs\; H_{1}: Dáta\; sú\; stacionárne $$
+$$ H_{0}: c_{1} = 0 \;vs\; H_{1}: c_{1} < 0 $$
 
 + Odvodenie, že hypotéza predstavuje aj hypotézu o jednotkovom koreni daného časového radu
 $$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
