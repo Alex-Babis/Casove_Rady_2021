@@ -1,0 +1,462 @@
+---
+title: "Cvičenie 5 - Sezónne modely, modelovanie trendu"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Potrebne knižnice pre cvičenie 5
+```{r include=FALSE}
+library(fpp3) # data  
+library(fpp2) # data  
+library(ggplot2)  # pekne grafy
+library(astsa)  # sarima funkcia  
+library(urca) # jednotkovy koren
+library(forecast) # data 
+library(lubridate) # manipulacia casu
+library(WDI)  # HDP krajin
+library(mFilter)  # HP filter
+```
+
+```{r eval=FALSE}
+library(fpp3) # data  
+library(fpp2) # data  
+library(ggplot2)  # pekne grafy
+library(astsa)  # sarima funkcia  
+library(urca) # jednotkovy koren
+library(forecast) # data 
+library(lubridate) # manipulacia casu
+library(WDI)  # HDP krajin
+library(mFilter)  # HP filter
+```
+
+# Zostavenie sezónnych ARIMA modelov
+
+## Dáta 
+Budeme pracovať s údajmi o zamestnanosti pre USA. Konkrétne budeme pracovať s niektorými podsektormi služieb a cestovného ruchu. V datasete `us_employment` nájdete okrem týchto dát aj mnoho ďaľších, týkajúcich sa zamestnanosti v jednotlivých sektorov po mesiacoch.\
+\
+Načítame si dáta do premennej `leisure` a vytvoríme z nej object `ts`.
+```{r}
+leisure <- us_employment %>%
+  filter(Title == "Leisure and Hospitality",
+         year(Month) > 2000) %>%
+  mutate(Employed = Employed/1000) %>%
+  select(Month, Employed)
+
+leisure <- ts(leisure$Employed, start = c(2001,1), end = c(2019,9),
+              frequency = 12)
+```
+
+Vykreslimíme si dáta.
+```{r}
+autoplot(leisure) +
+  labs(title = "US employment: leisure and hospitality",
+       y="Number of people (millions)")
+```
+
+Dáta sa nevyznačújú rastúcou disperziou, ako je vidno na grafe, preto nebude treba pracovať s ich logaritmami.\ 
+Z dát si vynecháme poslednych 12 hodnôt, ktoré využijeme pri zhodnotení predikcií.
+
+```{r}
+# odlozime si posledny rok dat na zhodnotenie predikcii
+leisure.pred <- window(leisure, start = c(2018,10))
+
+# budeme pracovat s kratsim casovym radom
+leisure <- window(leisure, end = c(2018,9))
+```
+
+Vykreslíme si iba tie údaja, s ktorými budeme pracovať priamo.
+```{r}
+autoplot(leisure) +
+  labs(title = "US employment: leisure and hospitality",
+       y="Number of people (millions)")
+```
+
+## Zostavenie a vyhodnotenie SARIMA modelu
+Vykreslíme si ACF a PACF pre naše dáta.
+```{r}
+acf2(leisure)
+```
+
+V dátach je viditeľný trend, rovnako ako pravideľná sezónnosť. Dáta preto bude nutné diferencovať. Keďže ale pracujeme so sezónnymi dátami, má zmysel spraviť ako prvé sezónne diferencie (môže ísť napríklad o sezónnosť v strednej hodnote) a zhodnotíme, či v dátach ešte ostal trend, a či treba dáta ešte diferencovať obyčajne.
+
+```{r}
+leisure.d12 <- diff(leisure, lag = 12)
+```
+
+```{r}
+autoplot(leisure.d12) +
+  labs(title = "Seasonally differenced - US employment: leisure and hospitality",
+       y="Number of people (millions)")+
+  geom_hline(yintercept = 0, color = "green")+
+  geom_hline(yintercept = mean(leisure.d12), color = "orange")
+```
+
+```{r}
+acf2(leisure.d12)
+```
+
+V dátach nie je vidno značný trend, preto ich z tohto dôvodu nebude treba diferencovať. Čo ale treba ešte overiť, je prítomnosť jednotkového koreňa, ktorý by mohol spôsobovať nestacionaritu časového radu. Podľa grafu je zjavné, že priemer dát je výrazne vzdialený od 0, aj keď jeho dhonota je len niečo málo okolo 0.25, vždy treba zobrať do úvahy aj rozptyl dát. Preto, použijeme v funkcii `ur.df` parameter `type = "drift"`.
+
+```{r}
+# ostesujeme pritomnost jednotkoveho korena jednotkovy koren
+summary(ur.df(leisure.d12, lags = 5, selectlags = "BIC", type = "drift"))
+```
+
+Vidíme, že test pre naše dáta nezamietol hypotézu o jednotkovom koreni, preto dáta budeme diferencovať.
+
+```{r}
+leisure.d12.d1 <- diff(leisure.d12)
+```
+
+Zdiferencované dáta znova otestujeme na prítomnosť jednotkového koreňa. V tomto prípade je priemer dát veľmi blízky 0 (aj vzhľadom na disperziu dát), preto použijeme `type = "none"`.
+```{r}
+autoplot(leisure.d12.d1) +
+  labs(title = "Seasonally and first differenced - US employment: leisure and hospitality",
+       y="Number of people (millions)")+
+  geom_hline(yintercept = 0, color = "green")+
+  geom_hline(yintercept = mean(leisure.d12.d1), color = "orange")
+```
+
+V dátach nie je vidno ani trend, ani pravideľná sezónnosť, čo si vieme overiť aj pomocou ACF.
+```{r}
+acf2(leisure.d12.d1)
+```
+
+```{r}
+summary(ur.df(leisure.d12.d1, lags = 5, selectlags = "BIC", type = "none"))
+```
+
+Test nám hypotézu o jednotkovom koreni zamietol, dáta preto už nebudeme viacej diferencovať.
+
+```{r}
+autoplot(leisure.d12.d1) +
+  labs(title = "Seasonally and first differenced - US employment: leisure and hospitality",
+       y="Number of people (millions)")
+```
+
+Vykreslíme si ACF a PACF pre naše dva krát zdiferencované dáta (raz sezónne a raz obyčajne). Na dobrý tip pre nesezónne časti sarima modelu nám poslúžia prvé lagy ACF a PACF, na spravenie tipu pre sezónne časti sarima modelu zase hodnoty ACF a PACF v lagoch 1,2,3,4,... (teda každá 12,24,36 hodnota, podľa našej sezónnosti, keďže pracujeme s mesačnými dátami, a zaujíma nás ročná sezónnosť).
+```{r}
+acf2(leisure.d12.d1)
+```
+
+Dobrý tip by mohol byť napríklad AR(2), poprípade MA(2) pre nesezónnu časť a sMA(1), sAR(1) pre sezónnu časť. Vyskúšame aj iné modely, resp. rôzne kombinácie našich tipov.
+```{r}
+model.y <- capture.output(sarima(leisure, 2 ,1, 0, 1, 1, 0, 12))
+model.y <- capture.output(sarima(leisure, 0, 1, 2, 0, 1, 1, 12)) # zle rezidua
+model.y <- capture.output(sarima(leisure, 2, 1, 0, 0, 1, 1, 12))
+model.y <- capture.output(sarima(leisure, 0, 1, 2, 1, 1, 0, 12)) # zle rezidua
+model.y <- capture.output(sarima(leisure, 2, 1, 1, 1, 1, 1, 12)) # zle rezidua
+model.y <- capture.output(sarima(leisure, 2, 1, 0, 1, 1, 1, 12))
+```
+
+Vidíme, že nie všetky mali dobré rezídua, Ljung-Boxov test bol pod 5% pre určité lagy. Z tých, ktorým vyšli rezídua dobre vyberieme finálny model na základe BIC.
+```{r}
+sarima(leisure, 2 ,1, 0, 1, 1, 0, 12, details = FALSE)$BIC
+sarima(leisure, 2, 1, 0, 0, 1, 1, 12, details = FALSE)$BIC
+sarima(leisure, 2, 1, 0, 1, 1, 1, 12, details = FALSE)$BIC
+```
+
+Najmenšie BIC má model (2,1,0)x(0,1,1). Tento použijeme na predikcie naších dát.
+
+## Predikcie pre SARIMA model 
+```{r}
+# forecast
+sarima.for(leisure,12, 2, 1, 0, 0, 1, 1, 12)
+points(leisure.pred, col = "blue", type = "b")
+```
+
+## Ďalšie dáta na precvičenie
+```{r}
+autoplot(hsales) +
+  labs(title = "Monthly sales of new one-family houses sold in the USA since 1973",
+       y="", x = "")
+```
+
+```{r}
+autoplot(auscafe) +
+  labs(title = "The total monthly expenditure on services in Australia",
+       y="", x = "")
+```
+
+```{r}
+autoplot(qcement) +
+  labs(title = "Total quarterly production of Portland cement in Australia",
+       y="", x = "")
+```
+
+# Modelovanie trendu
+## Exponenciálne zhladzovanie
+Budeme modelovať dáta bez trendu. Konkrétne dáta `BJsales`, respektíve ich prvé diferencie. 
+```{r}
+y <- BJsales
+y.d1 <- diff(y)
+
+# nechame si poslednych 20 na zhodnotenie predikcii
+y.d1.pred <- window(y.d1, start = 131)
+y.d1 <- window(y.d1, end = 130)
+
+autoplot(y.d1)
+```
+
+Exponenciálne zhladzovanie je špeciálny prípad Holt-wintersovej metódy, ak vynecháme parametre `beta` a `gamma`. Použijeme funkciu HoltWintgers v tvare:
+
+```{r eval = FALSE}
+HoltWinters(data,beta = FALSE, gamma = FALSE)
+```
+
+Predikcie pre Holt-wintersa dostaneme použitím funkcie `predict`. Jednotlivé parametre: `object` je náš odhadnutý model, teda uložený výstup funckie `HoltWinters`, n.ahead  predstavuje na koľko pozorovaní dopredu chceme určiť predikcie, level určuje hladinu významnosti, teda aké intervaly spoľahlivosti chceme vykresliť/vypočítať, prediction.interval označuje, či chceme alebo nie počítať Intervaly spolahlivosti.
+
+```{r eval = FALSE}
+predict(object , n.ahead , prediction.interval,
+       level , ...)
+```
+
+Každý samostnatne si spusti metódu pre dáta. Vykreslite pôvodné dáta a predikcie doporedu pre 10 časových jednotiek do budúcnosti.
+
+```{r echo = FALSE}
+exp.y.d1 <- HoltWinters(y.d1,beta = FALSE, gamma = FALSE)
+pred <- predict(exp.y.d1, n.ahead= 20, prediction.interval = TRUE,
+                level = 0.95)
+```
+
+Na vykreslenie môžete použiť predpripravenú funkciu: 
+```{r}
+pallete <-  c("#D55E00","#009E73","#009E73", "gray", "gray")
+pred.is <- pred %>% as_tsibble(pivot_longer = FALSE)
+
+autoplot(y.d1) +
+  autolayer(exp.y.d1$fitted[,"xhat"], series="Fitted data") +
+  autolayer(y.d1.pred, series="Data") +
+  autolayer(pred[,"fit"], series="Forecasts")+
+  autolayer(pred[,"upr"], series="UB")+
+  autolayer(pred[,"lwr"], series="LB")+
+  geom_ribbon(data = pred.is, aes(x = index,y = fit, ymin = lwr, ymax = upr, fill = "0.95% IS"),  alpha = 0.2)+
+  scale_colour_manual(values=pallete)+
+  scale_fill_manual(values = "gray")+
+  theme(axis.title.y=element_blank())
+
+```
+
+
+## Holt-Wintersová metóda 
+```{r eval = FALSE}
+HoltWinters(data,alpha = FALSE ,beta = FALSE, gamma = FALSE, seasonal = c("multiplicative","additive"))
+```
+
+Ak sa v dátach nachádza lineárny trend a chcemeho zahrnúť do modelu, exponenciálne zhladzovanie nemusí byť dostatočné. Preto použijeme Holt-Wintersovú metódu. Oproti predchádzajúcemu príkladu sa líši o to, že sa odhane aj parametere `beta`. Odhadnite pre dáta (nie diferencie) Holt-Wintersov model a rovnako spravte aj predickie na 10 časových jednotiek do budúcna.
+```{r}
+y <- BJsales
+
+# nechame si poslednych 20 na zhodnotenie predikcii
+y.pred <- window(y, start = 131)
+y <- window(y, end = 130)
+```
+
+```{r echo = FALSE}
+exp.y <- HoltWinters(y, gamma = FALSE)
+pred <- predict(exp.y, n.ahead= 20, prediction.interval = TRUE,
+                level = 0.95)
+
+pallete <-  c("#D55E00","#009E73","#009E73", "gray", "gray")
+pred.is <- pred %>% as_tsibble(pivot_longer = FALSE)
+
+autoplot(y) +
+  autolayer(exp.y$fitted[,"xhat"], series="Fitted data") +
+  autolayer(y.pred, series="Data") +
+  autolayer(pred[,"fit"], series="Forecasts")+
+  autolayer(pred[,"upr"], series="UB")+
+  autolayer(pred[,"lwr"], series="LB")+
+  geom_ribbon(data = pred.is, aes(x = index,y = fit, ymin = lwr, ymax = upr, fill = "0.95% IS"),  alpha = 0.2)+
+  scale_colour_manual(values=pallete)+
+  scale_fill_manual(values = "gray")+
+  theme(axis.title.y=element_blank())
+```
+
+## Holt-Wintersová metóda Multiplikatívna vs Aditívna sezonalita
+Majme sezónne dáta z prvej časti cvičení, obe sú mesačné dáta
+```{r}
+# data 
+leisure <- us_employment %>%
+  filter(Title == "Leisure and Hospitality",
+         year(Month) > 2000) %>%
+  mutate(Employed = Employed/1000) %>%
+  select(Month, Employed)
+
+leisure <- ts(leisure$Employed, start = c(2001,1), end = c(2019,9),
+              frequency = 12)
+
+# odlozime si posledny rok dat na zhodnotenie predikcii
+leisure.pred <- window(leisure, start = c(2017,10))
+
+# budeme pracovat s kratsim casovym radom
+leisure <- window(leisure, end = c(2017,9))
+
+autoplot(leisure) +
+  labs(title = "US employment: leisure and hospitality",
+       y="Number of people (millions)")
+```
+
+```{r}
+auscafe.pred <- window(auscafe, start = c(2015, 10))
+auscafe.ts <- window(auscafe, end = c(2015, 9))
+autoplot(auscafe.ts) +
+  labs(title = "The total monthly expenditure on services in Australia",
+       y="", x = "")
+
+```
+
+Pre obe dáta modelujte Holt-wintersovou metódou trend, spravte predikcie na 2 roky dopredu, t.j. 24 mesiacov/pozorovaní dopredu.
+
+Pre `leisure` dáta:
+```{r echo = FALSE}
+exp.y <- HoltWinters(leisure, seasonal = "additive")
+pred <- predict(exp.y, n.ahead= 24, prediction.interval = TRUE,
+                level = 0.95)
+
+pallete <-  c("#D55E00","#009E73","#009E73", "gray", "gray")
+pred.is <- pred %>% as_tsibble(pivot_longer = FALSE)
+
+pred.is$index <- lubridate::year(pred.is$index)+
+  (lubridate::month(pred.is$index) - 1)/12
+
+autoplot(leisure) +
+  autolayer(exp.y$fitted[,"xhat"], series="Fitted data") +
+  autolayer(leisure.pred, series="Data") +
+  autolayer(pred[,"fit"], series="Forecasts")+
+  autolayer(pred[,"upr"], series="UB")+
+  autolayer(pred[,"lwr"], series="LB")+
+  geom_ribbon(data = pred.is, aes(x = index,y = fit, ymin = lwr, ymax = upr, fill = "0.95% IS"),  alpha = 0.2)+
+  scale_colour_manual(values=pallete)+
+  scale_fill_manual(values = "gray")+
+  theme(axis.title.y=element_blank())
+```
+
+Pre `auscafe` dáta:
+```{r echo = FALSE}
+exp.y <- HoltWinters(auscafe.ts, seasonal = "multiplicative")
+pred <- predict(exp.y, n.ahead= 24, prediction.interval = TRUE,
+                level = 0.95)
+
+pallete <-  c("#D55E00","#009E73","#009E73", "gray", "gray")
+pred.is <- pred %>% as_tsibble(pivot_longer = FALSE)
+
+pred.is$index <- lubridate::year(pred.is$index)+
+  (lubridate::month(pred.is$index) - 1)/12
+
+autoplot(auscafe.ts) +
+  autolayer(exp.y$fitted[,"xhat"], series="Fitted data") +
+  autolayer(auscafe.pred, series="Data") +
+  autolayer(pred[,"fit"], series="Forecasts")+
+  autolayer(pred[,"upr"], series="UB")+
+  autolayer(pred[,"lwr"], series="LB")+
+  geom_ribbon(data = pred.is, aes(x = index,y = fit, ymin = lwr, ymax = upr, fill = "0.95% IS"),  alpha = 0.2)+
+  scale_colour_manual(values=pallete)+
+  scale_fill_manual(values = "gray")+
+  theme(axis.title.y=element_blank())
+```
+
+
+# Hodrick-Prescottov filter
+
+Využitie na dáta bez sezónnej zložky na odhadovanie trendu. Aplikujeme na výpočet produkčnej medzery, analogicky podľa posledných slajdov na prednáške. http://www.iam.fmph.uniba.sk/institute/stehlikova/cr21/cr08.pdf
+
+2 parametre, `data`, `freq` == lambda v prednáškach. Odhadnutý trend je potom uložený v `hp$trend`.
+Odporúčané hodnoty pre lambdu, reps. parameter `freq`:\
+* 100 pre ročné dáta
+* 1600 pre kvartálne dáta 
+* 14400 pre mesačné dáta
+
+```{r eval = FALSE}
+hp <- hpfilter(data, freq = 100) 
+```
+
+
+## Aplikácia pri výpočte produkčnej medzery
+Opakovanie prednášky:\
+
+* Potenciálne HDP - Maximálny výstup, ktorý vie ekonomika pri daných faktoroch vyprodukovať bez inflačných tlakov
+* Skutočná hodnota HDP osciluje okolo potenciálneho HDP (hospodárske cykly)
+* Produkčná medzera - rozdiel medzi potenciálnym a reálnym HDP výstupom
+
+### Dáta 
+Nemecko
+```{r}
+data <- WDI(indicator = 'NY.GNP.PCAP.KD',
+            country= c ('DE'),
+            start = 1975, end = 2019)
+
+data <- data[order(data$year),]
+
+y_DE <- ts(data$NY.GNP.PCAP.KD, start = 1975, frequency = 1)
+
+```
+
+Rakúsko
+```{r}
+data <- WDI(indicator = 'NY.GNP.PCAP.KD',
+            country= c ('AT'),
+            start = 1975, end = 2019)
+data <- data[order(data$year),]
+y_AT <- ts(data$NY.GNP.PCAP.KD, start = 1975, frequency = 1)
+```
+
+USA
+```{r}
+data <- WDI(indicator = 'NY.GNP.PCAP.KD',
+            country= c ('US'),
+            start = 1975, end = 2019)
+data <- data[order(data$year),]
+y_US <- ts(data$NY.GNP.PCAP.KD, start = 1975, frequency = 1)
+```
+
+### Zadanie
+Pre každú z krajín (môžete si zvoliť aj inú) vypočítajte produkčnú medzeru ako relatívnu zmenu potenciálneho HDP oproti skutočnému.
+$$100(\frac{HDP-HDP_{pot}}{HDP_{pot}})$$
+
+Vykreslite do jedného grafu hodnoty potenciálneho HDP aj hodnoty skutočného HDP.
+
+```{r include = FALSE}
+prod.medzera <- function(x)
+{
+  pallete <-  c("black","#D55E00")
+  xHP <- hpfilter(x, freq = 100)$trend
+  Prod.medzera <- 100 * (x - xHP)/xHP
+  p <- autoplot(x, series = "HDP")+
+       autolayer(xHP, series="Potenciálne HDP")+
+       scale_colour_manual(values=pallete)+
+    ggtitle(paste0("HDP vs Potenciálne HDP - ",deparse(substitute(x))))
+  p2 <- autoplot(Prod.medzera, color = "#009E73")+
+    ggtitle(paste0("Produkčná medzera - ",deparse(substitute(x))))
+
+  return(list(pm = Prod.medzera,
+         g = p, g2 = p2))
+}
+```
+
+
+```{r echo = FALSE}
+DE <- prod.medzera(y_DE)
+DE$g
+DE$g2
+AT <- prod.medzera(y_AT)
+AT$g
+AT$g2
+US <- prod.medzera(y_US)
+US$g
+US$g2
+
+cor(cbind(DE$pm, AT$pm, US$pm))
+```
+

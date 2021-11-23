@@ -14,6 +14,8 @@ navbar:
           href: Cvicenie3.html
         - text: "Tutorial 4"
           href: Cvicenie4.html
+        - text: "Tutorial 5"
+          href: Cvicenie5.html
     - text: "Homeworks"
       menu:
         - text: "Homework 1"
