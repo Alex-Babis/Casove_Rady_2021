@@ -1,0 +1,49 @@
+---
+title: "Domáca úloha 4"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Pokyny
+
+* Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, **ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.**
+
+* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2021 - DU4 - priezvisko/priezviská** 
+
+* Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.
+
+* Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. 
+
+* Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou). 
+
+Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
+
+# Zadanie
+Modelovanie sezónnych časových radov
+Nájdite si vhodné dáta (t. j. také, pre ktoré nájdete vhodný SARIMA model), ktoré majú sezónny charakter.
+
+Z dát vynechajte niekoľko posledných (napríklad posledný rok alebo niekoľko rokov, v závislosti od dĺžky časového radu). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.
+
+V domácej úlohe:
+
+* Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite ich priebeh. Ak treba stabilizovať disperziu, môžete vyskúšať logaritmy dát.
+
+* Uveďte, koľkokrát ste dáta diferencovali klasicky a sezónne, a vysvetlite prečo. Spíšte výsledky a doplňte ich výstupmi z R-ka tak, aby sa vaše tvrdenia dali skontrolovať bez spúšťania kódu. Ukončenie diferencovania (ako aj diferencovanie bez jasného trendu) treba zdôvodniť testami, nestačí povedať “toto už vyzerá dobre”.
+
+* Nájdite vhodný SARIMA model (uveďte výsledok Ljung-Boxovho testu pre rezísuá) pre vaše dáta a spravte pomocou neho predikcie.
+
+* Pre tie isté dáta použite Holt-Wintersovu metódu (keďže rastúcu disperziu by ste mali odstrániť napríklad logaritmovaním, asi pôjde o aditívnu sezónnosť).
+
+* Porovnajte úspešnosť predikcií uvedených dvoch metód (či sú podobné, či je niektorá výraznejšie lepšia, či ich považujete za dobré a pod.).
+
