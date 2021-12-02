@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. 
 
-* Každá skupina si musí stiahne dáta o výmenných kurzoch, vyberie si jeden, ktorý si rezervuje. Dáta stiahnete na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html dole na stránke. Time series - CSV(.zip). Môžete použiť kód na ich úpravu ako je na cvičení. 
+* Každá skupina si musí stiahne dáta o výmenných kurzoch, vyberie si jeden, ktorý si rezervuje. Dáta stiahnete na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html dole na stránke. Time series - CSV(.zip). Dáta si bude treba správne upraviť. 
 
 Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
 

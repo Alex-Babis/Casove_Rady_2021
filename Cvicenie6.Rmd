@@ -182,23 +182,7 @@ Keďže dáta modelujeme ako konštantu plus biely šum, predikcie do budúcnost
 
 Načítanie a úprava dáta na logaritmické výnosy. Dáta sú za obdobie 3 rokov, voľne dostupné na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
 ```{r}
-data_neusporiadane <- read.table("eurofxref-hist.csv", 
-                                 header = TRUE, 
-                                 sep = ",",
-                                 stringsAsFactors = FALSE,
-                                 na.strings = "N/A")
-
-data_usporiadane <- data_neusporiadane[nrow(data_neusporiadane):1, ]
-
-zaciatok <- which(grepl(data_usporiadane[,1], pattern = "2018-"))[1]
-koniec <-  tail(which(grepl(data_usporiadane[,1], pattern = "2020-")), 1)
-data <- data_usporiadane[zaciatok:koniec, ]  # 3 roky, 2018-2020
-
-data <- data[ , colSums(is.na(data)) == 0] # zrusime stlpce obsahujuce NA
-data <- data[, -1] # zrusime datum
-data <- log(data[2:nrow(data), ]) - log(data[1:(nrow(data)-1), ]) #diferencie logaritmov stlpcov
-
-data <- data[, -3] # zrusime konstatne data
+load("XRdata.Rdata")
 ```
 
 Finálne dáta budú predstavovať stĺpec 7:
