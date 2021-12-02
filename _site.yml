@@ -16,6 +16,8 @@ navbar:
           href: Cvicenie4.html
         - text: "Tutorial 5"
           href: Cvicenie5.html
+        - text: "Tutorial 6"
+          href: Cvicenie6.html
     - text: "Homeworks"
       menu:
         - text: "Homework 1"
@@ -26,4 +28,6 @@ navbar:
           href: Domaca_uloha3.html
         - text: "Homework 4"
           href: Domaca_uloha4.html
+        - text: "Homework 5"
+          href: Domaca_uloha5.html
 output_dir: "docs"

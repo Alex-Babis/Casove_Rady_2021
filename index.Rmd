@@ -51,7 +51,7 @@ cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
                                     "12.11.2021-24:00",
                                     "25.11.2021-24:00",
                                     "09.12.2021-24:00",
-                                    "17.12.2021-24:00"))
+                                    "14.12.2021-24:00"))
 colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Domáca úloha",
                         "Miestnosť", "Deadline pre DÚ")

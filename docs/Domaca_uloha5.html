@@ -11,7 +11,7 @@
 
 
 
-<title>Domáca úloha 1</title>
+<title>Domáca úloha 5</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
 
@@ -231,6 +234,75 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +310,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -320,75 +402,38 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Domáca úloha 1</h1>
+<h1 class="title toc-ignore">Domáca úloha 5</h1>
 
 </div>
 
 
 <div id="pokyny" class="section level1">
-<h1>Pokyny</h1>
+<h1><span class="header-section-number">1</span> Pokyny</h1>
 <ul>
 <li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU1 - priezvisko/priezviská</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU5 - priezvisko/priezviská</strong></p></li>
 <li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
-<li><p>V oboch príkladoch pracuje každá skupina s inými dátami, rezervácia dát na stránke (píšte svoje meno/mená a názov akcie, resp. názov dát a zdroj pre Bassov model, neuvádzajte svoj e-mail) <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
+<li><p>Každá skupina si musí stiahne dáta o výmenných kurzoch, vyberie si jeden, ktorý si rezervuje. Dáta stiahnete na <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" class="uri">https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html</a> dole na stránke. Time series - CSV(.zip). Môžete použiť kód na ich úpravu ako je na cvičení.</p></li>
 </ul>
+<p>Rezervácia tu: <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p>
 </div>
-<div id="testovanie-autokorelácií-6-bodov" class="section level1">
-<h1>Testovanie autokorelácií (6 Bodov)</h1>
+<div id="zadanie" class="section level1">
+<h1><span class="header-section-number">2</span> Zadanie</h1>
+<p>Budeme chciet modelovať logaritmické výnosy pre výmenné kurzy:</p>
 <ul>
-<li><p>Pracovať budete s knížnicou <code>quantmod</code> (tak ako sme to robili na cvičení). Každá skupina/jedinec si stiahne dáta o nejakej firme. <code>Symbols</code> (tá skratka danej firmy, ktorú budete potrebovať použiť vo funkcií <code>getSymbols</code>) sa dá nájsť pre konkrétne firmy napríklad tak, že si názov firmy napíšete do <a href="https://finance.yahoo.com/" class="uri">https://finance.yahoo.com/</a></p></li>
-<li><p>Dáta si môžete stiahnúť za ľubovoľné obdobie, ale nech mate aspoň jeden rok dát</p></li>
-<li><p>Pracovať budete s posledným stĺpcom <code>Adjusted</code>. Transformujte dáta najskôr na týždenné (na cvičení sme mali ako sa transformujú na mesačné) a vypočítajte logartmické výnosy.</p></li>
-<li><p>Náplň prvej úlohy bude testovanie pomocou ACF a Ljung-Boxovho testu, že tieto výnosy sa dajú modelovať ako konštanta (stredná hodnota výnosov - tá na autokorelácie nemá vplyv) plus biely šum.</p></li>
-<li><p>Za tieto časti získate body: (Za každú 1)</p>
-<ul>
-<li>Názov zvolenej firmy, krátka informácia o nej</li>
-<li>Grafy priebehu cien akcie a výnosov (použite grafy z knižnice <code>quantmod</code>)</li>
-<li>Zobrazenie výberovej autokorelačnej funkcie výnosov a jej interpretáciu.</li>
-<li>Pomocou príkazu <code>acf(y, plot = FALSE, lag.max = 10)</code> - (y sú vaše dáta) - dostanete prvých 10 hodnôt autokorelačnej funkcie. Pomocou <strong>týchto zaokrúhlených hodnôt</strong> testujte hypotézu, že prvé 3 autokorelácie sú nulové. Vypočítajte pomocou R-ka (bez použitia funkcie <code>Box.test</code>) hodnotu testovej štatistiky, kritickú hodnotu tohto testu na 5-percentnej hladine významnosti, p-value. Uvedte, či danú hypotézu zamietate/nezamietate a prečo. (Hodiť sa vám pri tom môže toto <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare" class="uri">https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare</a>)</li>
-<li>Výsledky Ljung-Boxovho testu pre hodnoty lagu od 1 až po zvolenú hornú hranicu (aspoň 8 lagov). P hodnoty znázornite graficky ako na cvičení, spolu s porovnaním s hodnotou 0.05. Interpretujte výsledky. (Tu už môžete použiť funkcie <code>Box.test</code>)</li>
-<li>Zhodnotenie modelu: Považujete model “výnosy sú konštanta (t. j. priemerný výnos) plus biely šum” za dobrý model pre vaše dáta? Prečo?</li>
-</ul></li>
+<li><p>Zobrazte dáta (ako veľa dát si zvolíte, je na vás ale aspoň 2-3 roky) a pomocou ADF testu otestujte prítomnosť jednotkového koreňa (1B)</p></li>
+<li><p>Zhodnodte, či sa vaše dáta dajú modelovať ako biely šum posunutý o konštantu (podľa ACF, Ljung-boxových testov). Ak sa nedajú, skúste otestovať, či sa dáta dajú modelovať nejakým nesezónnym ARMA procesom. Vysvetlite, prečo ARMA proces nie je dostatočný (ktorý predpoklad je porušený) (2B)</p></li>
+<li><p>Nájdite pre vaše dáta, čo najlepši ARMA+GARCH model (kľudne sa môže stať, že najlepší bude čisto GARCH proces). Vysvetlite prečo váš model považujete za dostatočný. Ak nájdete viac modelov, vyberte najlepší podľa zhodnotení informačných kritérií. (4B)</p></li>
+<li><p>Z vášho modelu spravte predikcie na aspoň 2 týždne dopredu a výstup patrične okomentujte (komentujte aj graf, čo je z neho vidieť o volatilite? o predikciách?). (1B)</p></li>
+<li><p>Váš model následne použite na výpočet VaR. Aké okno a stratégiu si zvolíte je na vás (koľko pozorovaní a ako budete počítať predikcie na budúci deň). Určte VaR na aspoň jeden rok dopredu (252 dní). Vykreslite VaR a výnosy do jedného grafu. Zhodnodte, či váš model je dostatočný na určenie VaR (porovnajte frekvenciu prekročení s hľadinou, na ktorej VaR počítate) (2B)</p></li>
 </ul>
-</div>
-<div id="bassov-model-4-body" class="section level1">
-<h1>Bassov model (4 body)</h1>
-<p>Opäť si každá dvojica/jedinec nájde dáta, pričom nesmú byť rovnaké ako majú vaši kolegovia. Taktiež to nesmú byť dáta, s ktorými sme pracovali na cvičeniach.(Môžete si napríklad nájsť dáta o inom filme, ktorý na cvičení uvedený nebol)</p>
-<ul>
-<li>Body budete získavať za: (Za každú 1)
-<ul>
-<li>Krátky popis dát a uvedenie zdroja</li>
-<li>Určenie dobrých začiatočných hodnôt pre prílušné parametre (také, aby vám metóda nls konvergovala)</li>
-<li>Odhadnutie hodnôt parametrov pre vaše dáta</li>
-<li>Porovnanie skutočných tržieb s fitovanými + predikcie tržieb aspoň na 4 roky dopredu, aj s grafickým znázornením (<span class="math inline">\(m*f(t)\)</span> vs predaje, <span class="math inline">\(m*F(t)\)</span> vs kumulatívne predaje[funkcia <code>cumsum(x)</code>])</li>
-</ul></li>
-</ul>
-</div>
-<div id="bonus-2-body" class="section level1">
-<h1>Bonus (2 body)</h1>
-<ul>
-<li><p>Odvodte vzťahy pre funkcie <span class="math inline">\(f(t)\)</span> a <span class="math inline">\(F(t)\)</span></p>
-<ul>
-<li>(Návod: rozklad na parciálne zlomky) <span class="math display">\[
-\begin{aligned}
- \frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
-\end{aligned}
-\]</span></li>
-</ul></li>
-<li><p>Dokážte, že ak <span class="math inline">\(q&gt;p&gt;0\)</span>, tak funkcia <span class="math inline">\(f(t)\)</span> nadobúda maximum v čase <span class="math display">\[
-\begin{aligned}
- t^{*}=\frac{ln(\frac{q}{p})}{p+q}
-\end{aligned}
-\]</span> Voľne povedané, je to čas, v ktorom sa predá najviac výrobkov</p></li>
-<li><p>Odvodte vzťah pre maximum funkcie <span class="math inline">\(f(t)\)</span> v prípade, že <span class="math inline">\(p&gt;q&gt;0\)</span>. Čo od tohto prípade - keď prevláda vplyv inovátorov - očakávame?</p></li>
-</ul>
-<p>Bonus môžete počitať na papier, naskenovať ho a poslať ho zvlásť ako obrázky. Píšte ale čitateľne.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -421,6 +466,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

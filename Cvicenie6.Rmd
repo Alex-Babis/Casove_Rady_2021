@@ -1,0 +1,373 @@
+---
+title: "Cvičenie 6 - Modelovanie volatility - GARCH modely"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Potrebne knižnice pre cvičenie 6
+```{r include=FALSE}
+library(fGarch)
+library(astsa)
+library(quantmod)
+library(urca)
+library(ggplot2)
+library(ggfortify)
+library(forecast)
+```
+
+```{r eval=FALSE}
+library(fGarch)
+library(astsa)
+library(quantmod)
+library(urca)
+library(ggplot2)
+library(ggfortify)
+library(forecast)
+```
+
+# Dáta 1 - ceny akcie Apple
+V prvej časti budeme, tak ako na prednáške, pracovať s logaritmickými výnosmi pre ceny akcií. 
+Konkrétne sa pozrieme na výnosy akcie `AAPL` (Apple):
+```{r}
+getSymbols("AAPL",
+           from = "2016-01-01",
+           to = "2021-01-01",
+           auto.assign = TRUE)
+```
+
+Budeme pracovať s týždennými dátami.
+```{r}
+AAPL.tyzden <- to.weekly(AAPL)
+head(AAPL.tyzden)
+```
+
+Transformácia cien na logaritmické výnosy:
+```{r}
+ceny <- AAPL.tyzden$AAPL.Adjusted
+vynosy <- diff(log(ceny))
+vynosy <- vynosy[-1]
+```
+
+Vykreslenie dát
+```{r}
+chartSeries(vynosy, theme=chartTheme('white',up.col="#009E73"))
+```
+
+Skontrolujeme dáta, či v nich náhodou nie je jednotkový koreň:
+```{r}
+autoplot(vynosy)+
+  geom_hline(yintercept = 0, color = "green")+
+  geom_hline(yintercept = mean(vynosy), color = "orange")
+```
+
+Obe čiary sú dosť pri sebe, použijeme type = "none"
+```{r}
+summary(ur.df(vynosy, lags = 5, selectlags = "BIC", type = "none"))
+```
+Hypotézu o jednotkovom koreni zamietame, takže dáta nebude treba differencovať.
+
+Vykreslíme si ACF a PACF pre naše dáta 
+```{r}
+acf2(vynosy)
+```
+
+Vidíme, že podľa ACF aj PACF by sme dáta mohli modelovať ako konštanta + biely šum.
+```{r}
+vynosy.00 <- capture.output(sarima(vynosy,0,0,0))
+vynosy.00 <- sarima(vynosy,0,0,0, details = FALSE)
+vynosy.00
+```
+
+Porovnáme si ACF pre rezídua a pre ich druhé mocniny:
+```{r}
+acf1(vynosy.00$fit$residuals)
+acf1(vynosy.00$fit$residuals^2)
+```
+
+Vidíme, že hoci samotné rezídua nevyzerajú byť korelované, ich druhé mocniny sú. Takúto vlastnosť ale biely šum nemá. Preto budeme dáta modelovať ako GARCH(p,q).
+
+## ARCH(p)
+
+Najskôr budeme dáta modelovať iba ako ARCH(p) proces. Začneme základným ARCH(1) procesom. Použijeme funkciu `garchFit` z knižnice `fGarch.`:
+
+* `~garch(1,0)` - predstavuje formulu, všeobecne v tvare `~arma(p,q)+garch(p,q)`
+* `data` - naše dáta
+* `trace` - ak chceme vypísať konvergenciu, atď... (FALSE ak nechceme)
+```{r}
+vynosy.10 <- garchFit(~garch(1,0), data = vynosy, trace = FALSE)
+vynosy.10
+```
+
+Z výstupu môžeme vidieť odhady pre jednotlivé parametre:
+
+* `mu` - konštanta v rovnici pre strednú hodnotu
+* `omega` - konštanta v rovnici pre disperziu
+* `alpha1` - koeficient pri $u_{t-1}^2$
+
+Spolu s odhadmi sú dané aj štandardné odchýlky a hodnota testovej štatistiky (H0 daný koeficient je nulový) spolu s p-value.
+
+Všetky tri koeficienty sú signifikantné.
+
+Pozrieme sa ešte na zhodnotenie rezíduí. Dobrý model bude taký, kde nezostane žiadna autokorelácia v rezíduách ani v ich druhým mocninách, a zároveň Hypotéza o homoskedasticite sa nebude zamietať. K týmto hodnotám pristúpime cez funckiu `summary`, ktorá nám ponúka aj hodnotu Informačných kritérií pre daný model. K tým budeme ale pristupovať neskôr.
+```{r}
+summary(vynosy.10)
+```
+Vidíme, že stále ostáva istá autokorelácia medzi druhými mocninami rezíduí, aj keď samotné rezíduá nie sú korelované. Rovnako sa zamieta aj LM Arch test, teda zamietame hypotézu o homoskedasticite (konštantnosti disperzie v rezíduach).
+
+Skúsime teda zvýšiť rád ARCH procesu. ARCH(2):
+```{r}
+vynosy.20 <- garchFit(~garch(2,0), data = vynosy, trace = FALSE)
+vynosy.20
+
+summary(vynosy.20)
+```
+Vidíme, že koeficient `alpha2` vyšiel nesignifikantný, zároveň sa však zachovali nedostatky rezíduí z ARCH(1) procesu (v niektorých prípadoch dokonca horšie p hodnoty).
+
+ARCH(3)
+```{r}
+vynosy.30 <- garchFit(~garch(3,0), data = vynosy, trace = FALSE)
+vynosy.30
+
+summary(vynosy.30)
+```
+
+Opäť máme nesignifikantné koeficienty, no druhé mocniny rezíduí sú už bez výraznej autokorelácie, LM Arch test sa nezamietol, teda môžeme predpokladať konštatnú disperziu v rezíduách. Teda rezíduá môžeme považovať za biely šum.
+
+## GARCH(p,q)
+ARCH(3) proces vyšiel ako vhodný model pre naše dáta, avšak vyšli nám v ňom dva koeficienty nesignifikantné. Preto sa pozrieme aj na zovšeobecnený ARCH proces, GARCH. Skúsime začať základným, ktorý sa vo veľa prípadoch ukazuje ako dostatočný na modelovanie volatility, GARCH(1,1)
+```{r}
+vynosy.11 <- garchFit(~garch(1,1), data = vynosy, trace = FALSE)
+vynosy.11
+
+summary(vynosy.11)
+```
+Všetky koeficienty vyšli signifikatné, aj keď koeficient `beta1` (koeficient pri $\sigma_{t-1}^2$) vyšiel dosť nahrane. Čo však je možné pozorovať je, že testy nám nezamietli ani nulovú koreláciu medzi rezíduami, ani pre ich druhé mocniny, ani LM Arch test pre homoskedasticitu v rezíduách. Teda, tak ako ARCH(3), aj GARCH(1,1) je pre naše dáta dobrým modelom.
+
+Na ukážku ešte vyskúšame GARCH proces vyššieho rádu napríklad GARCH(1,2), teda jeden krát člen $u_{t-1}^2$ a dva krát predošle hodnoty $\sigma^2$.
+```{r}
+vynosy.12 <- garchFit(~garch(1,2), data = vynosy, trace = FALSE)
+vynosy.12
+
+summary(vynosy.12)
+```
+
+Vhodný model pre naše dáta môžeme zvoliť napríklad podľa informačných kritérií, ku ktorým vieme pristúpiť nasledovne.
+```{r}
+vynosy.30@fit$ics # ARCH(3)
+vynosy.11@fit$ics # GARCH(1,1)
+vynosy.12@fit$ics # GARCH(1,2)
+```
+
+Vidíme, že spomedzi troch modelov, ktoré boli pre naše dáta vyhovujúce, má najmenšie hodnoty informačných kritérií práve GARCH(1,1). Ten ďalej použijeme aj na predikcie z modelu.
+
+## Predikcie
+Podobne ako pri Holt-Wintersovej metóde, predikcie budeme robiť pomocou funkcie `predict`
+```{r}
+vynosy.pred11 <- predict(vynosy.11, n.ahead = 50, plot = TRUE)
+```
+
+Keďže dáta modelujeme ako konštantu plus biely šum, predikcie do budúcnosti bude tiež iba samotná konštanta. Na druhú stranu, môžeme vidieť, že podmienená postupne narastá a konverguje k nepodmienenej disperzií časového radu. Prejaví sa to tak, že sa nám postupne rozšírujú intervaly spoľahlivosti.
+
+# Data 2 - výmenné kurzy PLN/EUR
+
+Načítanie a úprava dáta na logaritmické výnosy. Dáta sú za obdobie 3 rokov, voľne dostupné na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
+```{r}
+data_neusporiadane <- read.table("eurofxref-hist.csv", 
+                                 header = TRUE, 
+                                 sep = ",",
+                                 stringsAsFactors = FALSE,
+                                 na.strings = "N/A")
+
+data_usporiadane <- data_neusporiadane[nrow(data_neusporiadane):1, ]
+
+zaciatok <- which(grepl(data_usporiadane[,1], pattern = "2018-"))[1]
+koniec <-  tail(which(grepl(data_usporiadane[,1], pattern = "2020-")), 1)
+data <- data_usporiadane[zaciatok:koniec, ]  # 3 roky, 2018-2020
+
+data <- data[ , colSums(is.na(data)) == 0] # zrusime stlpce obsahujuce NA
+data <- data[, -1] # zrusime datum
+data <- log(data[2:nrow(data), ]) - log(data[1:(nrow(data)-1), ]) #diferencie logaritmov stlpcov
+
+data <- data[, -3] # zrusime konstatne data
+```
+
+Finálne dáta budú predstavovať stĺpec 7:
+```{r}
+vynosy <- as.ts(data[,7])
+```
+
+Vykreslíme si dáta a skontrolujeme, či sa v nich nenachádza jednotkový koreň
+```{r}
+autoplot(vynosy)+
+  geom_hline(yintercept = 0, color = "green")+
+  geom_hline(yintercept = mean(vynosy), color = "orange")
+```
+
+Obe čiary sú blízko pri sebe, teda použijeme `type = "none"`:
+```{r}
+summary(ur.df(vynosy, lags = 5, selectlags = "BIC", type = "none"))
+```
+
+Test zamieta hypotézu o jednotkovom koreni, teda dáta nebude treba diferencovať.
+
+Ako už z obrázku vidieť, dáta pozostávajú z období väčšej a menšej volatility.
+
+Pozrieme sa najskôr na ACF a PACF pre naše dáta
+```{r}
+acf2(vynosy)
+sarima(vynosy, 0, 0, 0)
+```
+
+V tomto prípade sa samotný časový rad nedá považovať za biely šum posunutý o konštantu. Vidíme v ACF aj PACF autokorelácie mimo intervalov spolahlivosti. Rovnako nevychádzajú ani Ljung-Boxové testy. 
+
+## ARMA 
+Poďme ako prvé skúsiť nájsť obyčajný ARMA model pre naše dáta. Podľa ACF a PACF by sa mohlo zdať, že dobrý model by mohol byť AR(2), MA(3), MA(4) alebo nejaký zmiešaný model
+
+```{r}
+vynosy.ar2 <- capture.output(sarima(vynosy, 2, 0 ,0))
+vynosy.ar3 <- capture.output(sarima(vynosy, 3, 0 ,0))
+vynosy.ma2 <- capture.output(sarima(vynosy, 0, 0 ,2))
+vynosy.ma3 <- capture.output(sarima(vynosy, 0, 0 ,3))
+vynosy.31 <- capture.output(sarima(vynosy, 3, 0 ,1))
+```
+
+Vidíme, že jediný vyhovujúci z tých, ktoré sme vyskúšali je ARMA(3,1). Poďme sa pozrieť, ako sú natom rezíduá a ich druhé mocniny.
+```{r}
+vynosy.31 <- sarima(vynosy, 3, 0 ,1,details = FALSE)
+acf1(vynosy.31$fit$residuals)
+acf1(vynosy.31$fit$residuals^2)
+```
+
+Vidíme, že zatiaľ, čo autokorelačná funkcia pre rezíduá pripomína tú pre biely šum, druhé mocniny rezíduí sú evidentne korelované, a teda o biely šum nejde. Bohužial pre prípad, keď sa nejedná o čisto GARCH model, nie je dobré najskôr samostantne určiť rád členov ARMA procesu a potom dourčiť rád GARCH procesu (ak nejde o čisto AR proces), to z dôvodu, že tieto dve rovnice sú navzájom prepojené, keďže v oboch by vystupovali nejaké rovnaké predošlé hodnoty $u_{t-s}$.
+
+## GARCH
+
+Vyskúšame najskôr čisto GARCH(1,1)
+```{r}
+vynosy.00.11 <- garchFit(~ garch(1,1), data = vynosy, trace = FALSE)
+vynosy.00.11 
+summary(vynosy.00.11)
+```
+
+Vidíme, že testy pre druhé mocniny rezíduí ako aj LM Arch test vyšli dobre. Parametre GARCH procesu vyšli signifikatné (až na konštantu z rovnice pre strednú hodnotu). Čo však nevyšlo dobre, sú Ljung-Boxové testy o nezávislosti rezíduí.
+
+Skúsime preto použiť zmiešany ARMA+GARCH proces. Zoberme opäť GARCH(1,1) a AR(1)
+
+```{r}
+vynosy.10.11 <- garchFit(~ arma(1,0)+garch(1,1), data = vynosy, trace = FALSE)
+vynosy.10.11 
+summary(vynosy.10.11)
+```
+
+AR člen vyšiel nesignifikatný, testy o nekorelovanosti rezíduí boli opäť zamietnuté. Skúsme vyšší AR rad.
+AR(2)
+
+```{r}
+vynosy.20.11 <- garchFit(~ arma(2,0)+garch(1,1), data = vynosy, trace = FALSE)
+vynosy.20.11 
+summary(vynosy.20.11)
+```
+
+V tomto prípade nám síce opäť vyšli nesignifikantné koeficienty, avšak tento krát sa testy pre nekorelovanosť rezíduí nezamietli. Ak si ich porovname s testami pre čisto s AR(2) proces, tak vidíme, že zatiaľ čo samotný AR(2) proces bol nevyhovujúci ako model, AR(2)+GARCH(1,1) je už vyhovujúcim modelom.
+```{r}
+vynosy.ar2 <- capture.output(sarima(vynosy,2,0,0))
+```
+
+Skúsme ešte porovnať AR(2)+GARCH(1,1) s ARMA(3,1)+GARCH(1,1) (keďže ARMA(3,1) nám vyšiel ako možný kandidát na model pre dáta, zlyhal na korelovanosti druhých mocnín rezíduí)
+
+```{r}
+vynosy.31.11 <- garchFit(~ arma(3,1)+garch(1,1), data = vynosy, trace = FALSE)
+vynosy.31.11 
+summary(vynosy.31.11)
+```
+
+Môžeme porovnať ich informačné kritéria
+```{r}
+vynosy.20.11@fit$ics # AR(2)+GARCH(1,1)
+vynosy.31.11@fit$ics # ARMA(3,1)+GARCH(1,1)
+```
+
+Podľa informačných kritérií, pridanie ďaľších dvoch členov v ARMA procese neprinieslo výrazne zlepšie v fittovaní dát (informačné kritéria skoro rovnaké). Z tohto dôvodu je lepšie odhadovať rád ARMA časti a GARCH časti dokopy.
+
+## Predikcie
+Rovnako ako pri výnosoch akcií spravíme predikcie pre výnosy výmenných kurzov 12 dní dopredu. Použijeme AR(2)+GARCH(1,1) proces.
+```{r warning=FALSE}
+vynosy.pred.20.11 <- predict(vynosy.20.11, n.ahead = 12, plot = TRUE, nx = 70)
+```
+
+# Výpočet VaR 
+
+Value at risk predstavuje mieru rizika, ktorá nám hovorí aké najväčšie straty s pravdepodonosťou $1 - \alpha$, kde $\alpha$
+je nejaká hladina pravdepodobnosti,môžeme očakávať. Označme X hodnotu portfólia. Potom $VaR_{\alpha}$ je taká hodnota, pre ktorú platí, že
+$$P(X \leq VaR_{\alpha})=\alpha$$
+Teda, $VaR_{\alpha}$ predstavuje $1 - \alpha$ kvantil rozdelenia možných hodnôt X. Ak predpokladáme, normálne rozdelenie, tak to nie je nič iné ako $1 - \alpha$ kvantil normálneho rozdelenia.
+
+## VaR pre Apple akciu
+Data pre ceny akcie
+```{r}
+ceny <- AAPL.tyzden$AAPL.Adjusted
+vynosy <- diff(log(ceny))
+vynosy <- vynosy[-1]
+```
+
+Model použijeme GARCH(1,1). Budeme počítať VaR iteračne. Každý deň budeme fitovať GARCH(1,1) proces pre naše dáta a spravíme pridkciu volatility na ďalší deň. Odhadovať budeme vždy z posledných 50 pozorovaní.
+
+Zadefinujeme si prázdny VaR vektor:
+```{r, warning=FALSE}
+N <- 50
+var.aaple <- rep(0, length(vynosy) - N + 1)
+for(i in 1:length(var.aaple))
+{
+  data.aapl <- vynosy[i:(i+N-1)]
+  garch.aapl <- garchFit(~garch(1,1), data = data.aapl, trace = FALSE)
+  aapl.pred <- predict(garch.aapl, n.ahead = 1, plot = FALSE)
+  var.aaple[i] <- qnorm(0.05, mean = aapl.pred[1,1],sd = aapl.pred[1,3])
+}
+```
+
+Vytvoríme z výsnosov aj VaR časové rady. VaR začína až od N+1 dňa.
+```{r}
+vynosy <- ts(vynosy)
+var.aaple <- ts(var.aaple, start = N + 1)
+```
+
+Vykreslíme do jedného grafu
+```{r}
+pallete <-  c("#D55E00","black")
+autoplot(vynosy, series = "Vynosy applu")+
+  autolayer(var.aaple, series = "VaR 95%")+
+  scale_colour_manual(values=pallete)+
+  ggtitle("Porovanie vynosov a VaR na 5% hladine")
+```
+
+Vypočítame si % prekročení VaR
+```{r}
+pocet <- sum(vynosy[(N + 1):length(vynosy)] < var.aaple[-length(var.aaple)])
+pocet
+perc <- 100*pocet/length(var.aaple[-length(var.aaple)])
+perc
+```
+
+Vidíme, že frekvencia prekorčení je odosť viac ako 5% (dá sa testovať napríklad Kupiecov test), teda náš model nie je úplne najvhodnejší na výpočet value at risk (očividne sa príliš pomaly prispôsbuje zmenám v disperzíi)). Rovnako by ešte trebalo testovať, či sú jednotlivé prekročenia od seba nezávislé (opäť existuje test Christoffersenov test).
+
+# Poznámky
+
+* Dájú sa odhadovať aj iné ako normálne rozdelenia. Napríklad pre finančné časové rady platí, že ich rozdelenia majú ťažšie chvosty ako normálne rozdelenie, zaroveň môžu pochádzať zo šikmého rozdelenia (záporne hodnoty nastavajú častejšie ako kladné). V `garchFit` sa dá vložiť aj parameter `cond.dist`, ktorý špecifikuje aké rozdelenie chceme fitovať. Napríklad `"std"` alebo `"sstd"`, čo značí štandardné studentovo a zošikmené studenentovo rozdelenie.
+
+* Funkcia `garchFit` z balíka `fGarch` ponúka fitovať aj iný typ GARCH modelov, tak ako je to spomenuté na konci prednášky. Konkrétne môžete fitovať APARCH, čo je skratka pre assymetric power GARCH model. Do funcie sa to vklada na, tak ako GARCH model, teda `~ apaarch(1,1)` napríklad.
+
+* Na odhadovanie GARCHOV v R máme viac balíkov. Taký, ktoré je asi najviac používaný je `rugarch`, pre jednorozmerné, `rmgarch` pre viacrozmerné GARCH modely. Okrem iného v tomto balíku je možnosť fitovať väčšie množstvo rozdielnych zovšeobecnení GARCH modelov ako sú `“sGARCH”`, `“fGARCH”`, `“eGARCH”`, `“gjrGARCH”`, `“apARCH”` and `“iGARCH”` and `“csGARCH”`.
+
+* Value at Risk má svoje nedostatky, ako bolo spomenuté na prednáške. Existujú aj iné, lepšie miery rizika ako napríklad Expected Shortfall.
+
+* Pri výpočte VaR nie je nutné aby sa každý deň rekalibroval model. Treba ale potom pri predikovaní volatilty použiť skutočné hodnoty pre $u_{t}$, ktoré získame tak, že použijeme pozorovanú hodnotu pre časový rad v daný deň.

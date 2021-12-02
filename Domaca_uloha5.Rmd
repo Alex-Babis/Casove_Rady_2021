@@ -1,0 +1,44 @@
+---
+title: "Domáca úloha 5"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Pokyny
+
+* Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, **ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.**
+
+* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2021 - DU5 - priezvisko/priezviská** 
+
+* Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.
+
+* Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. 
+
+* Každá skupina si musí stiahne dáta o výmenných kurzoch, vyberie si jeden, ktorý si rezervuje. Dáta stiahnete na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html dole na stránke. Time series - CSV(.zip). Môžete použiť kód na ich úpravu ako je na cvičení. 
+
+Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
+
+# Zadanie
+
+Budeme chciet modelovať logaritmické výnosy pre výmenné kurzy:
+
+* Zobrazte dáta (ako veľa dát si zvolíte, je na vás ale aspoň 2-3 roky) a pomocou ADF testu otestujte prítomnosť jednotkového koreňa (1B)
+
+* Zhodnodte, či sa vaše dáta dajú modelovať ako biely šum posunutý o konštantu (podľa ACF, Ljung-boxových testov). Ak sa nedajú, skúste otestovať, či sa dáta dajú modelovať nejakým nesezónnym ARMA procesom. Vysvetlite, prečo ARMA proces nie je dostatočný (ktorý predpoklad je porušený) (2B)
+
+* Nájdite pre vaše dáta, čo najlepši ARMA+GARCH model (kľudne sa môže stať, že najlepší bude čisto GARCH proces). Vysvetlite prečo váš model považujete za dostatočný. Ak nájdete viac modelov, vyberte najlepší podľa zhodnotení informačných kritérií. (4B)
+
+* Z vášho modelu spravte predikcie na aspoň 2 týždne dopredu a výstup patrične okomentujte (komentujte aj graf, čo je z neho vidieť o volatilite? o predikciách?). (1B)
+
+* Váš model následne použite na výpočet VaR. Aké okno a stratégiu si zvolíte je na vás (koľko pozorovaní a ako budete počítať predikcie na budúci deň). Určte VaR na aspoň jeden rok dopredu (252 dní). Vykreslite VaR a výnosy do jedného grafu. Zhodnodte, či váš model je dostatočný na určenie VaR (porovnajte frekvenciu prekročení s hľadinou, na ktorej VaR počítate) (2B)
