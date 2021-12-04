@@ -29,7 +29,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
 
-**TÍ Z VÁS, KTORÍ CHCÚ ÍSŤ NA PREDTERMÍN MUSIA ÚLOHU ODOVZDAŤ DO 14.12.2021 DO POLNOCI. OSTATNÍ MAJÚ ČAS DO 17.12.2021 DO POLNOCI**
+
 
 # Zadanie
 Modelovanie sezónnych časových radov
