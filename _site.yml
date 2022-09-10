@@ -1,7 +1,6 @@
 name: "Tutorials webpage"
 navbar:
   title: "Alex Babiš"
-  type: inverse
   left:
     - text: "Home"
       href: index.html

@@ -7,8 +7,8 @@ output:
       collapsed: false
       smooth_scroll: false
     number_sections: true
-    theme: simplex
-    highlight: espresso
+    theme: flatly
+    highlight: zenburn
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
