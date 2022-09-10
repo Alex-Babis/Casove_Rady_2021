@@ -1,6 +1,6 @@
-name: "Časové rady 2021"
+name: "Tutorials webpage"
 navbar:
-  title: "Časové rady"
+  title: "Alex Babiš"
   left:
     - text: "Home"
       href: index.html

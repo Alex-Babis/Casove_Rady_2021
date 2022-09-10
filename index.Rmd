@@ -1,9 +1,9 @@
 ---
 title: "Casove Rady 2021"
 output: 
-  html_document:
+  html_document: 
     theme: flatly
-    highlight: zenburn
+    highlight: espresso
 ---
 
 <style type="text/css">
@@ -57,7 +57,7 @@ colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Miestnosť", "Deadline pre DÚ")
 ```
 
-```{r echo = FALSE, results='asis'}
+```{r, warning=FALSE, echo = FALSE, results='asis'}
 library(knitr)
 kable(cvicenia[,c(1,2,4,3,5)], caption = "Tabuľka cvičení")
 ```

@@ -11,7 +11,7 @@
 
 
 
-<title>Casove Rady 2021</title>
+<title>Cvičenie 3 - Teoretické cvičenie</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
 <style type="text/css">
@@ -206,6 +209,75 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -213,6 +285,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -225,7 +307,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -295,96 +377,24 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Casove Rady 2021</h1>
+<h1 class="title toc-ignore">Cvičenie 3 - Teoretické cvičenie</h1>
 
 </div>
 
 
-<style type="text/css">
-.title {
-  display: none;
-}
+<p>Zadanie príkladov na stránke (iba prvé 4 príklady):<br />
+<a
+href="https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1.pdf"
+class="uri">https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1.pdf</a></p>
+<p>Riešenie:<br />
+<a
+href="https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1solns.pdf"
+class="uri">https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1solns.pdf</a></p>
 
-#getting-started img {
-  margin-right: 10px;
-}
 
-</style>
-<div class="row" style="padding-top: 30px;">
-<div class="col-sm-6">
 
-<div id="časové-rady-2021" class="section level1">
-<h1><strong>Časové Rady 2021</strong></h1>
-<p>Vítajte na stránke pre cvičenia z časových radov 2021.</p>
-<p>V záložke Tutorials nájdete materiály k cvičeniam.</p>
-<p>V záložke Homeworks nájdete zadania domácich úloh.</p>
-<table>
-<caption>Tabuľka cvičení</caption>
-<colgroup>
-<col width="15%" />
-<col width="26%" />
-<col width="14%" />
-<col width="18%" />
-<col width="24%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Poradie</th>
-<th align="left">Týždeň</th>
-<th align="left">Miestnosť</th>
-<th align="left">Domáca úloha</th>
-<th align="left">Deadline pre DÚ</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Cvičenie 1</td>
-<td align="left">27.09.-01.09.2021</td>
-<td align="left">M-208</td>
-<td align="left">Áno</td>
-<td align="left">15.10.2021-24:00</td>
-</tr>
-<tr class="even">
-<td align="left">Cvičenie 2</td>
-<td align="left">18.10.-22.10.2021</td>
-<td align="left">M-208</td>
-<td align="left">Nie</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Cvičenie 3</td>
-<td align="left">25.10.-29.10.2021</td>
-<td align="left">M-X</td>
-<td align="left">Áno</td>
-<td align="left">12.11.2021-24:00</td>
-</tr>
-<tr class="even">
-<td align="left">Cvičenie 4</td>
-<td align="left">08.11.-12.11.2021</td>
-<td align="left">M-208</td>
-<td align="left">Áno</td>
-<td align="left">25.11.2021-24:00</td>
-</tr>
-<tr class="odd">
-<td align="left">Cvičenie 5</td>
-<td align="left">22.11.-26.11.2021</td>
-<td align="left">M-208</td>
-<td align="left">Áno</td>
-<td align="left">09.12.2021-24:00</td>
-</tr>
-<tr class="even">
-<td align="left">Cvičenie 6</td>
-<td align="left">29.11.-03.12.2021</td>
-<td align="left">M-208</td>
-<td align="left">Áno</td>
-<td align="left">14.12.2021-24:00</td>
-</tr>
-</tbody>
-</table>
 </div>
-
-
-
+</div>
 
 </div>
 
@@ -417,6 +427,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
