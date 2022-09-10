@@ -1,9 +1,9 @@
 ---
 title: "Domáca úloha 1"
 output: 
-    html_document:
-        theme: flatly
-        highlight: zenburn
+    html_document: 
+      theme: united
+      highlight: espresso
 ---
 
 ```{r setup, include=FALSE}

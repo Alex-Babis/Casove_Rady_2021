@@ -1,14 +1,14 @@
 ---
 title: "Cvičenie 1 - Testovanie autokorelácií, Bassov model"
 output:
-  html_document:
-    toc: true
+  html_document: 
+    toc: yes
     toc_float:
-      collapsed: false
-      smooth_scroll: false
-    number_sections: true
-    theme: flatly
-    highlight: zenburn
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
+    theme: simplex
+    highlight: espresso
 ---
 
 ```{r setup, include=FALSE}
