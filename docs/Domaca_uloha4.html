@@ -13,46 +13,40 @@
 
 <title>Domáca úloha 4</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
-
-
-
 <style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
 
 
 
@@ -62,10 +56,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -82,40 +72,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -143,7 +106,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -155,7 +118,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -166,10 +129,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -181,7 +157,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -313,7 +288,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -332,7 +307,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -398,7 +373,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -407,28 +382,60 @@ div.tocify {
 </div>
 
 
-<div id="pokyny" class="section level1">
+<div id="pokyny" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Pokyny</h1>
 <ul>
-<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU4 - priezvisko/priezviská</strong></p></li>
-<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
-<li><p>Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou).</p></li>
+<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia
+ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy
+alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí
+úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a
+href="mailto:alexbabis96@gmail.com"
+class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 -
+DU4 - priezvisko/priezviská</strong></p></li>
+<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v
+skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny,
+aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou
+reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o
+bodoch.</p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako
+samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde
+spojíte kompletný kód a sprievodný text, v tom prípade posielajte
+vygenerovaný dokument.</p></li>
+<li><p>Každá skupina si musí nájsť vlastné dáta, rezervácia dát na
+stránke (píšte svoje meno/mená, názov dát a link s cestou).</p></li>
 </ul>
-<p>Rezervácia tu: <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p>
+<p>Rezervácia tu: <a
+href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0"
+class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p>
 </div>
-<div id="zadanie" class="section level1">
+<div id="zadanie" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Zadanie</h1>
-<p>Modelovanie sezónnych časových radov Nájdite si vhodné dáta (t. j. také, pre ktoré nájdete vhodný SARIMA model), ktoré majú sezónny charakter.</p>
-<p>Z dát vynechajte niekoľko posledných (napríklad posledný rok alebo niekoľko rokov, v závislosti od dĺžky časového radu). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.</p>
+<p>Modelovanie sezónnych časových radov Nájdite si vhodné dáta (t. j.
+také, pre ktoré nájdete vhodný SARIMA model), ktoré majú sezónny
+charakter.</p>
+<p>Z dát vynechajte niekoľko posledných (napríklad posledný rok alebo
+niekoľko rokov, v závislosti od dĺžky časového radu). Tieto nebudete
+používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality
+predikcií.</p>
 <p>V domácej úlohe:</p>
 <ul>
-<li><p>Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite ich priebeh. Ak treba stabilizovať disperziu, môžete vyskúšať logaritmy dát.</p></li>
-<li><p>Uveďte, koľkokrát ste dáta diferencovali klasicky a sezónne, a vysvetlite prečo. Spíšte výsledky a doplňte ich výstupmi z R-ka tak, aby sa vaše tvrdenia dali skontrolovať bez spúšťania kódu. Ukončenie diferencovania (ako aj diferencovanie bez jasného trendu) treba zdôvodniť testami, nestačí povedať “toto už vyzerá dobre”.</p></li>
-<li><p>Nájdite vhodný SARIMA model (uveďte výsledok Ljung-Boxovho testu pre rezísuá) pre vaše dáta a spravte pomocou neho predikcie.</p></li>
-<li><p>Pre tie isté dáta použite Holt-Wintersovu metódu (keďže rastúcu disperziu by ste mali odstrániť napríklad logaritmovaním, asi pôjde o aditívnu sezónnosť).</p></li>
-<li><p>Porovnajte úspešnosť predikcií uvedených dvoch metód (či sú podobné, či je niektorá výraznejšie lepšia, či ich považujete za dobré a pod.).</p></li>
+<li><p>Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite
+ich priebeh. Ak treba stabilizovať disperziu, môžete vyskúšať logaritmy
+dát.</p></li>
+<li><p>Uveďte, koľkokrát ste dáta diferencovali klasicky a sezónne, a
+vysvetlite prečo. Spíšte výsledky a doplňte ich výstupmi z R-ka tak, aby
+sa vaše tvrdenia dali skontrolovať bez spúšťania kódu. Ukončenie
+diferencovania (ako aj diferencovanie bez jasného trendu) treba
+zdôvodniť testami, nestačí povedať “toto už vyzerá dobre”.</p></li>
+<li><p>Nájdite vhodný SARIMA model (uveďte výsledok Ljung-Boxovho testu
+pre rezísuá) pre vaše dáta a spravte pomocou neho predikcie.</p></li>
+<li><p>Pre tie isté dáta použite Holt-Wintersovu metódu (keďže rastúcu
+disperziu by ste mali odstrániť napríklad logaritmovaním, asi pôjde o
+aditívnu sezónnosť).</p></li>
+<li><p>Porovnajte úspešnosť predikcií uvedených dvoch metód (či sú
+podobné, či je niektorá výraznejšie lepšia, či ich považujete za dobré a
+pod.).</p></li>
 </ul>
 </div>
 
@@ -443,7 +450,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -461,7 +468,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -470,6 +477,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -482,7 +492,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

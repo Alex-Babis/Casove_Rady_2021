@@ -1,14 +1,14 @@
 ---
 title: "Cvičenie 4 - Zostavenie a testovanie ARIMA modelov"
 output:
-  html_document:
-    toc: true
+  html_document: 
+    toc: yes
     toc_float:
-      collapsed: false
-      smooth_scroll: false
-    number_sections: true
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
     theme: flatly
-    highlight: zenburn
+    highlight: espresso
 ---
 
 ```{r setup, include=FALSE}
@@ -36,8 +36,8 @@ Cieľom bude nájdenie vhodného ARIMA modelu pre dáta (na skúške bývajú d�
 
 Majme data z knižnice `astsa`:
 ```{r}
-y <- ts(econ5$unemp, 
-        frequency = 4, start = c(1950,1), end = c(1969, 4))
+
+y <- econ5[,"unemp"]
 autoplot(y)
 ```
 

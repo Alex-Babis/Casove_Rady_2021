@@ -13,40 +13,68 @@
 
 <title>Domáca úloha 3</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -56,7 +84,7 @@ pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   { color: #cccccc; background-color: #303030; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ffcfaf; } /* Alert */
 code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
@@ -110,39 +138,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -152,10 +150,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -172,40 +166,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -233,7 +200,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -245,7 +212,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -256,10 +223,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -271,7 +251,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -403,7 +382,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -422,7 +401,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -488,7 +467,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -497,61 +476,130 @@ div.tocify {
 </div>
 
 
-<div id="pokyny" class="section level1">
+<div id="pokyny" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Pokyny</h1>
 <ul>
-<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU3 - priezvisko/priezviská</strong></p></li>
-<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument. <strong>Tento krát by mala byť domáca úloha v tvare súvislého textu dopneného výstupmi z R, čo znamená, že každý krok treba dôkladne vysvetliť/okomentovať</strong></p></li>
-<li><p>Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou).</p></li>
-<li><p>Podmienka na dáta je, že <strong>nesmú byť modelovateľné ako biely šum posunutý o konštantu</strong> + nemôžu to byť dáta, ktoré už boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené bolo. Navyše vaše <strong>dáta musia byť bez pravidelnej sezónnosti.</strong> Pravidelnú sezónnosť majú napríklad mesačné hodnoty teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP, dáta <code>AirPassengers</code> zo začiatku semestra a pod. - je to na grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale <strong>mal dať nájsť nesezónny ARIMA model.</strong> Rezervácia tu: <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
+<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia
+ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy
+alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí
+úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a
+href="mailto:alexbabis96@gmail.com"
+class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 -
+DU3 - priezvisko/priezviská</strong></p></li>
+<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v
+skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny,
+aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou
+reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o
+bodoch.</p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte a použitý kód ako
+samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde
+spojíte kompletný kód a sprievodný text, v tom prípade posielajte
+vygenerovaný dokument. <strong>Tento krát by mala byť domáca úloha v
+tvare súvislého textu dopneného výstupmi z R, čo znamená, že každý krok
+treba dôkladne vysvetliť/okomentovať</strong></p></li>
+<li><p>Každá skupina si musí nájsť vlastné dáta, rezervácia dát na
+stránke (píšte svoje meno/mená, názov dát a link s cestou).</p></li>
+<li><p>Podmienka na dáta je, že <strong>nesmú byť modelovateľné ako
+biely šum posunutý o konštantu</strong> + nemôžu to byť dáta, ktoré už
+boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité
+nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre
+dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené
+bolo. Navyše vaše <strong>dáta musia byť bez pravidelnej
+sezónnosti.</strong> Pravidelnú sezónnosť majú napríklad mesačné hodnoty
+teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP,
+dáta <code>AirPassengers</code> zo začiatku semestra a pod. - je to na
+grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta
+narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak
+neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale
+<strong>mal dať nájsť nesezónny ARIMA model.</strong> Rezervácia tu: <a
+href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0"
+class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
 </ul>
 </div>
-<div id="zadanie" class="section level1">
+<div id="zadanie" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Zadanie</h1>
-<p>Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.</p>
+<p>Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste
+najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale
+použite ich na zhodnotenie kvality predikcií.</p>
 <ul>
 <li><p>1 bod:</p>
 <ul>
-<li>Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite ich priebeh.<br />
+<li>Vysvetlite, čo vyjadrujú vaše dáta, uveďte ich zdroj a znázornite
+ich priebeh.<br />
 <br />
 </li>
 </ul></li>
 <li><p>1 bod:</p>
 <ul>
-<li>Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená, že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, …) napíšete či ste ich diferencovali a prečo. Skončíte tým, že určitý časový rad nebude už treba ďalej diferencovať. Štýl zdôvodnenia by mal byť v tvare napríklad: “Dáta sme diferencovali, pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie dát sme následne diferencovali, pretože obsahovali jednotkový koreň. Druhú diferencie už nebolo treba diferencovať, pretože neobsahovali ani trend, ani jednotkový koreň.”<br />
+<li>Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená,
+že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé
+diferencie, …) napíšete či ste ich diferencovali a prečo. Skončíte tým,
+že určitý časový rad nebude už treba ďalej diferencovať. Štýl
+zdôvodnenia by mal byť v tvare napríklad: “Dáta sme diferencovali,
+pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie
+dát sme následne diferencovali, pretože obsahovali jednotkový koreň.
+Druhú diferencie už nebolo treba diferencovať, pretože neobsahovali ani
+trend, ani jednotkový koreň.”<br />
 <br />
 </li>
 </ul></li>
 <li><p>5 bodov:</p>
 <ul>
-<li>Súčasťou predchádzajúceho bodu bolo testovanie jednotkového koreňa. V poslednom kroku (po prípadnom predchádzajúcom diferencovaní) nastala situácia, že v dátach nebol ani trend, ani jednotkový koreň, a preto ich nebolo potrebné diferencovať. Podrobne vysvetlite, čo sa tam dialo(za každú čast môžete získať 1 bod)<br />
+<li>Súčasťou predchádzajúceho bodu bolo testovanie jednotkového koreňa.
+V poslednom kroku (po prípadnom predchádzajúcom diferencovaní) nastala
+situácia, že v dátach nebol ani trend, ani jednotkový koreň, a preto ich
+nebolo potrebné diferencovať. Podrobne vysvetlite, čo sa tam dialo(za
+každú čast môžete získať 1 bod)<br />
 <br />
 </li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>Napíšte s akými parametrami ste dáta testovali a aká regresia sa odhadla. (Parametre, ktoré vkladate do funkcie ur.df a treba aj zdôvodniť, prečo tieto parametre. Regresiu napíšte v tvare podobne ako na prednáške a cvičení pre model, ktorý vám výjde, že sa v ADF teste odhadoval. Na cvičeniach bolo napríklad:</li>
+<li>Napíšte s akými parametrami ste dáta testovali a aká regresia sa
+odhadla. (Parametre, ktoré vkladate do funkcie ur.df a treba aj
+zdôvodniť, prečo tieto parametre. Regresiu napíšte v tvare podobne ako
+na prednáške a cvičení pre model, ktorý vám výjde, že sa v ADF teste
+odhadoval. Na cvičeniach bolo napríklad:</li>
 </ol>
-<p><span class="math display">\[ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span></p>
+<p><span class="math display">\[ \Delta z_{t} = \alpha +
+c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}\]</span></p>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Aká hypotéza o koeficientoch tejto regresie sa testuje?</p></li>
-<li><p>Ukážte, pre váš prípad, že táto hypotéza predstavuje hypotézu o jednotkovom koreni daného časového radu. (Analogicky ako bolo na cvičeniach pre vyššie spomenutú regresiu, alebo v prednáškach pre AR(3) proces).</p></li>
-<li><p>Kedy túto hypotézu zamietame? (ako vyzerá kritérium založené na testovacej štatistike a kritickej hodnote). Vypíšte aj testovaciu štatistiku a kritické hodnoty, s ktorými ju budete porovnávať.</p></li>
-<li><p>Čo vyšlo v vašom prípade (zamietate alebo nie) a čo to znamená pre diferencovanie vášho časového radu (diferencujete alebo nie)?</p></li>
+<li><p>Ukážte, pre váš prípad, že táto hypotéza predstavuje hypotézu o
+jednotkovom koreni daného časového radu. (Analogicky ako bolo na
+cvičeniach pre vyššie spomenutú regresiu, alebo v prednáškach pre AR(3)
+proces).</p></li>
+<li><p>Kedy túto hypotézu zamietame? (ako vyzerá kritérium založené na
+testovacej štatistike a kritickej hodnote). Vypíšte aj testovaciu
+štatistiku a kritické hodnoty, s ktorými ju budete porovnávať.</p></li>
+<li><p>Čo vyšlo v vašom prípade (zamietate alebo nie) a čo to znamená
+pre diferencovanie vášho časového radu (diferencujete alebo
+nie)?</p></li>
 </ol></li>
 <li><p>2 body:</p>
 <ul>
-<li>Nájdite vhodný ARIMA model pre vaše <strong>pôvodné dáta</strong>, teda nie pre diferencie. Napríklad ak výjde, že dáta treba diferencovať namiesto <code>sarima(diff(data), p, 0, q)</code> použijete <code>sarima(data, p , 1, q)</code>. Ak si viete tipnúť na základe PACF/ACF grafov je to fajn, ale skúste porovnať viac modelov, napríklad aj zmiešané a rozhodnúť sa podľa informačných kritérií. Požiadavky sú: stacionarita, invertovateľnosť, p-hodnoty Ljung-Boxovho testu nad 5%. Zároveň si skontrolujte, v prípade zmiešaného ARMA modelu, či korene polynómov nevychádzajú blízko seba. Ak áno, analogicky cvičeniam, vyskúšajte znížiť rad p aj q o 1, teda namiesto ARMA(p,q), vyskúšajte ARMA(p-1,q-1). Odpoveď napíšte zapísaním parametrov funkcie sarima, ktorou model odhadnete:</li>
+<li>Nájdite vhodný ARIMA model pre vaše <strong>pôvodné dáta</strong>,
+teda nie pre diferencie. Napríklad ak výjde, že dáta treba diferencovať
+namiesto <code>sarima(diff(data), p, 0, q)</code> použijete
+<code>sarima(data, p , 1, q)</code>. Ak si viete tipnúť na základe
+PACF/ACF grafov je to fajn, ale skúste porovnať viac modelov, napríklad
+aj zmiešané a rozhodnúť sa podľa informačných kritérií. Požiadavky sú:
+stacionarita, invertovateľnosť, p-hodnoty Ljung-Boxovho testu nad 5%.
+Zároveň si skontrolujte, v prípade zmiešaného ARMA modelu, či korene
+polynómov nevychádzajú blízko seba. Ak áno, analogicky cvičeniam,
+vyskúšajte znížiť rad p aj q o 1, teda namiesto ARMA(p,q), vyskúšajte
+ARMA(p-1,q-1). Odpoveď napíšte zapísaním parametrov funkcie sarima,
+ktorou model odhadnete:</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">sarima</span>(y, p, k, q)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(y, p, k, q)</span></code></pre></div>
 <ul>
 <li>1 bod:<br />
 <br />
-
 <ul>
-<li>Spravte predikcie do budúcna pre vaše <strong>pôvodné dáta</strong> a porovnajte ich so skutočnými pozorovanými hodnotami, ktoré ste na začiatku z dát vynechali. Zhodnodte váš model. Čo si o ňom myslíte?</li>
+<li>Spravte predikcie do budúcna pre vaše <strong>pôvodné dáta</strong>
+a porovnajte ich so skutočnými pozorovanými hodnotami, ktoré ste na
+začiatku z dát vynechali. Zhodnodte váš model. Čo si o ňom myslíte?</li>
 </ul></li>
 </ul>
 </div>
@@ -567,7 +615,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -585,7 +633,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -594,6 +642,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -606,7 +657,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

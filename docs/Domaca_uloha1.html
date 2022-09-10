@@ -13,43 +13,37 @@
 
 <title>Domáca úloha 1</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
-
-
-
 <style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
 
 
 
@@ -59,10 +53,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -79,40 +69,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -140,7 +103,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -152,7 +115,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -163,10 +126,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -178,7 +154,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -250,7 +225,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -316,7 +291,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -328,63 +303,125 @@ $(document).ready(function () {
 <div id="pokyny" class="section level1">
 <h1>Pokyny</h1>
 <ul>
-<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU1 - priezvisko/priezviská</strong></p></li>
-<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
-<li><p>V oboch príkladoch pracuje každá skupina s inými dátami, rezervácia dát na stránke (píšte svoje meno/mená a názov akcie, resp. názov dát a zdroj pre Bassov model, neuvádzajte svoj e-mail) <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
+<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia
+ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy
+alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí
+úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a
+href="mailto:alexbabis96@gmail.com"
+class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 -
+DU1 - priezvisko/priezviská</strong></p></li>
+<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v
+skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny,
+aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou
+reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o
+bodoch.</p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre
+čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými
+poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R
+markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v
+tom prípade posielajte vygenerovaný dokument.</p></li>
+<li><p>V oboch príkladoch pracuje každá skupina s inými dátami,
+rezervácia dát na stránke (píšte svoje meno/mená a názov akcie, resp.
+názov dát a zdroj pre Bassov model, neuvádzajte svoj e-mail) <a
+href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0"
+class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
 </ul>
 </div>
 <div id="testovanie-autokorelácií-6-bodov" class="section level1">
 <h1>Testovanie autokorelácií (6 Bodov)</h1>
 <ul>
-<li><p>Pracovať budete s knížnicou <code>quantmod</code> (tak ako sme to robili na cvičení). Každá skupina/jedinec si stiahne dáta o nejakej firme. <code>Symbols</code> (tá skratka danej firmy, ktorú budete potrebovať použiť vo funkcií <code>getSymbols</code>) sa dá nájsť pre konkrétne firmy napríklad tak, že si názov firmy napíšete do <a href="https://finance.yahoo.com/" class="uri">https://finance.yahoo.com/</a></p></li>
-<li><p>Dáta si môžete stiahnúť za ľubovoľné obdobie, ale nech mate aspoň jeden rok dát</p></li>
-<li><p>Pracovať budete s posledným stĺpcom <code>Adjusted</code>. Transformujte dáta najskôr na týždenné (na cvičení sme mali ako sa transformujú na mesačné) a vypočítajte logartmické výnosy.</p></li>
-<li><p>Náplň prvej úlohy bude testovanie pomocou ACF a Ljung-Boxovho testu, že tieto výnosy sa dajú modelovať ako konštanta (stredná hodnota výnosov - tá na autokorelácie nemá vplyv) plus biely šum.</p></li>
+<li><p>Pracovať budete s knížnicou <code>quantmod</code> (tak ako sme to
+robili na cvičení). Každá skupina/jedinec si stiahne dáta o nejakej
+firme. <code>Symbols</code> (tá skratka danej firmy, ktorú budete
+potrebovať použiť vo funkcií <code>getSymbols</code>) sa dá nájsť pre
+konkrétne firmy napríklad tak, že si názov firmy napíšete do <a
+href="https://finance.yahoo.com/"
+class="uri">https://finance.yahoo.com/</a></p></li>
+<li><p>Dáta si môžete stiahnúť za ľubovoľné obdobie, ale nech mate aspoň
+jeden rok dát</p></li>
+<li><p>Pracovať budete s posledným stĺpcom <code>Adjusted</code>.
+Transformujte dáta najskôr na týždenné (na cvičení sme mali ako sa
+transformujú na mesačné) a vypočítajte logartmické výnosy.</p></li>
+<li><p>Náplň prvej úlohy bude testovanie pomocou ACF a Ljung-Boxovho
+testu, že tieto výnosy sa dajú modelovať ako konštanta (stredná hodnota
+výnosov - tá na autokorelácie nemá vplyv) plus biely šum.</p></li>
 <li><p>Za tieto časti získate body: (Za každú 1)</p>
 <ul>
 <li>Názov zvolenej firmy, krátka informácia o nej</li>
-<li>Grafy priebehu cien akcie a výnosov (použite grafy z knižnice <code>quantmod</code>)</li>
-<li>Zobrazenie výberovej autokorelačnej funkcie výnosov a jej interpretáciu.</li>
-<li>Pomocou príkazu <code>acf(y, plot = FALSE, lag.max = 10)</code> - (y sú vaše dáta) - dostanete prvých 10 hodnôt autokorelačnej funkcie. Pomocou <strong>týchto zaokrúhlených hodnôt</strong> testujte hypotézu, že prvé 3 autokorelácie sú nulové. Vypočítajte pomocou R-ka (bez použitia funkcie <code>Box.test</code>) hodnotu testovej štatistiky, kritickú hodnotu tohto testu na 5-percentnej hladine významnosti, p-value. Uvedte, či danú hypotézu zamietate/nezamietate a prečo. (Hodiť sa vám pri tom môže toto <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare" class="uri">https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare</a>)</li>
-<li>Výsledky Ljung-Boxovho testu pre hodnoty lagu od 1 až po zvolenú hornú hranicu (aspoň 8 lagov). P hodnoty znázornite graficky ako na cvičení, spolu s porovnaním s hodnotou 0.05. Interpretujte výsledky. (Tu už môžete použiť funkcie <code>Box.test</code>)</li>
-<li>Zhodnotenie modelu: Považujete model “výnosy sú konštanta (t. j. priemerný výnos) plus biely šum” za dobrý model pre vaše dáta? Prečo?</li>
+<li>Grafy priebehu cien akcie a výnosov (použite grafy z knižnice
+<code>quantmod</code>)</li>
+<li>Zobrazenie výberovej autokorelačnej funkcie výnosov a jej
+interpretáciu.</li>
+<li>Pomocou príkazu <code>acf(y, plot = FALSE, lag.max = 10)</code> - (y
+sú vaše dáta) - dostanete prvých 10 hodnôt autokorelačnej funkcie.
+Pomocou <strong>týchto zaokrúhlených hodnôt</strong> testujte hypotézu,
+že prvé 3 autokorelácie sú nulové. Vypočítajte pomocou R-ka (bez
+použitia funkcie <code>Box.test</code>) hodnotu testovej štatistiky,
+kritickú hodnotu tohto testu na 5-percentnej hladine významnosti,
+p-value. Uvedte, či danú hypotézu zamietate/nezamietate a prečo. (Hodiť
+sa vám pri tom môže toto <a
+href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare"
+class="uri">https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/Chisquare</a>)</li>
+<li>Výsledky Ljung-Boxovho testu pre hodnoty lagu od 1 až po zvolenú
+hornú hranicu (aspoň 8 lagov). P hodnoty znázornite graficky ako na
+cvičení, spolu s porovnaním s hodnotou 0.05. Interpretujte výsledky. (Tu
+už môžete použiť funkcie <code>Box.test</code>)</li>
+<li>Zhodnotenie modelu: Považujete model “výnosy sú konštanta (t. j.
+priemerný výnos) plus biely šum” za dobrý model pre vaše dáta?
+Prečo?</li>
 </ul></li>
 </ul>
 </div>
 <div id="bassov-model-4-body" class="section level1">
 <h1>Bassov model (4 body)</h1>
-<p>Opäť si každá dvojica/jedinec nájde dáta, pričom nesmú byť rovnaké ako majú vaši kolegovia. Taktiež to nesmú byť dáta, s ktorými sme pracovali na cvičeniach.(Môžete si napríklad nájsť dáta o inom filme, ktorý na cvičení uvedený nebol)</p>
+<p>Opäť si každá dvojica/jedinec nájde dáta, pričom nesmú byť rovnaké
+ako majú vaši kolegovia. Taktiež to nesmú byť dáta, s ktorými sme
+pracovali na cvičeniach.(Môžete si napríklad nájsť dáta o inom filme,
+ktorý na cvičení uvedený nebol)</p>
 <ul>
 <li>Body budete získavať za: (Za každú 1)
 <ul>
 <li>Krátky popis dát a uvedenie zdroja</li>
-<li>Určenie dobrých začiatočných hodnôt pre prílušné parametre (také, aby vám metóda nls konvergovala)</li>
+<li>Určenie dobrých začiatočných hodnôt pre prílušné parametre (také,
+aby vám metóda nls konvergovala)</li>
 <li>Odhadnutie hodnôt parametrov pre vaše dáta</li>
-<li>Porovnanie skutočných tržieb s fitovanými + predikcie tržieb aspoň na 4 roky dopredu, aj s grafickým znázornením (<span class="math inline">\(m*f(t)\)</span> vs predaje, <span class="math inline">\(m*F(t)\)</span> vs kumulatívne predaje[funkcia <code>cumsum(x)</code>])</li>
+<li>Porovnanie skutočných tržieb s fitovanými + predikcie tržieb aspoň
+na 4 roky dopredu, aj s grafickým znázornením (<span
+class="math inline">\(m*f(t)\)</span> vs predaje, <span
+class="math inline">\(m*F(t)\)</span> vs kumulatívne predaje[funkcia
+<code>cumsum(x)</code>])</li>
 </ul></li>
 </ul>
 </div>
 <div id="bonus-2-body" class="section level1">
 <h1>Bonus (2 body)</h1>
 <ul>
-<li><p>Odvodte vzťahy pre funkcie <span class="math inline">\(f(t)\)</span> a <span class="math inline">\(F(t)\)</span></p>
+<li><p>Odvodte vzťahy pre funkcie <span
+class="math inline">\(f(t)\)</span> a <span
+class="math inline">\(F(t)\)</span></p>
 <ul>
 <li>(Návod: rozklad na parciálne zlomky) <span class="math display">\[
 \begin{aligned}
- \frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
+\frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
 \end{aligned}
 \]</span></li>
 </ul></li>
-<li><p>Dokážte, že ak <span class="math inline">\(q&gt;p&gt;0\)</span>, tak funkcia <span class="math inline">\(f(t)\)</span> nadobúda maximum v čase <span class="math display">\[
+<li><p>Dokážte, že ak <span class="math inline">\(q&gt;p&gt;0\)</span>,
+tak funkcia <span class="math inline">\(f(t)\)</span> nadobúda maximum v
+čase <span class="math display">\[
 \begin{aligned}
- t^{*}=\frac{ln(\frac{q}{p})}{p+q}
+t^{*}=\frac{ln(\frac{q}{p})}{p+q}
 \end{aligned}
-\]</span> Voľne povedané, je to čas, v ktorom sa predá najviac výrobkov</p></li>
-<li><p>Odvodte vzťah pre maximum funkcie <span class="math inline">\(f(t)\)</span> v prípade, že <span class="math inline">\(p&gt;q&gt;0\)</span>. Čo od tohto prípade - keď prevláda vplyv inovátorov - očakávame?</p></li>
+\]</span> Voľne povedané, je to čas, v ktorom sa predá najviac
+výrobkov</p></li>
+<li><p>Odvodte vzťah pre maximum funkcie <span
+class="math inline">\(f(t)\)</span> v prípade, že <span
+class="math inline">\(p&gt;q&gt;0\)</span>. Čo od tohto prípade - keď
+prevláda vplyv inovátorov - očakávame?</p></li>
 </ul>
-<p>Bonus môžete počitať na papier, naskenovať ho a poslať ho zvlásť ako obrázky. Píšte ale čitateľne.</p>
+<p>Bonus môžete počitať na papier, naskenovať ho a poslať ho zvlásť ako
+obrázky. Píšte ale čitateľne.</p>
 </div>
 
 
@@ -396,7 +433,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -414,7 +451,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

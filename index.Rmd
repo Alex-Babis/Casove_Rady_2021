@@ -57,7 +57,7 @@ colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Miestnosť", "Deadline pre DÚ")
 ```
 
-```{r, warning=FALSE, echo = FALSE, results='asis'}
+```{r, echo = FALSE, results='asis'}
 library(knitr)
 kable(cvicenia[,c(1,2,4,3,5)], caption = "Tabuľka cvičení")
 ```

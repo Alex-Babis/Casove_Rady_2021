@@ -13,37 +13,65 @@
 
 <title>Domáca úloha 2</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -53,7 +81,7 @@ pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   { color: #cccccc; background-color: #303030; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ffcfaf; } /* Alert */
 code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
@@ -107,39 +135,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -149,10 +147,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -169,40 +163,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -230,7 +197,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -242,7 +209,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -253,10 +220,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -268,7 +248,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -340,7 +319,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -406,7 +385,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -418,16 +397,36 @@ $(document).ready(function () {
 <div id="pokyny" class="section level1">
 <h1>Pokyny</h1>
 <ul>
-<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
-<li><p>Úlohu posielajte elektronicky na adresu <a href="mailto:alexbabis96@gmail.com" class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 - DU2 - priezvisko/priezviská</strong></p></li>
-<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.</p></li>
-<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v tom prípade posielajte vygenerovaný dokument.</p></li>
-<li><p>V druhom prípade pracuje každá skupina s inými dátami, rezervácia dát na stránke (píšte svoje meno/mená a názov výmenného kurzu) <a href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
+<li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia
+ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy
+alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí
+úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
+<li><p>Úlohu posielajte elektronicky na adresu <a
+href="mailto:alexbabis96@gmail.com"
+class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 -
+DU2 - priezvisko/priezviská</strong></p></li>
+<li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v
+skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny,
+aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou
+reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o
+bodoch.</p></li>
+<li><p>Posielajte vypracovanú úlohu v pdf formáte (súvislý, dobre
+čitateľný text doplnený grafmi, nie iba výstupy z R so stručnými
+poznámkami) a použitý kód ako samostatný súbor. Môžete použiť aj R
+markdown s HTML výstupom, kde spojíte kompletný kód a sprievodný text, v
+tom prípade posielajte vygenerovaný dokument.</p></li>
+<li><p>V druhom prípade pracuje každá skupina s inými dátami, rezervácia
+dát na stránke (píšte svoje meno/mená a názov výmenného kurzu) <a
+href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0"
+class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
 </ul>
 </div>
 <div id="príklad-1-procesy-s-danou-vlastnosťou" class="section level1">
 <h1>Príklad 1: Procesy s danou vlastnosťou</h1>
-<p>Uveďte príklad procesov s danými vlastnosťami. Ak nie je povedané inak, proces musí byť stacionárny. Pre každý proces dokážte, že má požadovanú vlastnosť (napríklad tak, že určite korene pre dané polynómy, vypočítate disperziu a podobne).</p>
+<p>Uveďte príklad procesov s danými vlastnosťami. Ak nie je povedané
+inak, proces musí byť stacionárny. Pre každý proces dokážte, že má
+požadovanú vlastnosť (napríklad tak, že určite korene pre dané polynómy,
+vypočítate disperziu a podobne).</p>
 <ul>
 <li>AR(2) proces so strednou hodnotou 15</li>
 <li>Nestacionárny AR(3) proces.</li>
@@ -436,19 +435,34 @@ $(document).ready(function () {
 <li>AR(3) proces, ktorého ACF nie je monotónna.</li>
 </ul>
 </div>
-<div id="príklad-2-ma-proces-ako-model-pre-percentuálnu-zmenu-výmenného-kurzu" class="section level1">
-<h1>Príklad 2: MA proces ako model pre percentuálnu zmenu výmenného kurzu</h1>
-<p>Pomocou funkcie <code>getSymbols.oanda</code> z balíka <code>quantmod</code> si načítajte dáta zvoleného výmenného kurzu. Každý pracuje s iným výmenným kurzom.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># z prednasky</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(quantmod)</a>
-<a class="sourceLine" id="cb1-3" title="3">data &lt;-<span class="st"> </span><span class="kw">getSymbols.oanda</span>(<span class="st">&quot;GBP/USD&quot;</span>, <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Budeme modelovať percentuálnu zmenu výmenného kurzu, teda premennú <code>diff(log(data))</code>. <strong>Požiadavkou na dáta je, že sa táto premenná nespráva ako biely šum.</strong> V tejto úlohe zistíme, či sa dá modelovať MA procesom.</p>
+<div
+id="príklad-2-ma-proces-ako-model-pre-percentuálnu-zmenu-výmenného-kurzu"
+class="section level1">
+<h1>Príklad 2: MA proces ako model pre percentuálnu zmenu výmenného
+kurzu</h1>
+<p>Pomocou funkcie <code>getSymbols.oanda</code> z balíka
+<code>quantmod</code> si načítajte dáta zvoleného výmenného kurzu. Každý
+pracuje s iným výmenným kurzom.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># z prednasky</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">getSymbols.oanda</span>(<span class="st">&quot;GBP/USD&quot;</span>, <span class="at">auto.assign =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Budeme modelovať percentuálnu zmenu výmenného kurzu, teda premennú
+<code>diff(log(data))</code>. <strong>Požiadavkou na dáta je, že sa táto
+premenná nespráva ako biely šum.</strong> V tejto úlohe zistíme, či sa
+dá modelovať MA procesom.</p>
 <ul>
-<li>Zdôvodnite, prečo sa <code>diff(log(data))</code> nedá považovať za biely šum.</li>
+<li>Zdôvodnite, prečo sa <code>diff(log(data))</code> nedá považovať za
+biely šum.</li>
 <li>Zobrazte výberovú <strong>autokorelačnú funkciu.</strong></li>
-<li>Viete na základe predchádzajúcej úlohy spraviť “tip”, aký by mohol byť vhodný rád procesu? Ak áno, vyskúšajte ho, pozrite sa na rezíduá a spíšte výsledky. Ak výjdu dobre, máme model.</li>
-<li>Ak model z predchádzajúceho bodu nevyšiel alebo sa nedal spraviť dobrý tip na základe ACF, odhadnite MA modely od rádu 1 do zvoleného maximálneho rádu (napríklad 5). Je niektorý z nich vyhovujúci?</li>
-<li>Ak ste našli vhodný model, spravte z neho predikcie (podľa vlastného výberu to mmôžu byť predikcie pre <code>diff(log(data))</code> alebo <code>log(data)</code>).</li>
+<li>Viete na základe predchádzajúcej úlohy spraviť “tip”, aký by mohol
+byť vhodný rád procesu? Ak áno, vyskúšajte ho, pozrite sa na rezíduá a
+spíšte výsledky. Ak výjdu dobre, máme model.</li>
+<li>Ak model z predchádzajúceho bodu nevyšiel alebo sa nedal spraviť
+dobrý tip na základe ACF, odhadnite MA modely od rádu 1 do zvoleného
+maximálneho rádu (napríklad 5). Je niektorý z nich vyhovujúci?</li>
+<li>Ak ste našli vhodný model, spravte z neho predikcie (podľa vlastného
+výberu to mmôžu byť predikcie pre <code>diff(log(data))</code> alebo
+<code>log(data)</code>).</li>
 </ul>
 </div>
 
@@ -461,7 +475,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -479,7 +493,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

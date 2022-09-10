@@ -13,40 +13,68 @@
 
 <title>Cvičenie 5 - Sezónne modely, modelovanie trendu</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -56,7 +84,7 @@ pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   { color: #cccccc; background-color: #303030; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ffcfaf; } /* Alert */
 code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
@@ -110,39 +138,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -152,10 +150,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -172,40 +166,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -233,7 +200,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -245,7 +212,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -256,10 +223,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -271,7 +251,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -403,7 +382,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -422,7 +401,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Časové rady</a>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -488,63 +467,76 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Cvičenie 5 - Sezónne modely, modelovanie trendu</h1>
+<h1 class="title toc-ignore">Cvičenie 5 - Sezónne modely, modelovanie
+trendu</h1>
 
 </div>
 
 
-<div id="potrebne-knižnice-pre-cvičenie-5" class="section level1">
-<h1><span class="header-section-number">1</span> Potrebne knižnice pre cvičenie 5</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(fpp3) <span class="co"># data  </span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(fpp2) <span class="co"># data  </span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(ggplot2)  <span class="co"># pekne grafy</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(astsa)  <span class="co"># sarima funkcia  </span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(urca) <span class="co"># jednotkovy koren</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw">library</span>(forecast) <span class="co"># data </span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="kw">library</span>(lubridate) <span class="co"># manipulacia casu</span></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="kw">library</span>(WDI)  <span class="co"># HDP krajin</span></a>
-<a class="sourceLine" id="cb1-9" title="9"><span class="kw">library</span>(mFilter)  <span class="co"># HP filter</span></a></code></pre></div>
+<div id="potrebne-knižnice-pre-cvičenie-5" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Potrebne knižnice pre
+cvičenie 5</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fpp3) <span class="co"># data  </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fpp2) <span class="co"># data  </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)  <span class="co"># pekne grafy</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astsa)  <span class="co"># sarima funkcia  </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(urca) <span class="co"># jednotkovy koren</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast) <span class="co"># data </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co"># manipulacia casu</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)  <span class="co"># HDP krajin</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mFilter)  <span class="co"># HP filter</span></span></code></pre></div>
 </div>
-<div id="zostavenie-sezónnych-arima-modelov" class="section level1">
-<h1><span class="header-section-number">2</span> Zostavenie sezónnych ARIMA modelov</h1>
-<div id="dáta" class="section level2">
+<div id="zostavenie-sezónnych-arima-modelov" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Zostavenie sezónnych
+ARIMA modelov</h1>
+<div id="dáta" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Dáta</h2>
-<p>Budeme pracovať s údajmi o zamestnanosti pre USA. Konkrétne budeme pracovať s niektorými podsektormi služieb a cestovného ruchu. V datasete <code>us_employment</code> nájdete okrem týchto dát aj mnoho ďaľších, týkajúcich sa zamestnanosti v jednotlivých sektorov po mesiacoch.<br />
+<p>Budeme pracovať s údajmi o zamestnanosti pre USA. Konkrétne budeme
+pracovať s niektorými podsektormi služieb a cestovného ruchu. V datasete
+<code>us_employment</code> nájdete okrem týchto dát aj mnoho ďaľších,
+týkajúcich sa zamestnanosti v jednotlivých sektorov po mesiacoch.<br />
 <br />
-Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object <code>ts</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">leisure &lt;-<span class="st"> </span>us_employment <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="st">  </span><span class="kw">filter</span>(Title <span class="op">==</span><span class="st"> &quot;Leisure and Hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb2-3" title="3">         <span class="kw">year</span>(Month) <span class="op">&gt;</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Employed =</span> Employed<span class="op">/</span><span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="st">  </span><span class="kw">select</span>(Month, Employed)</a>
-<a class="sourceLine" id="cb2-6" title="6"></a>
-<a class="sourceLine" id="cb2-7" title="7">leisure &lt;-<span class="st"> </span><span class="kw">ts</span>(leisure<span class="op">$</span>Employed, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2001</span>,<span class="dv">1</span>), <span class="dt">end =</span> <span class="kw">c</span>(<span class="dv">2019</span>,<span class="dv">9</span>),</a>
-<a class="sourceLine" id="cb2-8" title="8">              <span class="dt">frequency =</span> <span class="dv">12</span>)</a></code></pre></div>
+Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej
+object <code>ts</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> us_employment <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Title <span class="sc">==</span> <span class="st">&quot;Leisure and Hospitality&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">year</span>(Month) <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Employed =</span> Employed<span class="sc">/</span><span class="dv">1000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Month, Employed)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> <span class="fu">ts</span>(leisure<span class="sc">$</span>Employed, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2001</span>,<span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2019</span>,<span class="dv">9</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">frequency =</span> <span class="dv">12</span>)</span></code></pre></div>
 <p>Vykreslimíme si dáta.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">autoplot</span>(leisure) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb3-3" title="3">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Dáta sa nevyznačújú rastúcou disperziou, ako je vidno na grafe, preto nebude treba pracovať s ich logaritmami.  Z dát si vynecháme poslednych 12 hodnôt, ktoré využijeme pri zhodnotení predikcií.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># odlozime si posledny rok dat na zhodnotenie predikcii</span></a>
-<a class="sourceLine" id="cb4-2" title="2">leisure.pred &lt;-<span class="st"> </span><span class="kw">window</span>(leisure, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2018</span>,<span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb4-3" title="3"></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co"># budeme pracovat s kratsim casovym radom</span></a>
-<a class="sourceLine" id="cb4-5" title="5">leisure &lt;-<span class="st"> </span><span class="kw">window</span>(leisure, <span class="dt">end =</span> <span class="kw">c</span>(<span class="dv">2018</span>,<span class="dv">9</span>))</a></code></pre></div>
+<p>Dáta sa nevyznačújú rastúcou disperziou, ako je vidno na grafe, preto
+nebude treba pracovať s ich logaritmami.  Z dát si vynecháme poslednych
+12 hodnôt, ktoré využijeme pri zhodnotení predikcií.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># odlozime si posledny rok dat na zhodnotenie predikcii</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>leisure.pred <span class="ot">&lt;-</span> <span class="fu">window</span>(leisure, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2018</span>,<span class="dv">10</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># budeme pracovat s kratsim casovym radom</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> <span class="fu">window</span>(leisure, <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2018</span>,<span class="dv">9</span>))</span></code></pre></div>
 <p>Vykreslíme si iba tie údaja, s ktorými budeme pracovať priamo.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">autoplot</span>(leisure) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb5-3" title="3">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
-<div id="zostavenie-a-vyhodnotenie-sarima-modelu" class="section level2">
-<h2><span class="header-section-number">2.2</span> Zostavenie a vyhodnotenie SARIMA modelu</h2>
+<div id="zostavenie-a-vyhodnotenie-sarima-modelu" class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Zostavenie a
+vyhodnotenie SARIMA modelu</h2>
 <p>Vykreslíme si ACF a PACF pre naše dáta.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">acf2</span>(leisure)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(leisure)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre><code>##      [,1]  [,2]  [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.97  0.91  0.83 0.77 0.72 0.70 0.70 0.73 0.77  0.80  0.82  0.82  0.79
@@ -558,15 +550,19 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##      [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46] [,47] [,48]
 ## ACF   0.34  0.28  0.23  0.18  0.16  0.17  0.19  0.22  0.25  0.27  0.27
 ## PACF  0.02  0.03 -0.01 -0.04  0.00 -0.03  0.01  0.01  0.04  0.03 -0.01</code></pre>
-<p>V dátach je viditeľný trend, rovnako ako pravideľná sezónnosť. Dáta preto bude nutné diferencovať. Keďže ale pracujeme so sezónnymi dátami, má zmysel spraviť ako prvé sezónne diferencie (môže ísť napríklad o sezónnosť v strednej hodnote) a zhodnotíme, či v dátach ešte ostal trend, a či treba dáta ešte diferencovať obyčajne.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">leisure.d12 &lt;-<span class="st"> </span><span class="kw">diff</span>(leisure, <span class="dt">lag =</span> <span class="dv">12</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">autoplot</span>(leisure.d12) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Seasonally differenced - US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb9-3" title="3">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">color =</span> <span class="st">&quot;green&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="kw">mean</span>(leisure.d12), <span class="dt">color =</span> <span class="st">&quot;orange&quot;</span>)</a></code></pre></div>
+<p>V dátach je viditeľný trend, rovnako ako pravideľná sezónnosť. Dáta
+preto bude nutné diferencovať. Keďže ale pracujeme so sezónnymi dátami,
+má zmysel spraviť ako prvé sezónne diferencie (môže ísť napríklad o
+sezónnosť v strednej hodnote) a zhodnotíme, či v dátach ešte ostal
+trend, a či treba dáta ešte diferencovať obyčajne.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>leisure.d12 <span class="ot">&lt;-</span> <span class="fu">diff</span>(leisure, <span class="at">lag =</span> <span class="dv">12</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure.d12) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Seasonally differenced - US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;green&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(leisure.d12), <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">acf2</span>(leisure.d12)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(leisure.d12)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre><code>##      [,1]  [,2]  [,3]  [,4]  [,5]  [,6] [,7]  [,8] [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.98  0.96  0.93  0.90  0.86  0.82 0.78  0.74 0.70  0.66  0.61  0.57  0.53
@@ -580,9 +576,15 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##      [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46] [,47] [,48]
 ## ACF  -0.16 -0.17 -0.18 -0.19 -0.19 -0.20 -0.21 -0.21 -0.22 -0.23 -0.24
 ## PACF -0.10 -0.06  0.06 -0.09  0.05 -0.08  0.00  0.02 -0.08  0.02 -0.02</code></pre>
-<p>V dátach nie je vidno značný trend, preto ich z tohto dôvodu nebude treba diferencovať. Čo ale treba ešte overiť, je prítomnosť jednotkového koreňa, ktorý by mohol spôsobovať nestacionaritu časového radu. Podľa grafu je zjavné, že priemer dát je výrazne vzdialený od 0, aj keď jeho dhonota je len niečo málo okolo 0.25, vždy treba zobrať do úvahy aj rozptyl dát. Preto, použijeme v funkcii <code>ur.df</code> parameter <code>type = "drift"</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># ostesujeme pritomnost jednotkoveho korena jednotkovy koren</span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="kw">summary</span>(<span class="kw">ur.df</span>(leisure.d12, <span class="dt">lags =</span> <span class="dv">5</span>, <span class="dt">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;drift&quot;</span>))</a></code></pre></div>
+<p>V dátach nie je vidno značný trend, preto ich z tohto dôvodu nebude
+treba diferencovať. Čo ale treba ešte overiť, je prítomnosť jednotkového
+koreňa, ktorý by mohol spôsobovať nestacionaritu časového radu. Podľa
+grafu je zjavné, že priemer dát je výrazne vzdialený od 0, aj keď jeho
+dhonota je len niečo málo okolo 0.25, vždy treba zobrať do úvahy aj
+rozptyl dát. Preto, použijeme v funkcii <code>ur.df</code> parameter
+<code>type = "drift"</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ostesujeme pritomnost jednotkoveho korena jednotkovy koren</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(leisure.d12, <span class="at">lags =</span> <span class="dv">5</span>, <span class="at">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="at">type =</span> <span class="st">&quot;drift&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ## ############################################### 
 ## # Augmented Dickey-Fuller Test Unit Root Test # 
@@ -618,17 +620,21 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##       1pct  5pct 10pct
 ## tau2 -3.46 -2.88 -2.57
 ## phi1  6.52  4.63  3.81</code></pre>
-<p>Vidíme, že test pre naše dáta nezamietol hypotézu o jednotkovom koreni, preto dáta budeme diferencovať.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">leisure.d12.d1 &lt;-<span class="st"> </span><span class="kw">diff</span>(leisure.d12)</a></code></pre></div>
-<p>Zdiferencované dáta znova otestujeme na prítomnosť jednotkového koreňa. V tomto prípade je priemer dát veľmi blízky 0 (aj vzhľadom na disperziu dát), preto použijeme <code>type = "none"</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">autoplot</span>(leisure.d12.d1) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Seasonally and first differenced - US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb15-3" title="3">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">color =</span> <span class="st">&quot;green&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="kw">mean</span>(leisure.d12.d1), <span class="dt">color =</span> <span class="st">&quot;orange&quot;</span>)</a></code></pre></div>
+<p>Vidíme, že test pre naše dáta nezamietol hypotézu o jednotkovom
+koreni, preto dáta budeme diferencovať.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>leisure.d12.d1 <span class="ot">&lt;-</span> <span class="fu">diff</span>(leisure.d12)</span></code></pre></div>
+<p>Zdiferencované dáta znova otestujeme na prítomnosť jednotkového
+koreňa. V tomto prípade je priemer dát veľmi blízky 0 (aj vzhľadom na
+disperziu dát), preto použijeme <code>type = "none"</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure.d12.d1) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Seasonally and first differenced - US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;green&quot;</span>)<span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(leisure.d12.d1), <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>V dátach nie je vidno ani trend, ani pravideľná sezónnosť, čo si vieme overiť aj pomocou ACF.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">acf2</span>(leisure.d12.d1)</a></code></pre></div>
+<p>V dátach nie je vidno ani trend, ani pravideľná sezónnosť, čo si
+vieme overiť aj pomocou ACF.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(leisure.d12.d1)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre><code>##      [,1] [,2]  [,3] [,4] [,5]  [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.16 0.22  0.03 0.09 0.09  0.01 0.07 0.02 0.08  0.09  0.18 -0.19  0.02
@@ -642,7 +648,7 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##      [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46] [,47] [,48]
 ## ACF  -0.05  0.02  0.00 -0.06  0.05 -0.01 -0.09  0.05 -0.03  0.01  0.01
 ## PACF  0.04 -0.05  0.02 -0.08  0.05 -0.02 -0.10  0.07 -0.03 -0.06 -0.08</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">summary</span>(<span class="kw">ur.df</span>(leisure.d12.d1, <span class="dt">lags =</span> <span class="dv">5</span>, <span class="dt">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;none&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(leisure.d12.d1, <span class="at">lags =</span> <span class="dv">5</span>, <span class="at">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="at">type =</span> <span class="st">&quot;none&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ## ############################################### 
 ## # Augmented Dickey-Fuller Test Unit Root Test # 
@@ -675,13 +681,19 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ## Critical values for test statistics: 
 ##       1pct  5pct 10pct
 ## tau1 -2.58 -1.95 -1.62</code></pre>
-<p>Test nám hypotézu o jednotkovom koreni zamietol, dáta preto už nebudeme viacej diferencovať.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">autoplot</span>(leisure.d12.d1) <span class="op">+</span></a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Seasonally and first differenced - US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb20-3" title="3">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</a></code></pre></div>
+<p>Test nám hypotézu o jednotkovom koreni zamietol, dáta preto už
+nebudeme viacej diferencovať.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure.d12.d1) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Seasonally and first differenced - US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<p>Vykreslíme si ACF a PACF pre naše dva krát zdiferencované dáta (raz sezónne a raz obyčajne). Na dobrý tip pre nesezónne časti sarima modelu nám poslúžia prvé lagy ACF a PACF, na spravenie tipu pre sezónne časti sarima modelu zase hodnoty ACF a PACF v lagoch 1,2,3,4,… (teda každá 12,24,36 hodnota, podľa našej sezónnosti, keďže pracujeme s mesačnými dátami, a zaujíma nás ročná sezónnosť).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">acf2</span>(leisure.d12.d1)</a></code></pre></div>
+<p>Vykreslíme si ACF a PACF pre naše dva krát zdiferencované dáta (raz
+sezónne a raz obyčajne). Na dobrý tip pre nesezónne časti sarima modelu
+nám poslúžia prvé lagy ACF a PACF, na spravenie tipu pre sezónne časti
+sarima modelu zase hodnoty ACF a PACF v lagoch 1,2,3,4,… (teda každá
+12,24,36 hodnota, podľa našej sezónnosti, keďže pracujeme s mesačnými
+dátami, a zaujíma nás ročná sezónnosť).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(leisure.d12.d1)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre><code>##      [,1] [,2]  [,3] [,4] [,5]  [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.16 0.22  0.03 0.09 0.09  0.01 0.07 0.02 0.08  0.09  0.18 -0.19  0.02
@@ -695,32 +707,39 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##      [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46] [,47] [,48]
 ## ACF  -0.05  0.02  0.00 -0.06  0.05 -0.01 -0.09  0.05 -0.03  0.01  0.01
 ## PACF  0.04 -0.05  0.02 -0.08  0.05 -0.02 -0.10  0.07 -0.03 -0.06 -0.08</code></pre>
-<p>Dobrý tip by mohol byť napríklad AR(2), poprípade MA(2) pre nesezónnu časť a sMA(1), sAR(1) pre sezónnu časť. Vyskúšame aj iné modely, resp. rôzne kombinácie našich tipov.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">2</span> ,<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>))</a></code></pre></div>
+<p>Dobrý tip by mohol byť napríklad AR(2), poprípade MA(2) pre nesezónnu
+časť a sMA(1), sAR(1) pre sezónnu časť. Vyskúšame aj iné modely, resp.
+rôzne kombinácie našich tipov.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">2</span> ,<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>))</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-4.png" width="672" /></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)) <span class="co"># zle rezidua</span></span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-5.png" width="672" /></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">model.y &lt;-<span class="st"> </span><span class="kw">capture.output</span>(<span class="kw">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model.y <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-18-6.png" width="672" /></p>
-<p>Vidíme, že nie všetky mali dobré rezídua, Ljung-Boxov test bol pod 5% pre určité lagy. Z tých, ktorým vyšli rezídua dobre vyberieme finálny model na základe BIC.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">sarima</span>(leisure, <span class="dv">2</span> ,<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dt">details =</span> <span class="ot">FALSE</span>)<span class="op">$</span>BIC</a></code></pre></div>
-<pre><code>## [1] -3.368345</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dt">details =</span> <span class="ot">FALSE</span>)<span class="op">$</span>BIC</a></code></pre></div>
-<pre><code>## [1] -3.397317</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dt">details =</span> <span class="ot">FALSE</span>)<span class="op">$</span>BIC</a></code></pre></div>
-<pre><code>## [1] -3.388213</code></pre>
-<p>Najmenšie BIC má model (2,1,0)x(0,1,1). Tento použijeme na predikcie naších dát.</p>
+<p>Vidíme, že nie všetky mali dobré rezídua, Ljung-Boxov test bol pod 5%
+pre určité lagy. Z tých, ktorým vyšli rezídua dobre vyberieme finálny
+model na základe BIC.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(leisure, <span class="dv">2</span> ,<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="at">details =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>BIC</span></code></pre></div>
+<pre><code>## [1] -3.553604</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="at">details =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>BIC</span></code></pre></div>
+<pre><code>## [1] -3.58417</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(leisure, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="at">details =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>BIC</span></code></pre></div>
+<pre><code>## [1] -3.574564</code></pre>
+<p>Najmenšie BIC má model (2,1,0)x(0,1,1). Tento použijeme na predikcie
+naších dát.</p>
 </div>
-<div id="predikcie-pre-sarima-model" class="section level2">
-<h2><span class="header-section-number">2.3</span> Predikcie pre SARIMA model</h2>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># forecast</span></a>
-<a class="sourceLine" id="cb35-2" title="2"><span class="kw">sarima.for</span>(leisure,<span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)</a></code></pre></div>
+<div id="predikcie-pre-sarima-model" class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> Predikcie pre SARIMA
+model</h2>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forecast</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima.for</span>(leisure,<span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>)</span></code></pre></div>
 <pre><code>## $pred
 ##           Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
 ## 2018                                                                        
@@ -736,153 +755,196 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 ##             Jul        Aug        Sep        Oct        Nov        Dec
 ## 2018                                  0.03796299 0.05951616 0.08118589
 ## 2019 0.18472873 0.19563335 0.20597558</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">points</span>(leisure.pred, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(leisure.pred, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">type =</span> <span class="st">&quot;b&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
-<div id="ďalšie-dáta-na-precvičenie" class="section level2">
-<h2><span class="header-section-number">2.4</span> Ďalšie dáta na precvičenie</h2>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">autoplot</span>(hsales) <span class="op">+</span></a>
-<a class="sourceLine" id="cb38-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Monthly sales of new one-family houses sold in the USA since 1973&quot;</span>,</a>
-<a class="sourceLine" id="cb38-3" title="3">       <span class="dt">y=</span><span class="st">&quot;&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<div id="ďalšie-dáta-na-precvičenie" class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Ďalšie dáta na
+precvičenie</h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(hsales) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Monthly sales of new one-family houses sold in the USA since 1973&quot;</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="kw">autoplot</span>(auscafe) <span class="op">+</span></a>
-<a class="sourceLine" id="cb39-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;The total monthly expenditure on services in Australia&quot;</span>,</a>
-<a class="sourceLine" id="cb39-3" title="3">       <span class="dt">y=</span><span class="st">&quot;&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(auscafe) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;The total monthly expenditure on services in Australia&quot;</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">autoplot</span>(qcement) <span class="op">+</span></a>
-<a class="sourceLine" id="cb40-2" title="2"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Total quarterly production of Portland cement in Australia&quot;</span>,</a>
-<a class="sourceLine" id="cb40-3" title="3">       <span class="dt">y=</span><span class="st">&quot;&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(qcement) <span class="sc">+</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total quarterly production of Portland cement in Australia&quot;</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 </div>
-<div id="modelovanie-trendu" class="section level1">
+<div id="modelovanie-trendu" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Modelovanie trendu</h1>
-<div id="exponenciálne-zhladzovanie" class="section level2">
-<h2><span class="header-section-number">3.1</span> Exponenciálne zhladzovanie</h2>
-<p>Budeme modelovať dáta bez trendu. Konkrétne dáta <code>BJsales</code>, respektíve ich prvé diferencie.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">y &lt;-<span class="st"> </span>BJsales</a>
-<a class="sourceLine" id="cb41-2" title="2">y.d1 &lt;-<span class="st"> </span><span class="kw">diff</span>(y)</a>
-<a class="sourceLine" id="cb41-3" title="3"></a>
-<a class="sourceLine" id="cb41-4" title="4"><span class="co"># nechame si poslednych 20 na zhodnotenie predikcii</span></a>
-<a class="sourceLine" id="cb41-5" title="5">y.d1.pred &lt;-<span class="st"> </span><span class="kw">window</span>(y.d1, <span class="dt">start =</span> <span class="dv">131</span>)</a>
-<a class="sourceLine" id="cb41-6" title="6">y.d1 &lt;-<span class="st"> </span><span class="kw">window</span>(y.d1, <span class="dt">end =</span> <span class="dv">130</span>)</a>
-<a class="sourceLine" id="cb41-7" title="7"></a>
-<a class="sourceLine" id="cb41-8" title="8"><span class="kw">autoplot</span>(y.d1)</a></code></pre></div>
+<div id="exponenciálne-zhladzovanie" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Exponenciálne
+zhladzovanie</h2>
+<p>Budeme modelovať dáta bez trendu. Konkrétne dáta
+<code>BJsales</code>, respektíve ich prvé diferencie.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> BJsales</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>y.d1 <span class="ot">&lt;-</span> <span class="fu">diff</span>(y)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># nechame si poslednych 20 na zhodnotenie predikcii</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>y.d1.pred <span class="ot">&lt;-</span> <span class="fu">window</span>(y.d1, <span class="at">start =</span> <span class="dv">131</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>y.d1 <span class="ot">&lt;-</span> <span class="fu">window</span>(y.d1, <span class="at">end =</span> <span class="dv">130</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(y.d1)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>Exponenciálne zhladzovanie je špeciálny prípad Holt-wintersovej metódy, ak vynecháme parametre <code>beta</code> a <code>gamma</code>. Použijeme funkciu HoltWintgers v tvare:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">HoltWinters</span>(data,<span class="dt">beta =</span> <span class="ot">FALSE</span>, <span class="dt">gamma =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Predikcie pre Holt-wintersa dostaneme použitím funkcie <code>predict</code>. Jednotlivé parametre: <code>object</code> je náš odhadnutý model, teda uložený výstup funckie <code>HoltWinters</code>, n.ahead predstavuje na koľko pozorovaní dopredu chceme určiť predikcie, level určuje hladinu významnosti, teda aké intervaly spoľahlivosti chceme vykresliť/vypočítať, prediction.interval označuje, či chceme alebo nie počítať Intervaly spolahlivosti.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="kw">predict</span>(object , n.ahead , prediction.interval,</a>
-<a class="sourceLine" id="cb43-2" title="2">       level , ...)</a></code></pre></div>
-<p>Každý samostnatne si spusti metódu pre dáta. Vykreslite pôvodné dáta a predikcie doporedu pre 10 časových jednotiek do budúcnosti.</p>
+<p>Exponenciálne zhladzovanie je špeciálny prípad Holt-wintersovej
+metódy, ak vynecháme parametre <code>beta</code> a <code>gamma</code>.
+Použijeme funkciu HoltWintgers v tvare:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HoltWinters</span>(data,<span class="at">beta =</span> <span class="cn">FALSE</span>, <span class="at">gamma =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Predikcie pre Holt-wintersa dostaneme použitím funkcie
+<code>predict</code>. Jednotlivé parametre: <code>object</code> je náš
+odhadnutý model, teda uložený výstup funckie <code>HoltWinters</code>,
+n.ahead predstavuje na koľko pozorovaní dopredu chceme určiť predikcie,
+level určuje hladinu významnosti, teda aké intervaly spoľahlivosti
+chceme vykresliť/vypočítať, prediction.interval označuje, či chceme
+alebo nie počítať Intervaly spolahlivosti.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(object , n.ahead , prediction.interval,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>       level , ...)</span></code></pre></div>
+<p>Každý samostnatne si spusti metódu pre dáta. Vykreslite pôvodné dáta
+a predikcie doporedu pre 10 časových jednotiek do budúcnosti.</p>
 <p>Na vykreslenie môžete použiť predpripravenú funkciu:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">pallete &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>,<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;gray&quot;</span>, <span class="st">&quot;gray&quot;</span>)</a>
-<a class="sourceLine" id="cb44-2" title="2">pred.is &lt;-<span class="st"> </span>pred <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tsibble</span>(<span class="dt">pivot_longer =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb44-3" title="3"></a>
-<a class="sourceLine" id="cb44-4" title="4"><span class="kw">autoplot</span>(y.d1) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-5" title="5"><span class="st">  </span><span class="kw">autolayer</span>(exp.y.d1<span class="op">$</span>fitted[,<span class="st">&quot;xhat&quot;</span>], <span class="dt">series=</span><span class="st">&quot;Fitted data&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-6" title="6"><span class="st">  </span><span class="kw">autolayer</span>(y.d1.pred, <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-7" title="7"><span class="st">  </span><span class="kw">autolayer</span>(pred[,<span class="st">&quot;fit&quot;</span>], <span class="dt">series=</span><span class="st">&quot;Forecasts&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-8" title="8"><span class="st">  </span><span class="kw">autolayer</span>(pred[,<span class="st">&quot;upr&quot;</span>], <span class="dt">series=</span><span class="st">&quot;UB&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-9" title="9"><span class="st">  </span><span class="kw">autolayer</span>(pred[,<span class="st">&quot;lwr&quot;</span>], <span class="dt">series=</span><span class="st">&quot;LB&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-10" title="10"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> pred.is, <span class="kw">aes</span>(<span class="dt">x =</span> index,<span class="dt">y =</span> fit, <span class="dt">ymin =</span> lwr, <span class="dt">ymax =</span> upr, <span class="dt">fill =</span> <span class="st">&quot;0.95% IS&quot;</span>),  <span class="dt">alpha =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-11" title="11"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span>pallete)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-12" title="12"><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="st">&quot;gray&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb44-13" title="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title.y=</span><span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>pallete <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>,<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;gray&quot;</span>, <span class="st">&quot;gray&quot;</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>pred.is <span class="ot">&lt;-</span> pred <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">pivot_longer =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(y.d1) <span class="sc">+</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(exp.y.d1<span class="sc">$</span>fitted[,<span class="st">&quot;xhat&quot;</span>], <span class="at">series=</span><span class="st">&quot;Fitted data&quot;</span>) <span class="sc">+</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(y.d1.pred, <span class="at">series=</span><span class="st">&quot;Data&quot;</span>) <span class="sc">+</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(pred[,<span class="st">&quot;fit&quot;</span>], <span class="at">series=</span><span class="st">&quot;Forecasts&quot;</span>)<span class="sc">+</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(pred[,<span class="st">&quot;upr&quot;</span>], <span class="at">series=</span><span class="st">&quot;UB&quot;</span>)<span class="sc">+</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(pred[,<span class="st">&quot;lwr&quot;</span>], <span class="at">series=</span><span class="st">&quot;LB&quot;</span>)<span class="sc">+</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> pred.is, <span class="fu">aes</span>(<span class="at">x =</span> index,<span class="at">y =</span> fit, <span class="at">ymin =</span> lwr, <span class="at">ymax =</span> upr, <span class="at">fill =</span> <span class="st">&quot;0.95% IS&quot;</span>),  <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>pallete)<span class="sc">+</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="st">&quot;gray&quot;</span>)<span class="sc">+</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
-<div id="holt-wintersová-metóda" class="section level2">
-<h2><span class="header-section-number">3.2</span> Holt-Wintersová metóda</h2>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">HoltWinters</span>(data,<span class="dt">alpha =</span> <span class="ot">FALSE</span> ,<span class="dt">beta =</span> <span class="ot">FALSE</span>, <span class="dt">gamma =</span> <span class="ot">FALSE</span>, <span class="dt">seasonal =</span> <span class="kw">c</span>(<span class="st">&quot;multiplicative&quot;</span>,<span class="st">&quot;additive&quot;</span>))</a></code></pre></div>
-<p>Ak sa v dátach nachádza lineárny trend a chcemeho zahrnúť do modelu, exponenciálne zhladzovanie nemusí byť dostatočné. Preto použijeme Holt-Wintersovú metódu. Oproti predchádzajúcemu príkladu sa líši o to, že sa odhane aj parametere <code>beta</code>. Odhadnite pre dáta (nie diferencie) Holt-Wintersov model a rovnako spravte aj predickie na 10 časových jednotiek do budúcna.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">y &lt;-<span class="st"> </span>BJsales</a>
-<a class="sourceLine" id="cb46-2" title="2"></a>
-<a class="sourceLine" id="cb46-3" title="3"><span class="co"># nechame si poslednych 20 na zhodnotenie predikcii</span></a>
-<a class="sourceLine" id="cb46-4" title="4">y.pred &lt;-<span class="st"> </span><span class="kw">window</span>(y, <span class="dt">start =</span> <span class="dv">131</span>)</a>
-<a class="sourceLine" id="cb46-5" title="5">y &lt;-<span class="st"> </span><span class="kw">window</span>(y, <span class="dt">end =</span> <span class="dv">130</span>)</a></code></pre></div>
+<div id="holt-wintersová-metóda" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Holt-Wintersová
+metóda</h2>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HoltWinters</span>(data,<span class="at">alpha =</span> <span class="cn">FALSE</span> ,<span class="at">beta =</span> <span class="cn">FALSE</span>, <span class="at">gamma =</span> <span class="cn">FALSE</span>, <span class="at">seasonal =</span> <span class="fu">c</span>(<span class="st">&quot;multiplicative&quot;</span>,<span class="st">&quot;additive&quot;</span>))</span></code></pre></div>
+<p>Ak sa v dátach nachádza lineárny trend a chcemeho zahrnúť do modelu,
+exponenciálne zhladzovanie nemusí byť dostatočné. Preto použijeme
+Holt-Wintersovú metódu. Oproti predchádzajúcemu príkladu sa líši o to,
+že sa odhane aj parametere <code>beta</code>. Odhadnite pre dáta (nie
+diferencie) Holt-Wintersov model a rovnako spravte aj predickie na 10
+časových jednotiek do budúcna.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> BJsales</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nechame si poslednych 20 na zhodnotenie predikcii</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>y.pred <span class="ot">&lt;-</span> <span class="fu">window</span>(y, <span class="at">start =</span> <span class="dv">131</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">window</span>(y, <span class="at">end =</span> <span class="dv">130</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
-<div id="holt-wintersová-metóda-multiplikatívna-vs-aditívna-sezonalita" class="section level2">
-<h2><span class="header-section-number">3.3</span> Holt-Wintersová metóda Multiplikatívna vs Aditívna sezonalita</h2>
+<div id="holt-wintersová-metóda-multiplikatívna-vs-aditívna-sezonalita"
+class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Holt-Wintersová
+metóda Multiplikatívna vs Aditívna sezonalita</h2>
 <p>Majme sezónne dáta z prvej časti cvičení, obe sú mesačné dáta</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># data </span></a>
-<a class="sourceLine" id="cb47-2" title="2">leisure &lt;-<span class="st"> </span>us_employment <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-3" title="3"><span class="st">  </span><span class="kw">filter</span>(Title <span class="op">==</span><span class="st"> &quot;Leisure and Hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb47-4" title="4">         <span class="kw">year</span>(Month) <span class="op">&gt;</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Employed =</span> Employed<span class="op">/</span><span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-6" title="6"><span class="st">  </span><span class="kw">select</span>(Month, Employed)</a>
-<a class="sourceLine" id="cb47-7" title="7"></a>
-<a class="sourceLine" id="cb47-8" title="8">leisure &lt;-<span class="st"> </span><span class="kw">ts</span>(leisure<span class="op">$</span>Employed, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2001</span>,<span class="dv">1</span>), <span class="dt">end =</span> <span class="kw">c</span>(<span class="dv">2019</span>,<span class="dv">9</span>),</a>
-<a class="sourceLine" id="cb47-9" title="9">              <span class="dt">frequency =</span> <span class="dv">12</span>)</a>
-<a class="sourceLine" id="cb47-10" title="10"></a>
-<a class="sourceLine" id="cb47-11" title="11"><span class="co"># odlozime si posledny rok dat na zhodnotenie predikcii</span></a>
-<a class="sourceLine" id="cb47-12" title="12">leisure.pred &lt;-<span class="st"> </span><span class="kw">window</span>(leisure, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2017</span>,<span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb47-13" title="13"></a>
-<a class="sourceLine" id="cb47-14" title="14"><span class="co"># budeme pracovat s kratsim casovym radom</span></a>
-<a class="sourceLine" id="cb47-15" title="15">leisure &lt;-<span class="st"> </span><span class="kw">window</span>(leisure, <span class="dt">end =</span> <span class="kw">c</span>(<span class="dv">2017</span>,<span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb47-16" title="16"></a>
-<a class="sourceLine" id="cb47-17" title="17"><span class="kw">autoplot</span>(leisure) <span class="op">+</span></a>
-<a class="sourceLine" id="cb47-18" title="18"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</a>
-<a class="sourceLine" id="cb47-19" title="19">       <span class="dt">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data </span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> us_employment <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Title <span class="sc">==</span> <span class="st">&quot;Leisure and Hospitality&quot;</span>,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">year</span>(Month) <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Employed =</span> Employed<span class="sc">/</span><span class="dv">1000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Month, Employed)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> <span class="fu">ts</span>(leisure<span class="sc">$</span>Employed, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2001</span>,<span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2019</span>,<span class="dv">9</span>),</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="co"># odlozime si posledny rok dat na zhodnotenie predikcii</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>leisure.pred <span class="ot">&lt;-</span> <span class="fu">window</span>(leisure, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2017</span>,<span class="dv">10</span>))</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="co"># budeme pracovat s kratsim casovym radom</span></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>leisure <span class="ot">&lt;-</span> <span class="fu">window</span>(leisure, <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2017</span>,<span class="dv">9</span>))</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(leisure) <span class="sc">+</span></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;US employment: leisure and hospitality&quot;</span>,</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Number of people (millions)&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">auscafe.pred &lt;-<span class="st"> </span><span class="kw">window</span>(auscafe, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2015</span>, <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb48-2" title="2">auscafe.ts &lt;-<span class="st"> </span><span class="kw">window</span>(auscafe, <span class="dt">end =</span> <span class="kw">c</span>(<span class="dv">2015</span>, <span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb48-3" title="3"><span class="kw">autoplot</span>(auscafe.ts) <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;The total monthly expenditure on services in Australia&quot;</span>,</a>
-<a class="sourceLine" id="cb48-5" title="5">       <span class="dt">y=</span><span class="st">&quot;&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>auscafe.pred <span class="ot">&lt;-</span> <span class="fu">window</span>(auscafe, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">10</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>auscafe.ts <span class="ot">&lt;-</span> <span class="fu">window</span>(auscafe, <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">9</span>))</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(auscafe.ts) <span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;The total monthly expenditure on services in Australia&quot;</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie5_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<p>Pre obe dáta modelujte Holt-wintersovou metódou trend, spravte predikcie na 2 roky dopredu, t.j. 24 mesiacov/pozorovaní dopredu.</p>
-<p>Pre <code>leisure</code> dáta: <img src="Cvicenie5_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<p>Pre <code>auscafe</code> dáta: <img src="Cvicenie5_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>Pre obe dáta modelujte Holt-wintersovou metódou trend, spravte
+predikcie na 2 roky dopredu, t.j. 24 mesiacov/pozorovaní dopredu.</p>
+<p>Pre <code>leisure</code> dáta:
+<img src="Cvicenie5_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>Pre <code>auscafe</code> dáta:
+<img src="Cvicenie5_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 </div>
 </div>
-<div id="hodrick-prescottov-filter" class="section level1">
-<h1><span class="header-section-number">4</span> Hodrick-Prescottov filter</h1>
-<p>Využitie na dáta bez sezónnej zložky na odhadovanie trendu. Aplikujeme na výpočet produkčnej medzery, analogicky podľa posledných slajdov na prednáške. <a href="http://www.iam.fmph.uniba.sk/institute/stehlikova/cr21/cr08.pdf" class="uri">http://www.iam.fmph.uniba.sk/institute/stehlikova/cr21/cr08.pdf</a></p>
-<p>2 parametre, <code>data</code>, <code>freq</code> == lambda v prednáškach. Odhadnutý trend je potom uložený v <code>hp$trend</code>. Odporúčané hodnoty pre lambdu, reps. parameter <code>freq</code>:<br />
-* 100 pre ročné dáta * 1600 pre kvartálne dáta * 14400 pre mesačné dáta</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">hp &lt;-<span class="st"> </span><span class="kw">hpfilter</span>(data, <span class="dt">freq =</span> <span class="dv">100</span>) </a></code></pre></div>
-<div id="aplikácia-pri-výpočte-produkčnej-medzery" class="section level2">
-<h2><span class="header-section-number">4.1</span> Aplikácia pri výpočte produkčnej medzery</h2>
+<div id="hodrick-prescottov-filter" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Hodrick-Prescottov
+filter</h1>
+<p>Využitie na dáta bez sezónnej zložky na odhadovanie trendu.
+Aplikujeme na výpočet produkčnej medzery, analogicky podľa posledných
+slajdov na prednáške. <a
+href="http://www.iam.fmph.uniba.sk/institute/stehlikova/cr21/cr08.pdf"
+class="uri">http://www.iam.fmph.uniba.sk/institute/stehlikova/cr21/cr08.pdf</a></p>
+<p>2 parametre, <code>data</code>, <code>freq</code> == lambda v
+prednáškach. Odhadnutý trend je potom uložený v <code>hp$trend</code>.
+Odporúčané hodnoty pre lambdu, reps. parameter <code>freq</code>:<br />
+* 100 pre ročné dáta * 1600 pre kvartálne dáta * 14400 pre mesačné
+dáta</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>hp <span class="ot">&lt;-</span> <span class="fu">hpfilter</span>(data, <span class="at">freq =</span> <span class="dv">100</span>) </span></code></pre></div>
+<div id="aplikácia-pri-výpočte-produkčnej-medzery"
+class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Aplikácia pri výpočte
+produkčnej medzery</h2>
 <p>Opakovanie prednášky:<br />
 </p>
 <ul>
-<li>Potenciálne HDP - Maximálny výstup, ktorý vie ekonomika pri daných faktoroch vyprodukovať bez inflačných tlakov</li>
-<li>Skutočná hodnota HDP osciluje okolo potenciálneho HDP (hospodárske cykly)</li>
-<li>Produkčná medzera - rozdiel medzi potenciálnym a reálnym HDP výstupom</li>
+<li>Potenciálne HDP - Maximálny výstup, ktorý vie ekonomika pri daných
+faktoroch vyprodukovať bez inflačných tlakov</li>
+<li>Skutočná hodnota HDP osciluje okolo potenciálneho HDP (hospodárske
+cykly)</li>
+<li>Produkčná medzera - rozdiel medzi potenciálnym a reálnym HDP
+výstupom</li>
 </ul>
-<div id="dáta-1" class="section level3">
+<div id="dáta-1" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Dáta</h3>
 <p>Nemecko</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1">data &lt;-<span class="st"> </span><span class="kw">WDI</span>(<span class="dt">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</a>
-<a class="sourceLine" id="cb50-2" title="2">            <span class="dt">country=</span> <span class="kw">c</span> (<span class="st">&#39;DE&#39;</span>),</a>
-<a class="sourceLine" id="cb50-3" title="3">            <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">end =</span> <span class="dv">2019</span>)</a>
-<a class="sourceLine" id="cb50-4" title="4"></a>
-<a class="sourceLine" id="cb50-5" title="5">data &lt;-<span class="st"> </span>data[<span class="kw">order</span>(data<span class="op">$</span>year),]</a>
-<a class="sourceLine" id="cb50-6" title="6"></a>
-<a class="sourceLine" id="cb50-7" title="7">y_DE &lt;-<span class="st"> </span><span class="kw">ts</span>(data<span class="op">$</span>NY.GNP.PCAP.KD, <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">frequency =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">country=</span> <span class="fu">c</span> (<span class="st">&#39;DE&#39;</span>),</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">end =</span> <span class="dv">2019</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">order</span>(data<span class="sc">$</span>year),]</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>y_DE <span class="ot">&lt;-</span> <span class="fu">ts</span>(data<span class="sc">$</span>NY.GNP.PCAP.KD, <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">frequency =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>Rakúsko</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1">data &lt;-<span class="st"> </span><span class="kw">WDI</span>(<span class="dt">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</a>
-<a class="sourceLine" id="cb51-2" title="2">            <span class="dt">country=</span> <span class="kw">c</span> (<span class="st">&#39;AT&#39;</span>),</a>
-<a class="sourceLine" id="cb51-3" title="3">            <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">end =</span> <span class="dv">2019</span>)</a>
-<a class="sourceLine" id="cb51-4" title="4">data &lt;-<span class="st"> </span>data[<span class="kw">order</span>(data<span class="op">$</span>year),]</a>
-<a class="sourceLine" id="cb51-5" title="5">y_AT &lt;-<span class="st"> </span><span class="kw">ts</span>(data<span class="op">$</span>NY.GNP.PCAP.KD, <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">frequency =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">country=</span> <span class="fu">c</span> (<span class="st">&#39;AT&#39;</span>),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">end =</span> <span class="dv">2019</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">order</span>(data<span class="sc">$</span>year),]</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>y_AT <span class="ot">&lt;-</span> <span class="fu">ts</span>(data<span class="sc">$</span>NY.GNP.PCAP.KD, <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">frequency =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>USA</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">data &lt;-<span class="st"> </span><span class="kw">WDI</span>(<span class="dt">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</a>
-<a class="sourceLine" id="cb52-2" title="2">            <span class="dt">country=</span> <span class="kw">c</span> (<span class="st">&#39;US&#39;</span>),</a>
-<a class="sourceLine" id="cb52-3" title="3">            <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">end =</span> <span class="dv">2019</span>)</a>
-<a class="sourceLine" id="cb52-4" title="4">data &lt;-<span class="st"> </span>data[<span class="kw">order</span>(data<span class="op">$</span>year),]</a>
-<a class="sourceLine" id="cb52-5" title="5">y_US &lt;-<span class="st"> </span><span class="kw">ts</span>(data<span class="op">$</span>NY.GNP.PCAP.KD, <span class="dt">start =</span> <span class="dv">1975</span>, <span class="dt">frequency =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">country=</span> <span class="fu">c</span> (<span class="st">&#39;US&#39;</span>),</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">end =</span> <span class="dv">2019</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">order</span>(data<span class="sc">$</span>year),]</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>y_US <span class="ot">&lt;-</span> <span class="fu">ts</span>(data<span class="sc">$</span>NY.GNP.PCAP.KD, <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">frequency =</span> <span class="dv">1</span>)</span></code></pre></div>
 </div>
-<div id="zadanie" class="section level3">
+<div id="zadanie" class="section level3" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Zadanie</h3>
-<p>Pre každú z krajín (môžete si zvoliť aj inú) vypočítajte produkčnú medzeru ako relatívnu zmenu potenciálneho HDP oproti skutočnému. <span class="math display">\[100(\frac{HDP-HDP_{pot}}{HDP_{pot}})\]</span></p>
-<p>Vykreslite do jedného grafu hodnoty potenciálneho HDP aj hodnoty skutočného HDP.</p>
-<p><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-1.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-2.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-3.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-4.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-5.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-6.png" width="672" /></p>
-<pre><code>##           DE$pm     AT$pm     US$pm
-## DE$pm 1.0000000 0.7133670 0.3862262
-## AT$pm 0.7133670 1.0000000 0.3706671
-## US$pm 0.3862262 0.3706671 1.0000000</code></pre>
+<p>Pre každú z krajín (môžete si zvoliť aj inú) vypočítajte produkčnú
+medzeru ako relatívnu zmenu potenciálneho HDP oproti skutočnému. <span
+class="math display">\[100(\frac{HDP-HDP_{pot}}{HDP_{pot}})\]</span></p>
+<p>Vykreslite do jedného grafu hodnoty potenciálneho HDP aj hodnoty
+skutočného HDP.</p>
+<p><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-1.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
+<pre><code>## Warning: Removed 45 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-3.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-4.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-5.png" width="672" /><img src="Cvicenie5_files/figure-html/unnamed-chunk-41-6.png" width="672" /></p>
+<pre><code>##          DE$pm AT$pm    US$pm
+## DE$pm 1.000000    NA 0.421681
+## AT$pm       NA     1       NA
+## US$pm 0.421681    NA 1.000000</code></pre>
 </div>
 </div>
 </div>
@@ -898,7 +960,7 @@ Načítame si dáta do premennej <code>leisure</code> a vytvoríme z nej object 
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -916,7 +978,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -925,6 +987,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -937,7 +1002,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
