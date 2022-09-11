@@ -11,6 +11,17 @@ output:
     highlight: zenburn
 ---
 
+
+```{r}
+xfun::pkg_load2(c("htmltools", "mime"))
+```
+
+
+```{r}
+xfun::embed_file('Cvicenie1.Rmd')
+```
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -76,6 +87,47 @@ ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
 * Aké vyzerá disperzia odhadu autokorelačnej funkcie, ak pracujeme s bielym šumom? Čo predpokladáme?
 * Kedy hypotézu $H_{0}$ zamietame? Ako vyzerá interval spoľahlivosti?
 * Čo dostaváme v našom prípade?
+
+```{r echo = TRUE}
+y <- c(x[1],x[2:N] + 0.7*x[1:(N-1)])
+
+```
+
+
+Zobrazíme si priebeh nových dát
+```{r echo = FALSE, fig.align="center"}
+data.y <- data.frame(index = 1:N,
+                     y = y)
+ggplot(data = data.y, aes(x = index, y = y)) +
+  geom_line()
+
+```
+
+
+Zobrazíme autokoreláčnú funkciu: (napr. príklaz acf)
+```{r echo = FALSE, fig.align="center"}
+acf.y <- as.vector(acf(y, plot = FALSE)$acf)
+acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
+                    ACF = acf.y[-1])
+disp <- 2/sqrt(N)
+
+# generate break positions
+breaks = round(c(seq(-0.5, 0.5, by=0.05), disp,-disp), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = -disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series y"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.5, 0.5), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
+
 
 ## Testovanie nulovostí autokorelácií - Ljung-Boxov test
 
