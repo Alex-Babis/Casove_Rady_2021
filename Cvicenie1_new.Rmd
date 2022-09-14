@@ -1,0 +1,304 @@
+---
+title: "Cvičenie 1 - Testovanie autokorelácií, Bassov model"
+output:
+  html_document: 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
+    theme: flatly
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include = FALSE}
+library(ggplot2)
+```
+
+# Opakovanie prednášky
+
+## Základné pojmy
+* Čo je biely šum? (stredná hodnota, disperzia, autokovariancia)
+* Silná a slabá stacionarita?
+* Čo je autokorelačná funkcia?
+* Čo znamená ergodický proces?
+
+## Generovanie nezávislých dát
+Vygenerujeme dáta - biely šum posunutý o konštantu, takže bude mať nulové autokorelácie.
+
+```{r echo = TRUE}
+N <- 150 # počet pozorovaní
+set.seed(101) # repredukovateľnosť výsledkov
+x <- rnorm(N, mean = 5, sd = 1) # nezávislé z N(5,1)
+
+```
+
+Zobrazíme si priebeh vygenerovaných dát
+```{r echo = FALSE, fig.align="center"}
+data.x <- data.frame(index = 1:N,
+                     x = x)
+ggplot(data = data.x, aes(x = index, y = x)) +
+  geom_line()
+
+```
+
+## Testovanie nulovosti autokorelácií - každá samostatne
+
+Zobrazíme autokoreláčnú funkciu: (napr. príklaz acf)
+```{r echo = FALSE, fig.align="center"}
+acf.x <- as.vector(acf(x, plot = FALSE)$acf)
+acf.x <- data.frame(Lag = as.factor(1:(length(acf.x)-1)),
+                    ACF = acf.x[-1])
+disp <- 2/sqrt(N)
+
+# generate break positions
+breaks = round(c(seq(-0.2, 0.2, by=0.05), disp,-disp), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = -disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series x"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.2, 0.2), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
+**Otázky**:
+
+* Akú hypotézu vieme takýmto prístupom testovať pre každú autokoreláciu?
+* Aké vyzerá disperzia odhadu autokorelačnej funkcie, ak pracujeme s bielym šumom? Čo predpokladáme?
+* Kedy hypotézu $H_{0}$ zamietame? Ako vyzerá interval spoľahlivosti?
+* Čo dostaváme v našom prípade?
+
+
+## Generovanie závislých dát
+Vygenerujeme si dáta, ktoré vzniknú ako suma dvoch po sebe idúcich realizácií bieleho šumu. Napríklad takto:
+
+```{r echo = TRUE}
+y <- c(x[1],x[2:N] + 0.7*x[1:(N-1)])
+```
+
+
+Zobrazíme si priebeh nových dát
+```{r echo = FALSE, fig.align="center"}
+data.y <- data.frame(index = 1:N,
+                     y = y)
+ggplot(data = data.y, aes(x = index, y = y)) +
+  geom_line()
+
+```
+
+
+Zobrazíme autokoreláčnú funkciu: (napr. príklaz acf)
+```{r echo = FALSE, fig.align="center"}
+acf.y <- as.vector(acf(y, plot = FALSE)$acf)
+acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
+                    ACF = acf.y[-1])
+disp <- 2/sqrt(N)
+
+disp2 <- 2*sqrt((1+2*acf.y$ACF[1]^2)/N)
+  
+# generate break positions
+breaks = round(c(c(0.10,0.30,0.40,0.50,0.60),-c(0.10,0.30,0.40,0.50,0.60),
+                 disp,-disp), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = -disp,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series y"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.6, 0.6), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
+Prvá autokorelácia vyšla výrazne väčšia ako je hodnota intervalu spoľahlivosti. Môžeme z toho usudzovať, že daný proces nie je bielym šumom. Keďže zvyšné autokorelácie vychádzajú menej, poprípade na hrane, ako je hodnota intervalu spoľahlivosti, má zmysel testovať aj hypotézu, že $\rho_1 \neq 0$ ale $\rho_2=\rho_3=\rho_4=...=0$. Za tohto predpokladu, že všetky korelácie sú nulové od lagu $p$ a vyššie, vieme aproximovať disperziu zvyšných autkorelacií ako:
+$$D(\hat{\rho_{i}}) \approx \frac{1}{N}(1+2\sum_{k=1}^{p}\rho_{k}^{2})$$
+V našom prípade je $p=1$.
+Zobrazíme si opäť autokorelačnú funkciu, tento krát ale s inými intervalmi spoľahlivosti.
+
+```{r echo = FALSE, fig.align="center"}
+acf.y <- as.vector(acf(y, plot = FALSE)$acf)
+acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
+                    ACF = acf.y[-1])
+disp <- 2/sqrt(N)
+
+disp2 <- 2*sqrt((1+2*acf.y$ACF[1]^2)/N)
+  
+# generate break positions
+breaks = round(c(c(0.10,0.30,0.40,0.50,0.60),-c(0.10,0.30,0.40,0.50,0.60), disp2, -disp2), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp2,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = -disp2,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series y"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.6, 0.6), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
+
+## Testovanie nulovostí autokorelácií - Ljung-Boxov test
+
+Otestujte Ljung-Boxovým testom, že autokorelácie rádu 1,2,3,4 sú súčasne nulové ($\rho_1=\rho_2=\rho_3=\rho_4=0$)
+```{r}
+Box.test(x, lag = 4, type = "Ljung-Box")
+```
+
+**Otázky**:
+
+* Ako sa vypočíta testovacia štatistika?
+* Aké je pravdepodobnostné rozdelenie štatistiky za platnosti nulovej hypotézy $H_{0}$?
+* Pre aké hodnoty testovej štatistiky zamietame hypotézu $H_{0}$?
+* Ako sa určí p-hodnota?
+* Čo dostávame v našom prípade?
+
+V cykle vypočítajte p-hodnoty zodpovedajúce testovaniu hypotézy, že prvých **k** autokorelácií je súcasne nulových. Výsledok znázornite graficky, zobrazte získané p hodnoty a hranicu 0.05.
+
+Oplatí sa nastaviť y-ovú os na interval (0, 1), aby bol skript univerzálny pre všetky dáta, aby sa vždy (aj pri vysokých p hodnotách) dala vidieť vyznačená hodnota 0.05, s ktorou p hodnoty porovnávame.
+
+```{r fig.align="center"}
+k <- 10 
+p.values <- c()
+for(i in 1:k)
+{
+  p.values <- c(p.values,
+                Box.test(x, lag = i, type ="Ljung-Box")$p.value)
+}
+
+p.values <- data.frame(p.values = p.values,
+                       Lags = as.factor(1:k))
+
+ggplot(data = p.values, aes(x = Lags, y= p.values))+
+  geom_point(size=2, shape=23)+
+  geom_hline(yintercept = 0.05,linetype='dashed', col = '#D55E00')+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Ljung-Boxov test - p-values"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(0, 1))
+```
+
+# Analýza výnosov akcií
+Pomocou knižnice `quantmod` načítame priamo do R-ka ceny akcií a zistíme, či sú korelované alebo nie.
+
+## Načítanie dát o cenách akcií pomocou knižnice quantmod
+Načítajte (ak treba, tak nainštalujte) knižnicu `quantmod`
+```{r message=FALSE, warning= FALSE}
+library(quantmod)
+```
+
+Na získanie cien akcií sa použije funkcia `getSymbols`, napríklad:
+```{r message = FALSE}
+getSymbols("NFLX", from = "2019-01-01", to = "2020-01-01", auto.assign = TRUE)
+```
+Pozrime sa, ako vyzerajú naše dáta, ktoré sú uložené v premennej `NFLX`, zobrazíme ich začiatok:
+
+```{r}
+head(NFLX)
+```
+
+## Grafy pomocou quantmod
+Napr.:
+```{r, fig.align="center"}
+chartSeries(NFLX, up.col = "#009E73", dn.col = "#D55E00")
+```
+
+Skúste aj:
+```{r, fig.align="center"}
+chartSeries(NFLX, subset="2019-06::2019-12", up.col = "#009E73", dn.col = "#D55E00") # od juna do septembra
+```
+
+```{r, fig.align="center"}
+NFLX.mesacne <- to.monthly(NFLX)  # mesacne data
+NFLX.mesacne                      # vypiseme
+chartSeries(NFLX.mesacne, up.col = "#009E73", dn.col = "#D55E00")         # graf
+```
+
+## Výnosy akcií
+Z týchto dát `NFLX` budeme potrebovať posledný stĺpec (`NFLX.Adjusted`), z ktorého vypočítame výnosy. Budeme pracovať so spojitými výnosmi, teda denné výnosy sa budú počítať ako logaritmus podielu cien v dvoch po sebe idúcich dňoch. Ekvivalentne:
+
+```{r}
+ceny <- NFLX$NFLX.Adjusted
+vynosy <- diff(log(ceny))
+vynosy <- vynosy[-1]
+```
+
+Priebeh výnosov:
+```{r, fig.align="center"}
+chartSeries(vynosy, theme=chartTheme('white',up.col="#009E73"))
+```
+
+Autokorelačná funkcia:
+```{r echo = FALSE, fig.align="center"}
+acf.vynosy <- as.vector(acf(vynosy, plot = FALSE)$acf)
+acf.vynosy <- data.frame(Lag = as.factor(1:(length(acf.vynosy)-1)),
+                    ACF = acf.vynosy[-1])
+disp <- 2/sqrt(length(vynosy))
+
+# generate break positions
+breaks = round(c(seq(-0.25, 0.25, by=0.05), disp,-disp), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.vynosy, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp,linetype='dashed', col = '#D55E00')+
+  geom_hline(yintercept = -disp,linetype='dashed', col = '#D55E00')+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series x"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.25, 0.25), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
+
+## Testovanie autokorelácií
+Zistite, či výnosy firmy Netflix sú nekorelované. Použite výberovú autokorelačnú funkciu a Ljung-Boxov test.
+
+(Výsledok)
+```{r fig.align="center"}
+k <- 10
+p.values <- c()
+for(i in 1:k)
+{
+  p.values <- c(p.values,
+                Box.test(vynosy, lag = i, type ="Ljung-Box")$p.value)
+}
+
+p.values <- data.frame(p.values = p.values,
+                       Lags = as.factor(1:k))
+
+ggplot(data = p.values, aes(x = Lags, y= p.values))+
+  geom_point(size=2, shape=23)+
+  geom_hline(yintercept = 0.05,linetype='dashed', col = '#D55E00')+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Ljung-Boxov test - p-values"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(0, 1))
+```
+
+
+# Rmarkdown
+
+Užitočné odkazy na tvorbu Rmarkdownu/syntax:
+
+* R markdown: http://rmarkdown.rstudio.com/
+
+* Konkrétne HTML dokumenty: https://bookdown.org/yihui/rmarkdown/html-document.html
+
+* Užitočný môže byť aj interaktívny notebook: https://bookdown.org/yihui/rmarkdown/notebook.html

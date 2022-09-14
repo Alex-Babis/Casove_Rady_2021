@@ -7,27 +7,27 @@ navbar:
     - text: "Tutorials"
       menu:
         - text: "Tutorial 1"
-          href: Cvicenie1.html
+          #href: Cvicenie1.html
         - text: "Tutorial 2"
-          href: Cvicenie2.html
+          #href: Cvicenie2.html
         - text: "Tutorial 3"
-          href: Cvicenie3.html
+          #href: Cvicenie3.html
         - text: "Tutorial 4"
-          href: Cvicenie4.html
+          #href: Cvicenie4.html
         - text: "Tutorial 5"
-          href: Cvicenie5.html
+          #href: Cvicenie5.html
         - text: "Tutorial 6"
-          href: Cvicenie6.html
+          #href: Cvicenie6.html
     - text: "Homeworks"
       menu:
         - text: "Homework 1"
-          href: Domaca_uloha1.html
+          #href: Domaca_uloha1.html
         - text: "Homework 2"
-          href: Domaca_uloha2.html
+          #href: Domaca_uloha2.html
         - text: "Homework 3"
-          href: Domaca_uloha3.html
+          #href: Domaca_uloha3.html
         - text: "Homework 4"
-          href: Domaca_uloha4.html
+          #href: Domaca_uloha4.html
         - text: "Homework 5"
-          href: Domaca_uloha5.html
+          #href: Domaca_uloha5.html
 output_dir: "docs"

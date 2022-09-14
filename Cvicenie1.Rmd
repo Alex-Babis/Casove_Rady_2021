@@ -11,17 +11,6 @@ output:
     highlight: zenburn
 ---
 
-
-```{r}
-xfun::pkg_load2(c("htmltools", "mime"))
-```
-
-
-```{r}
-xfun::embed_file('docs/Cvicenie1.Html')
-```
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -34,15 +23,16 @@ library(ggplot2)
 
 ## Základné pojmy
 * Čo je biely šum? (stredná hodnota, disperzia, autokovariancia)
+* Silná a slabá stacionarita?
 * Čo je autokorelačná funkcia?
 * Čo znamená ergodický proces?
 
-## Generovanie dát
+## Generovanie nezávislých dát
 Vygenerujeme dáta - biely šum posunutý o konštantu, takže bude mať nulové autokorelácie.
 
 ```{r echo = TRUE}
 N <- 150 # počet pozorovaní
-set.seed(12345) # repredukovateľnosť výsledkov
+set.seed(101) # repredukovateľnosť výsledkov
 x <- rnorm(N, mean = 5, sd = 1) # nezávislé z N(5,1)
 
 ```
@@ -88,9 +78,12 @@ ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
 * Kedy hypotézu $H_{0}$ zamietame? Ako vyzerá interval spoľahlivosti?
 * Čo dostaváme v našom prípade?
 
+
+## Generovanie závislých dát
+Vygenerujeme si dáta, ktoré vzniknú ako suma dvoch po sebe idúcich realizácií bieleho šumu. Napríklad takto:
+
 ```{r echo = TRUE}
 y <- c(x[1],x[2:N] + 0.7*x[1:(N-1)])
-
 ```
 
 
@@ -111,8 +104,11 @@ acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
                     ACF = acf.y[-1])
 disp <- 2/sqrt(N)
 
+disp2 <- 2*sqrt((1+2*acf.y$ACF[1]^2)/N)
+  
 # generate break positions
-breaks = round(c(seq(-0.5, 0.5, by=0.05), disp,-disp), digits = 4)
+breaks = round(c(c(0.10,0.30,0.40,0.50,0.60),-c(0.10,0.30,0.40,0.50,0.60),
+                 disp,-disp), digits = 4)
 # and labels
 labels = as.character(breaks)
 
@@ -123,11 +119,39 @@ ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
   geom_hline(yintercept = 0)+
   ggtitle(paste0("Series y"))+
   theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
-  scale_y_continuous(limits = c(-0.5, 0.5), breaks = breaks, labels = labels,
+  scale_y_continuous(limits = c(-0.6, 0.6), breaks = breaks, labels = labels,
                      name = "ACF")
   
 ```
+Prvá autokorelácia vyšla výrazne väčšia ako je hodnota intervalu spoľahlivosti. Môžeme z toho usudzovať, že daný proces nie je bielym šumom. Keďže zvyšné autokorelácie vychádzajú menej, poprípade na hrane, ako je hodnota intervalu spoľahlivosti, má zmysel testovať aj hypotézu, že $\rho_1 \neq 0$ ale $\rho_2=\rho_3=\rho_4=...=0$. Za tohto predpokladu, že všetky korelácie sú nulové od lagu $p$ a vyššie, vieme aproximovať disperziu zvyšných autkorelacií ako:
+$$D(\hat{\rho_{i}}) \approx \frac{1}{N}(1+2\sum_{k=1}^{p}\rho_{k}^{2})$$
+V našom prípade je $p=1$.
+Zobrazíme si opäť autokorelačnú funkciu, tento krát ale s inými intervalmi spoľahlivosti.
 
+```{r echo = FALSE, fig.align="center"}
+acf.y <- as.vector(acf(y, plot = FALSE)$acf)
+acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
+                    ACF = acf.y[-1])
+disp <- 2/sqrt(N)
+
+disp2 <- 2*sqrt((1+2*acf.y$ACF[1]^2)/N)
+  
+# generate break positions
+breaks = round(c(c(0.10,0.30,0.40,0.50,0.60),-c(0.10,0.30,0.40,0.50,0.60), disp2, -disp2), digits = 4)
+# and labels
+labels = as.character(breaks)
+
+ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
+  geom_linerange()+
+  geom_hline(yintercept = disp2,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = -disp2,linetype='dashed', col = "#D55E00")+
+  geom_hline(yintercept = 0)+
+  ggtitle(paste0("Series y"))+
+  theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
+  scale_y_continuous(limits = c(-0.6, 0.6), breaks = breaks, labels = labels,
+                     name = "ACF")
+  
+```
 
 ## Testovanie nulovostí autokorelácií - Ljung-Boxov test
 
@@ -206,7 +230,7 @@ chartSeries(NFLX.mesacne, up.col = "#009E73", dn.col = "#D55E00")         # graf
 ```
 
 ## Výnosy akcií
-Z týchto dát `NFLX` budeme potrebovať posledný stĺpec (`NFLX.Adjusted`), z ktorého vypočítame výnosy. Budeme pracovať zo spojitými výnosmi, teda denné výnosy sa budú počítať ako logaritmus podielu cien v dvoch po sebe idúcich dňoch. Ekvivalentne:
+Z týchto dát `NFLX` budeme potrebovať posledný stĺpec (`NFLX.Adjusted`), z ktorého vypočítame výnosy. Budeme pracovať so spojitými výnosmi, teda denné výnosy sa budú počítať ako logaritmus podielu cien v dvoch po sebe idúcich dňoch. Ekvivalentne:
 
 ```{r}
 ceny <- NFLX$NFLX.Adjusted
