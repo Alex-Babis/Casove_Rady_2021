@@ -1,5 +1,5 @@
 ---
-title: "Casove Rady 2021"
+title: "Casove Rady 2022"
 output: 
   html_document: 
     theme: flatly
@@ -20,9 +20,9 @@ output:
 <div class="row" style="padding-top: 30px;">
 <div class="col-sm-6">
 
-# **Časové Rady 2021**
+# **Časové Rady 2022**
 
-Vítajte na stránke pre cvičenia z časových radov 2021.
+Vítajte na stránke pre cvičenia z časových radov 2022.
 
 V záložke Tutorials nájdete materiály k cvičeniam. 
 
@@ -31,12 +31,12 @@ V záložke Homeworks nájdete zadania domácich úloh.
 ```{r include = FALSE}
 
 cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
-                       Datum = c("27.09.-01.09.2021",
-                                 "18.10.-22.10.2021",
-                                 "25.10.-29.10.2021",
-                                 "08.11.-12.11.2021",
-                                 "22.11.-26.11.2021",
-                                 "29.11.-03.12.2021"),
+                       Datum = c("",
+                                 "",
+                                 "",
+                                 "",
+                                 "",
+                                 ""),
                        Domaca_uloha = c("Áno","Nie",
                                         "Áno","Áno",
                                         "Áno","Áno"),
@@ -46,12 +46,12 @@ cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
                                     "M-208",
                                     "M-208",
                                     "M-208"),
-                       Deadline = c("15.10.2021-24:00",
+                       Deadline = c("",
                                     "",
-                                    "12.11.2021-24:00",
-                                    "25.11.2021-24:00",
-                                    "09.12.2021-24:00",
-                                    "14.12.2021-24:00"))
+                                    "",
+                                    "",
+                                    "",
+                                    ""))
 colnames(cvicenia) <- c("Poradie","Týždeň",
                         "Domáca úloha",
                         "Miestnosť", "Deadline pre DÚ")
