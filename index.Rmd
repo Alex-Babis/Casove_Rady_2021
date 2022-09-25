@@ -31,12 +31,12 @@ V záložke Homeworks nájdete zadania domácich úloh.
 ```{r include = FALSE}
 
 cvicenia <- data.frame(Index = paste0("Cvičenie ",c(1:6)),
-                       Datum = c("",
-                                 "",
-                                 "",
-                                 "",
-                                 "",
-                                 ""),
+                       Datum = c("27/28.9.2022",
+                                 "11/12.10.2022",
+                                 "25/26.10.2022",
+                                 "8/9.11.2022",
+                                 "22/23.11.2022",
+                                 "6/7.12.2022"),
                        Domaca_uloha = c("Áno","Nie",
                                         "Áno","Áno",
                                         "Áno","Áno"),
