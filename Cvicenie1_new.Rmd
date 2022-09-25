@@ -15,9 +15,39 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r include = FALSE}
-library(ggplot2)
+# knižnice
+
+Spustením nasledovného príkazu sa nainštalujú potrebné knižnice, ak nainštalované nie sú, a zároveň sa aj načítajú.
+
+```{r include= FALSE}
+# Package names
+packages <- c("ggplot2","quantmod","astsa","reshape2","WDI")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
 ```
+
+
+```{r eval = FALSE}
+# názvy balíkov, ktoré budú potrebné pre cvičenie 1
+packages <- c("ggplot2","quantmod","astsa")
+
+# inštalácia balíkov, ak nie sú nainštalované
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+# načítanie balíkov
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
 
 # Opakovanie prednášky
 
@@ -28,31 +58,96 @@ library(ggplot2)
 * Čo znamená ergodický proces?
 
 ## Generovanie nezávislých dát
-Vygenerujeme dáta - biely šum posunutý o konštantu, takže bude mať nulové autokorelácie.
+Vygenerujeme si dve sady dát - biely šum posunutý o konštantu, takže bude mať nulové autokorelácie a dáta, ktoré vzniknú ako suma dvoch po sebe idúcich realizácií bieleho šumu. Napríklad takto:
 
 ```{r echo = TRUE}
-N <- 150 # počet pozorovaní
-set.seed(101) # repredukovateľnosť výsledkov
-x <- rnorm(N, mean = 5, sd = 1) # nezávislé z N(5,1)
+
+# počet pozorovaní
+N <- 150 
+
+# repredukovateľnosť výsledkov
+set.seed(101) 
+
+# nezávislé z N(5,1)
+x <- rnorm(N, mean = 0, sd = 2) 
+
+# závislé dáta y_t = x_t + 0.7x_t-1
+y <- c(x[1],x[2:N] + 0.7*x[1:(N-1)])
 
 ```
 
-Zobrazíme si priebeh vygenerovaných dát
+Zobrazíme si priebeh vygenerovaných dát:
+
 ```{r echo = FALSE, fig.align="center"}
-data.x <- data.frame(index = 1:N,
-                     x = x)
-ggplot(data = data.x, aes(x = index, y = x)) +
-  geom_line()
+data.ts <- data.frame(index = 1:N,
+                     x = x,
+                     y = y,
+                     x_y = y)
+
+data.long.ts <- melt(data.ts, id.vars = "index", variable.name = "ts")
+ggplot(data = data.long.ts, aes(x = index, y = value, group = ts, color = ts)) +
+  geom_line()+
+  facet_wrap(~ts,ncol = 1, nrow= 3)+
+  geom_line(data = data.frame(index = 1:N, value = x ,ts=as.factor("x_y")), 
+             aes(x = index, y = value, color = "x2"))+
+  scale_colour_manual(values = c('x'="#009E73",'y'="#8B008B",'x_y' = "#28282B", 'x2'="#D55E00"),
+                      labels = c("y","x"),
+                       breaks = c("x_y","x2"),
+                      name = "")
 
 ```
+Zobrazíme si aj grafy $x_{t}$ vs $x_{t-1}$, respektíve $y_{t}$ vs. $y_{t-1}$
+
+```{r echo = FALSE, fig.align="center"}
+scatter.ts <- data.frame(t = c(x[2:N],y[2:N]),
+                         t_1 = c(x[1:(N-1)],y[1:(N-1)]),
+                         ts = c(rep("x",N-1),rep("y", N-1)))
+
+
+ggplot(data = scatter.ts, aes(x = t, y = t_1, group = ts, color = ts)) +
+  geom_point()+
+  facet_wrap(~ts,ncol = 2, nrow= 1)+
+  scale_colour_manual(values = c('x'="#009E73",'y'="#8B008B"),
+                      labels = c("x","y"),
+                       breaks = c("x","y"),
+                      name = "")
+
+```
+
 
 ## Testovanie nulovosti autokorelácií - každá samostatne
 
-Zobrazíme autokoreláčnú funkciu: (napr. príklaz acf)
+Časový rad vieme veľmi dobre reprezentovať pomocou autokorelačnej funckie. 
+
+V jazyku R máme aspoň 2 možnosti ako ju vypočítať. Súčasťou klasickej syntexe R-ka je príkaz `acf`, alebo v balíku `astsa` sa nachádzajú funkcie `acf1` a `acf2`, druhú menovanú zatiaľ nebudeme používať. 
+
+```{r eval=FALSE}
+acf(x = časový rad,
+    lag.max = maximálny počet lagov ktorý nás zaujíma,
+    type = jedno z c("correlation", "covariance", "partial"),
+    plot = TRUE/FALSE podľa toho či chceme vykresliť aj graf, 
+    a ďaľšie argumenty)
+
+acf1(series = časový rad, 
+     max.lag = maximálny počet lagov ktorý nás zaujíma,
+     plot = TRUE/FALSE podľa toho či chceme vykresliť aj graf,
+     pacf = TRUE/FALSE podľa toho či chceme autokorelácie alebo parciálne autokorelácie,
+     a ďaľšie argumenty)
+```
+
+Zobrazíme autokoreláčnú funkciu: (napr. príklaz `acf`)
+
+```{r eval = FALSE}
+acf(x)
+```
+
+
 ```{r echo = FALSE, fig.align="center"}
 acf.x <- as.vector(acf(x, plot = FALSE)$acf)
+
 acf.x <- data.frame(Lag = as.factor(1:(length(acf.x)-1)),
                     ACF = acf.x[-1])
+
 disp <- 2/sqrt(N)
 
 # generate break positions
@@ -71,6 +166,11 @@ ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
                      name = "ACF")
   
 ```
+
+```{r}
+acf(x, plot = FALSE)$acf
+```
+
 **Otázky**:
 
 * Akú hypotézu vieme takýmto prístupom testovať pre každú autokoreláciu?
@@ -79,25 +179,8 @@ ggplot(data = acf.x, aes(x = Lag, ymax=ACF, ymin=0))+
 * Čo dostaváme v našom prípade?
 
 
-## Generovanie závislých dát
-Vygenerujeme si dáta, ktoré vzniknú ako suma dvoch po sebe idúcich realizácií bieleho šumu. Napríklad takto:
 
-```{r echo = TRUE}
-y <- c(x[1],x[2:N] + 0.7*x[1:(N-1)])
-```
-
-
-Zobrazíme si priebeh nových dát
-```{r echo = FALSE, fig.align="center"}
-data.y <- data.frame(index = 1:N,
-                     y = y)
-ggplot(data = data.y, aes(x = index, y = y)) +
-  geom_line()
-
-```
-
-
-Zobrazíme autokoreláčnú funkciu: (napr. príklaz acf)
+Zobrazíme autokoreláčnú funkciu aj pre druhý časový rad:
 ```{r echo = FALSE, fig.align="center"}
 acf.y <- as.vector(acf(y, plot = FALSE)$acf)
 acf.y <- data.frame(Lag = as.factor(1:(length(acf.y)-1)),
@@ -123,6 +206,7 @@ ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
                      name = "ACF")
   
 ```
+
 Prvá autokorelácia vyšla výrazne väčšia ako je hodnota intervalu spoľahlivosti. Môžeme z toho usudzovať, že daný proces nie je bielym šumom. Keďže zvyšné autokorelácie vychádzajú menej, poprípade na hrane, ako je hodnota intervalu spoľahlivosti, má zmysel testovať aj hypotézu, že $\rho_1 \neq 0$ ale $\rho_2=\rho_3=\rho_4=...=0$. Za tohto predpokladu, že všetky korelácie sú nulové od lagu $p$ a vyššie, vieme aproximovať disperziu zvyšných autkorelacií ako:
 $$D(\hat{\rho_{i}}) \approx \frac{1}{N}(1+2\sum_{k=1}^{p}\rho_{k}^{2})$$
 V našom prípade je $p=1$.
@@ -155,7 +239,20 @@ ggplot(data = acf.y, aes(x = Lag, ymax=ACF, ymin=0))+
 
 ## Testovanie nulovostí autokorelácií - Ljung-Boxov test
 
-Otestujte Ljung-Boxovým testom, že autokorelácie rádu 1,2,3,4 sú súčasne nulové ($\rho_1=\rho_2=\rho_3=\rho_4=0$)
+Ak nám výjdu hodnoty na hranici zamietania, je dobré sa pozrieť na autokorelácie aj skupinovo a nie len jednotne. Vždy pracujeme iba s odhadmi skutočných autokorelácií, preto je užitočné testovať nulovosť vybraného počtu prvých autokorelácií. Napríklad chceme testovať nulovosť prvých 4, teda $\rho_1=\rho_2=\rho_3=\rho_4=0$. 
+
+Na to nám poslúži Ljung-Boxov test, v Rku príkaz `Box.test`.
+
+```{r eval= FALSE}
+Box.test(x = Testovaný časový rad,
+         lag = počet koľko prvých autkorelácií chceme testovať, 
+         type = jedno z c("Box-Pierce", "Ljung-Box") pričom budeme používať druhý menovaný,
+         fitdf = počet stupňov voľnosti ktorý chceme odobrať z testovej štatitiky)
+```
+
+`fitdf` bude pre nás mať zmysel neskôr. Slúži nato, že ak testujeme namiesto pôvodného časového radu rezíuá z modelu, tak sa nám stupne voľnosti pre chi-kvadrát štatistiku zmenia.
+
+Otestujeme nulovosť prvých štyroch autokorelácií časového radu `x`:
 ```{r}
 Box.test(x, lag = 4, type = "Ljung-Box")
 ```
@@ -181,6 +278,30 @@ for(i in 1:k)
                 Box.test(x, lag = i, type ="Ljung-Box")$p.value)
 }
 
+```
+
+```{r eval = FALSE}
+
+plot( x = 1:k, # x-ová os
+      y = p.values, # y-ová os
+      type = "p", # body namiesto spojenej čiary
+      ylim = c(0,1)) # rozmädzie y-onovej osi
+
+# kreslenie čiar do existujucého grafu
+abline( h = 0.1, # horizotálna čiara na hodnote h
+        lty = "dashed", # prerušovaná čiara ako typ
+        col = "red") # farba
+
+# druhý spôsob kreslenia čiar do existujucého grafu
+abline( a = 0.05, # sklon priamky
+        b = 0, # intercept
+        lty = "dashed", # prerušovaná čiara
+        col = "blue") # farba 
+
+```
+
+
+```{r echo = FALSE}
 p.values <- data.frame(p.values = p.values,
                        Lags = as.factor(1:k))
 
@@ -192,6 +313,7 @@ ggplot(data = p.values, aes(x = Lags, y= p.values))+
   theme(plot.title = element_text(hjust = 0.5, size=14, face="bold"))+
   scale_y_continuous(limits = c(0, 1))
 ```
+
 
 # Analýza výnosov akcií
 Pomocou knižnice `quantmod` načítame priamo do R-ka ceny akcií a zistíme, či sú korelované alebo nie.
@@ -271,7 +393,7 @@ ggplot(data = acf.vynosy, aes(x = Lag, ymax=ACF, ymin=0))+
 Zistite, či výnosy firmy Netflix sú nekorelované. Použite výberovú autokorelačnú funkciu a Ljung-Boxov test.
 
 (Výsledok)
-```{r fig.align="center"}
+```{r fig.align="center", echo = FALSE}
 k <- 10
 p.values <- c()
 for(i in 1:k)
@@ -292,6 +414,118 @@ ggplot(data = p.values, aes(x = Lags, y= p.values))+
   scale_y_continuous(limits = c(0, 1))
 ```
 
+# AR(1) procesy
+
+V knižnici `datasets` je viacero zaujímavých časových radov, my sa teraz pozrieme na prietok Nílu:
+
+```{r, fig.align="center"}
+x <- Nile
+# podrobnejsi popis v helpe: ?Nile
+```
+
+Konkrétne sa zameriame na vyznačenú časť tohto časového radu - od roku 1910 do roku 1960.
+
+```{r echo = FALSE, warning=FALSE, fig.align="center"}
+library(dygraphs)
+dygraph(x)  %>% dySeries(label="Annual flow", color="black") %>% dyRangeSelector()%>% dyShading(from = "1910-1-1", to = "1960-1-1",color = "#c5ffef") 
+```
+
+Aby sme získali časť časového radu, použijeme funkciu `window`:
+```{r, fig.align="center"}
+x <- window(x, start=1910, end=1960)
+```
+
+**Úloha:**
+
++ Zistite, či je AR(1) proces dobrým modelom pre tieto dáta
+
+```{r echo = FALSE, fig.align="center"}
+mo2 = capture.output(sarima(x,1,0,0))
+```
+
+## Dáta Svetovej banky
+
+Kničnica
+`WDI` - World Development Indicators, prístup k dátam budeme mať priamo v R
+`ggplot2` - pekné grafy :)
+
+## Vyhľadávanie dát vo WDI
+```{r eval=FALSE, fig.align="center"}
+# hladame indikatory, ktore maju v nazve gdp
+WDIsearch('gdp') 
+```
+
+Kto pozná regulárne výrazy (regular expressions)
+
++ dajú sa používať aj tie
++ na ukážku - hľadajme indikátory, ktoré hovoria o HDP na obyvateľa - vypíšme si tie, ktoré obsahujú gdp a capita
+
+```{r eval=FALSE, fig.align="center"}
+WDIsearch('gdp.*capita')
+```
+
+Ak je veľa výsledkov, môžeme chciet vypísať niekoľko prvých:
+```{r, fig.align="center"}
+WDIsearch('gdp.*capita')[1:6,]
+```
+
+## Načítanie dát
+Pomocou funkcie `WDI`, ukážka použitia:
+
+```{r, fig.align="center"}
+data.hdp <- WDI(indicator = 'NY.GDP.PCAP.CD',
+                country = c('FI','US','FR', 'DE'),
+                start = 1975)
+```
+
++ `indicator` sme našli pomocou `WDIsearch`
++ `country` vo formáte `iso2c`
++ defaultný `start` je 1960 a defaultný `end` je 2020, môžeme ich takto zmeniť
++ `iso2c` kódy štátov sa dajú nájsť napríklad tu: https://datahub.io/core/country-list alebo pomocou knižnice `countrycode` v R-ku (https://cran.r-project.org/web/packages/countrycode/)
+
+```{r, fig.align="center"}
+head(data.hdp)
+```
+
+## Graf pomocou ggplot
+```{r fig.align="center"}
+ggplot(data.hdp, aes(year, NY.GDP.PCAP.CD, color = country)) +
+    geom_line() +
+    xlab('Year') + ylab('GDP per capita') +
+    labs(title = 'GDP per capita (current USD)')
+```
+
++ `data.hdp` je `data frame`, v ktorom sú naše premenné
++ `year, NY.GNP.PCAP.CD` - z dát uložených v `data.hdp` bude na x-ovej osi premenná `year` a na y-ovej `NY.GNP.PCAP.CD`
++ `color=country` - grafy budú odlíšené farebne (preto color) podľa premennej country
+
+## AR(1) model pre rýchlosť rastu HDP
+```{r, fig.align="center"}
+# GDP per capita (constant 2010 US$) 
+data <- WDI(indicator = 'NY.GNP.PCAP.KD',
+            country= c ('FR'),
+            start = 1975, end = 2019)
+
+# zoradime rastuco podla rokov
+data <- data[order(data$year),]
+
+# nasa premenna na modelovanie
+log.y <- log(data$NY.GNP.PCAP.KD)
+
+# doplnime casovu strukturu
+log.y <- ts(log.y, start = 1975, frequency = 1)
+
+```
+
+**Zadanie:**
+
++ Z priebehu dát vidíme, ze nie sú stacionárne, pretovbudeme pracovat s diferenciami
++ Zoberieme diferencie logaritmov - to je rýchlost rastu HDP.
++ Vyskúšajte, či je AR(1) model dobrým modelom pre rýchlosť rastu HDP.
++ Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či sa rýchlosť rastu nedá modelovať ako posunutý biely šum. 
+
+
+V prípade AR(1) procesu, je overovanie stacionarity zrejmé - stačí sa pozrieť na absolútnu hodnotu autoregresného koeficientu, musí byť v absolútnej hodnote menší ako 1.
 
 # Rmarkdown
 

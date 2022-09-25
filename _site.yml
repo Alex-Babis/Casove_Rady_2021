@@ -7,7 +7,7 @@ navbar:
     - text: "Tutorials"
       menu:
         - text: "Tutorial 1"
-          #href: Cvicenie1.html
+          href: Cvicenie1_new.html
         - text: "Tutorial 2"
           #href: Cvicenie2.html
         - text: "Tutorial 3"
