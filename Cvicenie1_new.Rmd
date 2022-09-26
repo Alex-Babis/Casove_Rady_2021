@@ -1,5 +1,5 @@
 ---
-title: "Cvičenie 1 - Testovanie autokorelácií, Bassov model"
+title: "Cvičenie 1 - Testovanie autokorelácií, AR(1)"
 output:
   html_document: 
     toc: yes
@@ -36,7 +36,7 @@ invisible(lapply(packages, library, character.only = TRUE))
 
 ```{r eval = FALSE}
 # názvy balíkov, ktoré budú potrebné pre cvičenie 1
-packages <- c("ggplot2","quantmod","astsa")
+packages <- c("ggplot2","quantmod","astsa","WDI")
 
 # inštalácia balíkov, ak nie sú nainštalované
 installed_packages <- packages %in% rownames(installed.packages())
