@@ -503,7 +503,7 @@ ggplot(data.hdp, aes(year, NY.GDP.PCAP.CD, color = country)) +
 ```{r, fig.align="center"}
 # GDP per capita (constant 2010 US$) 
 data <- WDI(indicator = 'NY.GNP.PCAP.KD',
-            country= c ('FR'),
+            country= c ('DE'),
             start = 1975, end = 2019)
 
 # zoradime rastuco podla rokov
