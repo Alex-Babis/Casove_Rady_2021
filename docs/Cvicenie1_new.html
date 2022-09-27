@@ -677,13 +677,18 @@ cenách akcií pomocou knižnice quantmod</h2>
 <p>Načítajte (ak treba, tak nainštalujte) knižnicu
 <code>quantmod</code></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span></code></pre></div>
-<p>Na získanie cien akcií sa použije funkcia <code>getSymbols</code>,
-napríklad:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="st">&quot;NFLX&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2019-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">auto.assign =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Na získanie cien akcií sa použije funkcia
+<code>getSymbols</code>,</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="at">Symbols =</span> skratka pre danú akciu <span class="sc">-</span> dá sa nájsť na finance.yahoo, </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">from =</span> dátum od kedy chceme dáta,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">to =</span> dátum do kedy chceme dáta, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">auto.assign =</span> <span class="cn">TRUE</span><span class="sc">/</span><span class="cn">FALSE</span> podľa toho či chceme vytvoriť dataset s daným názvom rovno)</span></code></pre></div>
+<p>napríklad:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="st">&quot;NFLX&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2019-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">auto.assign =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;NFLX&quot;</code></pre>
 <p>Pozrime sa, ako vyzerajú naše dáta, ktoré sú uložené v premennej
 <code>NFLX</code>, zobrazíme ich začiatok:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NFLX)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NFLX)</span></code></pre></div>
 <pre><code>##            NFLX.Open NFLX.High NFLX.Low NFLX.Close NFLX.Volume NFLX.Adjusted
 ## 2019-01-02    259.28    269.75   256.58     267.66    11679500        267.66
 ## 2019-01-03    270.20    275.79   264.43     271.20    14969600        271.20
@@ -696,13 +701,13 @@ napríklad:</p>
 <h2><span class="header-section-number">3.2</span> Grafy pomocou
 quantmod</h2>
 <p>Napr.:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>)</span></code></pre></div>
-<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Skúste aj:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX, <span class="at">subset=</span><span class="st">&quot;2019-06::2019-12&quot;</span>, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>) <span class="co"># od juna do septembra</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>)</span></code></pre></div>
 <p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>NFLX.mesacne <span class="ot">&lt;-</span> <span class="fu">to.monthly</span>(NFLX)  <span class="co"># mesacne data</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>NFLX.mesacne                      <span class="co"># vypiseme</span></span></code></pre></div>
+<p>Skúste aj:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX, <span class="at">subset=</span><span class="st">&quot;2019-06::2019-12&quot;</span>, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>) <span class="co"># od juna do septembra</span></span></code></pre></div>
+<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NFLX.mesacne <span class="ot">&lt;-</span> <span class="fu">to.monthly</span>(NFLX)  <span class="co"># mesacne data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>NFLX.mesacne                      <span class="co"># vypiseme</span></span></code></pre></div>
 <pre><code>##          NFLX.Open NFLX.High NFLX.Low NFLX.Close NFLX.Volume NFLX.Adjusted
 ## jan 2019    259.28    358.85   256.58     339.50   306616400        339.50
 ## feb 2019    337.18    371.49   336.50     358.10   148192100        358.10
@@ -716,8 +721,8 @@ quantmod</h2>
 ## okt 2019    267.35    308.75   257.01     287.41   231556400        287.41
 ## nov 2019    288.70    316.82   281.14     314.66   113645900        314.66
 ## dec 2019    314.39    338.00   292.02     323.57   124723600        323.57</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX.mesacne, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>)         <span class="co"># graf</span></span></code></pre></div>
-<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(NFLX.mesacne, <span class="at">up.col =</span> <span class="st">&quot;#009E73&quot;</span>, <span class="at">dn.col =</span> <span class="st">&quot;#D55E00&quot;</span>)         <span class="co"># graf</span></span></code></pre></div>
+<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="výnosy-akcií" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Výnosy akcií</h2>
@@ -725,14 +730,15 @@ quantmod</h2>
 (<code>NFLX.Adjusted</code>), z ktorého vypočítame výnosy. Budeme
 pracovať so spojitými výnosmi, teda denné výnosy sa budú počítať ako
 logaritmus podielu cien v dvoch po sebe idúcich dňoch. Ekvivalentne:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> NFLX<span class="sc">$</span>NFLX.Adjusted</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> vynosy[<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> NFLX<span class="sc">$</span>NFLX.Adjusted</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># alebo vynosy &lt;- diff(ceny, log = TRUE)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> vynosy[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># pr=va hodnota bude NA</span></span></code></pre></div>
 <p>Priebeh výnosov:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(vynosy, <span class="at">theme=</span><span class="fu">chartTheme</span>(<span class="st">&#39;white&#39;</span>,<span class="at">up.col=</span><span class="st">&quot;#009E73&quot;</span>))</span></code></pre></div>
-<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Autokorelačná funkcia:
-<img src="Cvicenie1_new_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(vynosy, <span class="at">theme=</span><span class="fu">chartTheme</span>(<span class="st">&#39;white&#39;</span>,<span class="at">up.col=</span><span class="st">&quot;#009E73&quot;</span>))</span></code></pre></div>
+<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Zobrazíme si autokorelačnú funkciu denných dát Autokorelačná funkcia:
+<img src="Cvicenie1_new_files/figure-html/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="testovanie-autokorelácií" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Testovanie
@@ -740,27 +746,48 @@ autokorelácií</h2>
 <p>Zistite, či výnosy firmy Netflix sú nekorelované. Použite výberovú
 autokorelačnú funkciu a Ljung-Boxov test.</p>
 <p>(Výsledok)
-<img src="Cvicenie1_new_files/figure-html/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<img src="Cvicenie1_new_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="ar1-procesy" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> AR(1) procesy</h1>
 <p>V knižnici <code>datasets</code> je viacero zaujímavých časových
 radov, my sa teraz pozrieme na prietok Nílu:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> Nile</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># podrobnejsi popis v helpe: ?Nile</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> Nile</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## Time Series:
+## Start = 1871 
+## End = 1970 
+## Frequency = 1 
+##   [1] 1120 1160  963 1210 1160 1160  813 1230 1370 1140  995  935 1110  994 1020
+##  [16]  960 1180  799  958 1140 1100 1210 1150 1250 1260 1220 1030 1100  774  840
+##  [31]  874  694  940  833  701  916  692 1020 1050  969  831  726  456  824  702
+##  [46] 1120 1100  832  764  821  768  845  864  862  698  845  744  796 1040  759
+##  [61]  781  865  845  944  984  897  822 1010  771  676  649  846  812  742  801
+##  [76] 1040  860  874  848  890  744  749  838 1050  918  986  797  923  975  815
+##  [91] 1020  906  901 1170  912  746  919  718  714  740</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># podrobnejsi popis v helpe: ?Nile</span></span></code></pre></div>
 <p>Konkrétne sa zameriame na vyznačenú časť tohto časového radu - od
 roku 1910 do roku 1960.</p>
 <div id="htmlwidget-9c9d8f90c1bc9b27f7eb" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
 <script type="application/json" data-for="htmlwidget-9c9d8f90c1bc9b27f7eb">{"x":{"attrs":{"labels":["year","Annual flow"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"colors":["black","black"],"series":{"Annual flow":{"axis":"y"}},"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"yearly","annotations":[],"shadings":[{"from":"1910-01-01T00:00:00.000Z","to":"1960-01-01T00:00:00.000Z","color":"#c5ffef","axis":"x"}],"events":[],"format":"date","data":[["1871-01-01T00:00:00.000Z","1872-01-01T00:00:00.000Z","1873-01-01T00:00:00.000Z","1874-01-01T00:00:00.000Z","1875-01-01T00:00:00.000Z","1876-01-01T00:00:00.000Z","1877-01-01T00:00:00.000Z","1878-01-01T00:00:00.000Z","1879-01-01T00:00:00.000Z","1880-01-01T00:00:00.000Z","1881-01-01T00:00:00.000Z","1882-01-01T00:00:00.000Z","1883-01-01T00:00:00.000Z","1884-01-01T00:00:00.000Z","1885-01-01T00:00:00.000Z","1886-01-01T00:00:00.000Z","1887-01-01T00:00:00.000Z","1888-01-01T00:00:00.000Z","1889-01-01T00:00:00.000Z","1890-01-01T00:00:00.000Z","1891-01-01T00:00:00.000Z","1892-01-01T00:00:00.000Z","1893-01-01T00:00:00.000Z","1894-01-01T00:00:00.000Z","1895-01-01T00:00:00.000Z","1896-01-01T00:00:00.000Z","1897-01-01T00:00:00.000Z","1898-01-01T00:00:00.000Z","1899-01-01T00:00:00.000Z","1900-01-01T00:00:00.000Z","1901-01-01T00:00:00.000Z","1902-01-01T00:00:00.000Z","1903-01-01T00:00:00.000Z","1904-01-01T00:00:00.000Z","1905-01-01T00:00:00.000Z","1906-01-01T00:00:00.000Z","1907-01-01T00:00:00.000Z","1908-01-01T00:00:00.000Z","1909-01-01T00:00:00.000Z","1910-01-01T00:00:00.000Z","1911-01-01T00:00:00.000Z","1912-01-01T00:00:00.000Z","1913-01-01T00:00:00.000Z","1914-01-01T00:00:00.000Z","1915-01-01T00:00:00.000Z","1916-01-01T00:00:00.000Z","1917-01-01T00:00:00.000Z","1918-01-01T00:00:00.000Z","1919-01-01T00:00:00.000Z","1920-01-01T00:00:00.000Z","1921-01-01T00:00:00.000Z","1922-01-01T00:00:00.000Z","1923-01-01T00:00:00.000Z","1924-01-01T00:00:00.000Z","1925-01-01T00:00:00.000Z","1926-01-01T00:00:00.000Z","1927-01-01T00:00:00.000Z","1928-01-01T00:00:00.000Z","1929-01-01T00:00:00.000Z","1930-01-01T00:00:00.000Z","1931-01-01T00:00:00.000Z","1932-01-01T00:00:00.000Z","1933-01-01T00:00:00.000Z","1934-01-01T00:00:00.000Z","1935-01-01T00:00:00.000Z","1936-01-01T00:00:00.000Z","1937-01-01T00:00:00.000Z","1938-01-01T00:00:00.000Z","1939-01-01T00:00:00.000Z","1940-01-01T00:00:00.000Z","1941-01-01T00:00:00.000Z","1942-01-01T00:00:00.000Z","1943-01-01T00:00:00.000Z","1944-01-01T00:00:00.000Z","1945-01-01T00:00:00.000Z","1946-01-01T00:00:00.000Z","1947-01-01T00:00:00.000Z","1948-01-01T00:00:00.000Z","1949-01-01T00:00:00.000Z","1950-01-01T00:00:00.000Z","1951-01-01T00:00:00.000Z","1952-01-01T00:00:00.000Z","1953-01-01T00:00:00.000Z","1954-01-01T00:00:00.000Z","1955-01-01T00:00:00.000Z","1956-01-01T00:00:00.000Z","1957-01-01T00:00:00.000Z","1958-01-01T00:00:00.000Z","1959-01-01T00:00:00.000Z","1960-01-01T00:00:00.000Z","1961-01-01T00:00:00.000Z","1962-01-01T00:00:00.000Z","1963-01-01T00:00:00.000Z","1964-01-01T00:00:00.000Z","1965-01-01T00:00:00.000Z","1966-01-01T00:00:00.000Z","1967-01-01T00:00:00.000Z","1968-01-01T00:00:00.000Z","1969-01-01T00:00:00.000Z","1970-01-01T00:00:00.000Z"],[1120,1160,963,1210,1160,1160,813,1230,1370,1140,995,935,1110,994,1020,960,1180,799,958,1140,1100,1210,1150,1250,1260,1220,1030,1100,774,840,874,694,940,833,701,916,692,1020,1050,969,831,726,456,824,702,1120,1100,832,764,821,768,845,864,862,698,845,744,796,1040,759,781,865,845,944,984,897,822,1010,771,676,649,846,812,742,801,1040,860,874,848,890,744,749,838,1050,918,986,797,923,975,815,1020,906,901,1170,912,746,919,718,714,740]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
 <p>Aby sme získali časť časového radu, použijeme funkciu
 <code>window</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">window</span>(x, <span class="at">start=</span><span class="dv">1910</span>, <span class="at">end=</span><span class="dv">1960</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">window</span>(x, <span class="at">start=</span><span class="dv">1910</span>, <span class="at">end=</span><span class="dv">1960</span>)</span></code></pre></div>
 <p><strong>Úloha:</strong></p>
 <ul>
 <li>Zistite, či je AR(1) proces dobrým modelom pre tieto dáta</li>
 </ul>
-<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Budeme modelovať dáta pomocou funkcie sarima, zatiaľ iba so 4
+argumentami</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(<span class="at">xdata =</span> dáta ktoré chceme modelovať,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">p =</span> autoregresný rád,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">d =</span> rád diferencovania,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">q =</span> moving average rád)</span></code></pre></div>
+<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Ako sa zmení Ljung-boxov test pri rezíduách?</p>
+<p>Ak je model vyhovujúci skúste aj, či sa dané dáta nedajú modelovať
+ako biely šum posunutý o konštantu.</p>
 <div id="dáta-svetovej-banky" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Dáta Svetovej
 banky</h2>
@@ -770,17 +797,17 @@ dátam budeme mať priamo v R <code>ggplot2</code> - pekné grafy :)</p>
 <div id="vyhľadávanie-dát-vo-wdi" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Vyhľadávanie dát vo
 WDI</h2>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hladame indikatory, ktore maju v nazve gdp</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp&#39;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hladame indikatory, ktore maju v nazve gdp</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp&#39;</span>) </span></code></pre></div>
 <p>Kto pozná regulárne výrazy (regular expressions)</p>
 <ul>
 <li>dajú sa používať aj tie</li>
 <li>na ukážku - hľadajme indikátory, ktoré hovoria o HDP na obyvateľa -
 vypíšme si tie, ktoré obsahujú gdp a capita</li>
 </ul>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp.*capita&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp.*capita&#39;</span>)</span></code></pre></div>
 <p>Ak je veľa výsledkov, môžeme chciet vypísať niekoľko prvých:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp.*capita&#39;</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">WDIsearch</span>(<span class="st">&#39;gdp.*capita&#39;</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,]</span></code></pre></div>
 <pre><code>##      indicator             
 ## [1,] &quot;6.0.GDPpc_constant&quot;  
 ## [2,] &quot;FB.DPT.INSU.PC.ZS&quot;   
@@ -799,9 +826,9 @@ vypíšme si tie, ktoré obsahujú gdp a capita</li>
 <div id="načítanie-dát" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Načítanie dát</h2>
 <p>Pomocou funkcie <code>WDI</code>, ukážka použitia:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>data.hdp <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GDP.PCAP.CD&#39;</span>,</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">country =</span> <span class="fu">c</span>(<span class="st">&#39;FI&#39;</span>,<span class="st">&#39;US&#39;</span>,<span class="st">&#39;FR&#39;</span>, <span class="st">&#39;DE&#39;</span>),</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">start =</span> <span class="dv">1975</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data.hdp <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GDP.PCAP.CD&#39;</span>,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">country =</span> <span class="fu">c</span>(<span class="st">&#39;FI&#39;</span>,<span class="st">&#39;US&#39;</span>,<span class="st">&#39;FR&#39;</span>, <span class="st">&#39;DE&#39;</span>),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">start =</span> <span class="dv">1975</span>)</span></code></pre></div>
 <ul>
 <li><code>indicator</code> sme našli pomocou <code>WDIsearch</code></li>
 <li><code>country</code> vo formáte <code>iso2c</code></li>
@@ -814,7 +841,7 @@ knižnice <code>countrycode</code> v R-ku (<a
 href="https://cran.r-project.org/web/packages/countrycode/"
 class="uri">https://cran.r-project.org/web/packages/countrycode/</a>)</li>
 </ul>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.hdp)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.hdp)</span></code></pre></div>
 <pre><code>##   iso2c country NY.GDP.PCAP.CD year
 ## 1    DE Germany       46252.69 2020
 ## 2    DE Germany       46794.90 2019
@@ -826,11 +853,11 @@ class="uri">https://cran.r-project.org/web/packages/countrycode/</a>)</li>
 <div id="graf-pomocou-ggplot" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Graf pomocou
 ggplot</h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data.hdp, <span class="fu">aes</span>(year, NY.GDP.PCAP.CD, <span class="at">color =</span> country)) <span class="sc">+</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&#39;Year&#39;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&#39;GDP per capita&#39;</span>) <span class="sc">+</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;GDP per capita (current USD)&#39;</span>)</span></code></pre></div>
-<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data.hdp, <span class="fu">aes</span>(year, NY.GDP.PCAP.CD, <span class="at">color =</span> country)) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&#39;Year&#39;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&#39;GDP per capita&#39;</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;GDP per capita (current USD)&#39;</span>)</span></code></pre></div>
+<p><img src="Cvicenie1_new_files/figure-html/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ul>
 <li><code>data.hdp</code> je <code>data frame</code>, v ktorom sú naše
 premenné</li>
@@ -845,24 +872,26 @@ color) podľa premennej country</li>
 number="4.5">
 <h2><span class="header-section-number">4.5</span> AR(1) model pre
 rýchlosť rastu HDP</h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GDP per capita (constant 2010 US$) </span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">country=</span> <span class="fu">c</span> (<span class="st">&#39;DE&#39;</span>),</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">end =</span> <span class="dv">2019</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># zoradime rastuco podla rokov</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">order</span>(data<span class="sc">$</span>year),]</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co"># nasa premenna na modelovanie</span></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>log.y <span class="ot">&lt;-</span> <span class="fu">log</span>(data<span class="sc">$</span>NY.GNP.PCAP.KD)</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co"># doplnime casovu strukturu</span></span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>log.y <span class="ot">&lt;-</span> <span class="fu">ts</span>(log.y, <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">frequency =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GDP per capita (constant 2010 US$) </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">&#39;NY.GNP.PCAP.KD&#39;</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">country=</span> <span class="fu">c</span> (<span class="st">&#39;DE&#39;</span>),</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">end =</span> <span class="dv">2019</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># zoradime rastuco podla rokov</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">order</span>(data<span class="sc">$</span>year),]</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># nasa premenna na modelovanie</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>log.y <span class="ot">&lt;-</span> <span class="fu">log</span>(data<span class="sc">$</span>NY.GNP.PCAP.KD)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="co"># doplnime casovu strukturu</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>log.y <span class="ot">&lt;-</span> <span class="fu">ts</span>(log.y, <span class="at">start =</span> <span class="dv">1975</span>, <span class="at">frequency =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><strong>Zadanie:</strong></p>
 <ul>
 <li>Z priebehu dát vidíme, ze nie sú stacionárne, pretovbudeme pracovat
 s diferenciami</li>
 <li>Zoberieme diferencie logaritmov - to je rýchlost rastu HDP.</li>
+<li>Zobrazte autokorelačnú funckiu pre dáta. Pripomína priebeh ACF pre
+AR(1) proces?</li>
 <li>Vyskúšajte, či je AR(1) model dobrým modelom pre rýchlosť rastu
 HDP.</li>
 <li>Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či

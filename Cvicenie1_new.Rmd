@@ -324,7 +324,14 @@ Načítajte (ak treba, tak nainštalujte) knižnicu `quantmod`
 library(quantmod)
 ```
 
-Na získanie cien akcií sa použije funkcia `getSymbols`, napríklad:
+Na získanie cien akcií sa použije funkcia `getSymbols`,
+```{r eval = FALSE}
+getSymbols(Symbols = skratka pre danú akciu - dá sa nájsť na finance.yahoo, 
+           from = dátum od kedy chceme dáta,
+           to = dátum do kedy chceme dáta, 
+           auto.assign = TRUE/FALSE podľa toho či chceme vytvoriť dataset s daným názvom rovno)
+```
+napríklad:
 ```{r message = FALSE}
 getSymbols("NFLX", from = "2019-01-01", to = "2020-01-01", auto.assign = TRUE)
 ```
@@ -357,7 +364,8 @@ Z týchto dát `NFLX` budeme potrebovať posledný stĺpec (`NFLX.Adjusted`), z 
 ```{r}
 ceny <- NFLX$NFLX.Adjusted
 vynosy <- diff(log(ceny))
-vynosy <- vynosy[-1]
+# alebo vynosy <- diff(ceny, log = TRUE)
+vynosy <- vynosy[-1] # pr=va hodnota bude NA
 ```
 
 Priebeh výnosov:
@@ -365,6 +373,7 @@ Priebeh výnosov:
 chartSeries(vynosy, theme=chartTheme('white',up.col="#009E73"))
 ```
 
+Zobrazíme si autokorelačnú funkciu denných dát
 Autokorelačná funkcia:
 ```{r echo = FALSE, fig.align="center"}
 acf.vynosy <- as.vector(acf(vynosy, plot = FALSE)$acf)
@@ -420,6 +429,7 @@ V knižnici `datasets` je viacero zaujímavých časových radov, my sa teraz po
 
 ```{r, fig.align="center"}
 x <- Nile
+x
 # podrobnejsi popis v helpe: ?Nile
 ```
 
@@ -439,9 +449,22 @@ x <- window(x, start=1910, end=1960)
 
 + Zistite, či je AR(1) proces dobrým modelom pre tieto dáta
 
+Budeme modelovať dáta pomocou funkcie sarima, zatiaľ iba so 4 argumentami
+```{r eval=FALSE}
+
+sarima(xdata = dáta ktoré chceme modelovať,
+       p = autoregresný rád,
+       d = rád diferencovania,
+       q = moving average rád)
+```
+
 ```{r echo = FALSE, fig.align="center"}
 mo2 = capture.output(sarima(x,1,0,0))
 ```
+
+Ako sa zmení Ljung-boxov test pri rezíduách?
+
+Ak je model vyhovujúci skúste aj, či sa dané dáta nedajú modelovať ako biely šum posunutý o konštantu.
 
 ## Dáta Svetovej banky
 
@@ -521,6 +544,7 @@ log.y <- ts(log.y, start = 1975, frequency = 1)
 
 + Z priebehu dát vidíme, ze nie sú stacionárne, pretovbudeme pracovat s diferenciami
 + Zoberieme diferencie logaritmov - to je rýchlost rastu HDP.
++ Zobrazte autokorelačnú funckiu pre dáta. Pripomína priebeh ACF pre AR(1) proces?
 + Vyskúšajte, či je AR(1) model dobrým modelom pre rýchlosť rastu HDP.
 + Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či sa rýchlosť rastu nedá modelovať ako posunutý biely šum. 
 
