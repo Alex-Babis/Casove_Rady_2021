@@ -40,34 +40,14 @@ knitr::opts_chunk$set(echo = TRUE)
     + Výsledky Ljung-Boxovho testu pre hodnoty lagu od 1 až po zvolenú hornú hranicu (aspoň 8 lagov). P hodnoty znázornite graficky ako na cvičení, spolu s porovnaním s hodnotou 0.05. Interpretujte výsledky. (Tu už môžete použiť funkcie `Box.test`)
     + Zhodnotenie modelu: Považujete model "výnosy sú konštanta (t. j. priemerný výnos) plus biely šum" za dobrý model pre vaše dáta? Prečo?
     
-# Bassov model (4 body)
+# AR(1) (4 body)
 
-Opäť si každá dvojica/jedinec nájde dáta, pričom nesmú byť rovnaké ako majú vaši kolegovia. Taktiež to nesmú byť dáta, s ktorými sme pracovali na cvičeniach.(Môžete si napríklad nájsť dáta o inom filme, ktorý na cvičení uvedený nebol)
+Opäť si každá dvojica/jedinec si zvolí krajinu, pričom nesmie byť rovnaká ako majú vaši kolegovia, s výnimkou Nemecka(to bolo na cvičení). Pomocou knižnice `WDI` si stiahnite dáta o HDP na obyvateľa za danú krajinu. Pracujte s logaritmami dát.
 
 * Body budete získavať za: (Za každú 1)
-    + Krátky popis dát a uvedenie zdroja
-    + Určenie dobrých začiatočných hodnôt pre prílušné parametre (také, aby vám metóda nls konvergovala)
-    + Odhadnutie hodnôt parametrov pre vaše dáta 
-    + Porovnanie skutočných tržieb s fitovanými + predikcie tržieb aspoň na 4 roky dopredu, aj s grafickým znázornením ($m*f(t)$ vs predaje, $m*F(t)$ vs kumulatívne predaje[funkcia `cumsum(x)`])
+    + Vykresli dáta, ak sa v nich nachádza trend, odstránte ho.
+    + Odhadnite AR(1) model. Môžeme požadovať daný model za dostatočný? Ak áno, skúste dáta modelovať ako biely šum posunutý o konštantu.
+    + Výsledky z modelu pre AR(1) proces si uložte do nejakej premennej. Pomocou príkazu `vasa_premenna$fit$residuals`, môžete pristupovať k rezíduam z modelu.
+    + Manuálnym výpočtom, podobne ako v príklade 1 v DU, spočítajte Ljung-Boxov test pre rezídua z modelu pre lag 5. Ako sa zmenia stupne volnosti pri testovej štatistike? (`acf(vasa_premenna$fit$residuals, plot = FALSE, lag.max = 10)` )
     
-# Bonus (2 body)
 
-* Odvodte vzťahy pre funkcie $f(t)$ a $F(t)$
-    + (Návod: rozklad na parciálne zlomky)
-$$
-\begin{aligned}
- \frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
-\end{aligned}
-$$
-
-* Dokážte, že ak $q>p>0$, tak funkcia $f(t)$ nadobúda maximum v čase
-$$
-\begin{aligned}
- t^{*}=\frac{ln(\frac{q}{p})}{p+q}
-\end{aligned}
-$$
-    Voľne povedané, je to čas, v ktorom sa predá najviac výrobkov
-    
-* Odvodte vzťah pre maximum funkcie $f(t)$ v prípade, že $p>q>0$. Čo od tohto prípade - keď prevláda vplyv inovátorov - očakávame?
-
-Bonus môžete počitať na papier, naskenovať ho a poslať ho zvlásť ako obrázky. Píšte ale čitateľne.

@@ -256,7 +256,9 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Homework 1</li>
+    <li>
+      <a href="Domaca_uloha1.html">Homework 1</a>
+    </li>
     <li class="dropdown-header">Homework 2</li>
     <li class="dropdown-header">Homework 3</li>
     <li class="dropdown-header">Homework 4</li>
@@ -353,55 +355,28 @@ Prečo?</li>
 </ul></li>
 </ul>
 </div>
-<div id="bassov-model-4-body" class="section level1">
-<h1>Bassov model (4 body)</h1>
-<p>Opäť si každá dvojica/jedinec nájde dáta, pričom nesmú byť rovnaké
-ako majú vaši kolegovia. Taktiež to nesmú byť dáta, s ktorými sme
-pracovali na cvičeniach.(Môžete si napríklad nájsť dáta o inom filme,
-ktorý na cvičení uvedený nebol)</p>
+<div id="ar1-4-body" class="section level1">
+<h1>AR(1) (4 body)</h1>
+<p>Opäť si každá dvojica/jedinec si zvolí krajinu, pričom nesmie byť
+rovnaká ako majú vaši kolegovia, s výnimkou Nemecka(to bolo na cvičení).
+Pomocou knižnice <code>WDI</code> si stiahnite dáta o HDP na obyvateľa
+za danú krajinu. Pracujte s logaritmami dát.</p>
 <ul>
 <li>Body budete získavať za: (Za každú 1)
 <ul>
-<li>Krátky popis dát a uvedenie zdroja</li>
-<li>Určenie dobrých začiatočných hodnôt pre prílušné parametre (také,
-aby vám metóda nls konvergovala)</li>
-<li>Odhadnutie hodnôt parametrov pre vaše dáta</li>
-<li>Porovnanie skutočných tržieb s fitovanými + predikcie tržieb aspoň
-na 4 roky dopredu, aj s grafickým znázornením (<span
-class="math inline">\(m*f(t)\)</span> vs predaje, <span
-class="math inline">\(m*F(t)\)</span> vs kumulatívne predaje[funkcia
-<code>cumsum(x)</code>])</li>
+<li>Vykresli dáta, ak sa v nich nachádza trend, odstránte ho.</li>
+<li>Odhadnite AR(1) model. Môžeme požadovať daný model za dostatočný? Ak
+áno, skúste dáta modelovať ako biely šum posunutý o konštantu.</li>
+<li>Výsledky z modelu pre AR(1) proces si uložte do nejakej premennej.
+Pomocou príkazu <code>vasa_premenna$fit$residuals</code>, môžete
+pristupovať k rezíduam z modelu.</li>
+<li>Manuálnym výpočtom, podobne ako v príklade 1 v DU, spočítajte
+Ljung-Boxov test pre rezídua z modelu pre lag 5. Ako sa zmenia stupne
+volnosti pri testovej štatistike?
+(<code>acf(vasa_premenna$fit$residuals, plot = FALSE, lag.max = 10)</code>
+)</li>
 </ul></li>
 </ul>
-</div>
-<div id="bonus-2-body" class="section level1">
-<h1>Bonus (2 body)</h1>
-<ul>
-<li><p>Odvodte vzťahy pre funkcie <span
-class="math inline">\(f(t)\)</span> a <span
-class="math inline">\(F(t)\)</span></p>
-<ul>
-<li>(Návod: rozklad na parciálne zlomky) <span class="math display">\[
-\begin{aligned}
-\frac{1}{(1-F(t))(p+qF(t))} = \frac{A}{(1-F(t))}+\frac{B}{p+qF(t)}
-\end{aligned}
-\]</span></li>
-</ul></li>
-<li><p>Dokážte, že ak <span class="math inline">\(q&gt;p&gt;0\)</span>,
-tak funkcia <span class="math inline">\(f(t)\)</span> nadobúda maximum v
-čase <span class="math display">\[
-\begin{aligned}
-t^{*}=\frac{ln(\frac{q}{p})}{p+q}
-\end{aligned}
-\]</span> Voľne povedané, je to čas, v ktorom sa predá najviac
-výrobkov</p></li>
-<li><p>Odvodte vzťah pre maximum funkcie <span
-class="math inline">\(f(t)\)</span> v prípade, že <span
-class="math inline">\(p&gt;q&gt;0\)</span>. Čo od tohto prípade - keď
-prevláda vplyv inovátorov - očakávame?</p></li>
-</ul>
-<p>Bonus môžete počitať na papier, naskenovať ho a poslať ho zvlásť ako
-obrázky. Píšte ale čitateľne.</p>
 </div>
 
 

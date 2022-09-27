@@ -21,7 +21,7 @@ navbar:
     - text: "Homeworks"
       menu:
         - text: "Homework 1"
-          #href: Domaca_uloha1.html
+          href: Domaca_uloha1.html
         - text: "Homework 2"
           #href: Domaca_uloha2.html
         - text: "Homework 3"

@@ -26,7 +26,7 @@ packages <- c("ggplot2","quantmod","astsa","reshape2","WDI")
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
-  install.packages(packages[!installed_packages])
+  install.packages(packages[!installed_packages],dependencies=TRUE)
 }
 
 # Packages loading
@@ -41,7 +41,7 @@ packages <- c("ggplot2","quantmod","astsa","WDI")
 # inštalácia balíkov, ak nie sú nainštalované
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
-  install.packages(packages[!installed_packages])
+  install.packages(packages[!installed_packages],dependencies=TRUE)
 }
 
 # načítanie balíkov
