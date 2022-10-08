@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Cvičenie 2 - Autoregresné procesy</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Alex Babiš</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Cvicenie1_new.html">Tutorial 1</a>
+    </li>
+    <li>
+      <a href="Cvicenie2_new.html">Tutorial 2</a>
+    </li>
+    <li class="dropdown-header">Tutorial 3</li>
+    <li class="dropdown-header">Tutorial 4</li>
+    <li class="dropdown-header">Tutorial 5</li>
+    <li class="dropdown-header">Tutorial 6</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Homeworks
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Domaca_uloha1.html">Homework 1</a>
+    </li>
+    <li class="dropdown-header">Homework 2</li>
+    <li class="dropdown-header">Homework 3</li>
+    <li class="dropdown-header">Homework 4</li>
+    <li class="dropdown-header">Homework 5</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Cvičenie 2 - Autoregresné procesy</h1>
+
+</div>
+
+
+<div id="potrebé-knižnice-pre-cvičenie-2" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Potrebé knižnice pre
+cvičenie 2</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Package names</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;ggfortify&quot;</span>,<span class="st">&quot;astsa&quot;</span>,<span class="st">&quot;datasets&quot;</span>,<span class="st">&quot;forecast&quot;</span>,<span class="st">&quot;zoo&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages not yet installed</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>installed_packages <span class="ot">&lt;-</span> packages <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(installed_packages <span class="sc">==</span> <span class="cn">FALSE</span>)) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(packages[<span class="sc">!</span>installed_packages],<span class="at">dependencies=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages loading</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+</div>
+<div id="odhadovanie-parametrov-ar-procesu" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Odhadovanie parametrov
+AR procesu</h1>
+<p>Podobne ako na minulom cvičení, ale podrobnejšie:</p>
+<p><strong>Funkcia v R-ku:</strong> Budeme používať funkciu
+<code>sarima</code> (AR proces je špeciálnym prípadom SARIMA procesu -
+sezónny proces, bude neskôr na tomto predmete) z knižnice
+<code>astsa</code> (astsa = applied statistical time series
+analysis).</p>
+<div id="príklad-z-prednášky-modelovanie-spreadu" class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> Príklad z prednášky:
+modelovanie spreadu</h2>
+<p>Modelujeme rozdiel medzi dlhodobou a krátkodobou úrokovou mierou</p>
+<p>Načítajte dáta a vytvorte premennú <code>spread</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/RSQ.txt&quot;</span>)   <span class="co"># short term rate</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>r20 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/R20Q.txt&quot;</span>) <span class="co"># 20Y rate</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>spread <span class="ot">&lt;-</span> r20 <span class="sc">-</span> rs</span></code></pre></div>
+<p>Z premennej <code>spread</code> vytvoríme object typu time-series,
+ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na
+cvičení 1. Použijeme funkciu <code>ts</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts</span>(<span class="at">data =</span> ..., </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">frequency =</span> ...,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">delta =</span> ...,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">start =</span> ...,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">end =</span> ..., </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">class =</span> ... )</span></code></pre></div>
+<p>Použitie funkcie <code>ts</code>: <code>data</code> - naše
+pozorovania<br />
+<code>frequency</code> - frekvencia s akou naše dáta berieme (1 - ročné,
+4 - kvartálne, 12 - mesačné, 356 - denné, …)<br />
+<code>start = c()</code> - Buď jedno číslo - rok odkedy berieme
+pozorovania, alebo vektor velkosti 2 - prvá hodnota označuje rok
+začiatku našich pozorovaní, druhá hodnota označuje, kde v daný rok začať
+v závislosti od zvolenej frekvencie<br />
+Napríklad zoberieme mesačnú frekvenciu - <code>frequency = 12</code>,
+<code>start = c(2020, 3)</code> označuje čas prvého pozorovania rovný
+01.03.2020<br />
+(V prípade denných dát, frekvencia 356, špecifikujeme konkrétny deň,
+napríklad 19.10.2020 = c(2020,292) ) <code>delta</code> - Alternatívne k
+<code>frequency</code> ako zlomok, teda 1/12 pre mesačné dáta, atď…
+<code>end</code> - Čas posledného pozorovania (nie je ale potrebné
+špecifikovať) <code>class</code> - Jedno z c(“mts”, “ts”, “matrix”),
+<code>mts</code> predstavuje viacrozmerný časový rad, resp. viac
+časových radov, ktoré zdielajú rovnakú časovú štruktúru</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spread <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="at">data =</span> ,             <span class="co"># data su premennej spread</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">frequency =</span> ,        <span class="co"># su kvartalne</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">start =</span> )            <span class="co"># zacinaju v 1. kvartali roku 1952</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(spread)  <span class="co"># budeme vidiet, ze uz je to casovy rad</span></span></code></pre></div>
+<pre><code>## [1] &quot;ts&quot;</code></pre>
+<p>Vykreslíme teraz priebeh - na x-ovej osi budú správne časy: Typ
+<code>ts</code> vieme kresliť rovno pomocou funkcie
+<code>plot(...)</code>.<br />
+Alternatívne vieme použiť knižnicu <code>ggfortify</code>, krorá nám
+umožní kresliť pekné grafy pre object <code>ts</code> pomocnou knižnice
+<code>ggplot2</code>. Funkcia <code>autoplot(ts)</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(spread)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" />
+Okrem iného môžeme pomocou <code>autoplot()</code> vykresliť aj
+autokorelačnú funkciu a ďalšie rôzne grafy týkajúce sa časových radov,
+akými sú výstupy z <code>sarima</code> funckie a podobne
+(<code>?autoplot</code>). <strong>Úloha:</strong> Zobrazte výberovú
+autokorelačnú funkciu.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">acf</span>(spread, <span class="at">plot =</span> <span class="cn">FALSE</span>)) </span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#acf1(spread)</span></span></code></pre></div>
+<p>Na prednáške sme videli, že hoci sa podobá na ACF procesu AR(1), nie
+je to dobrý model pre dáta. Zopakujeme to - odhadneme model a
+skontrolujeme rezíduá.</p>
+<p><strong>Použitie funkcie sarima:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(data, p, k, <span class="dv">0</span>) <span class="co"># AR(p) model pre k-te diferencie premennej data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(data, p, <span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># AR(p) model pre premennu data</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(data, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># Biely šum plus konštanta</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">sarima</span>(data,p, <span class="dv">0</span>, <span class="dv">0</span>)</span></code></pre></div>
+<p><strong>Výstup pri spustení funkcie <code>sarima</code>:</strong></p>
+<ul>
+<li>konvergencia optimalizačného algoritmu z odhadovania parametrov</li>
+<li>odhady parametrov, štandardné odchýlky, informačné kritériá</li>
+<li>graficky rezíduá, ich ACF, p-hodnoty Ljung-Boxovej štatistiky</li>
+</ul>
+<p><strong>Výstup vypísaní objektu <code>model</code> (vytvorený s
+parametrom <code>details = FALSE)</code>:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">sarima</span>(data,p, <span class="dv">0</span>, <span class="dv">0</span>, <span class="at">details=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<ul>
+<li>odhady parametrov, štandardné odchýlky, informačné kritériá</li>
+</ul>
+<p><strong>Úloha:</strong></p>
+<ul>
+<li>Na prednáške sme si ukázali, že AR(1) proces nie je dobrým modelom
+pre tieto dáta. Odhadnite ho teraz samostatne pomocou uvedenej funkcie a
+vysvetlite, na základe čoho tento model zamietneme.</li>
+<li>Potom odhadnite a skomentujte AR(2) model.<br />
+</li>
+</ul>
+<p><strong>AR(1):</strong><br />
+</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>## $fit
+## 
+## Call:
+## arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+##     xreg = xmean, include.mean = FALSE, transform.pars = trans, fixed = fixed, 
+##     optim.control = list(trace = trc, REPORT = 1, reltol = tol))
+## 
+## Coefficients:
+##          ar1   xmean
+##       0.9156  1.0473
+## s.e.  0.0266  0.5491
+## 
+## sigma^2 estimated as 0.5106:  log likelihood = -234.8,  aic = 475.61
+## 
+## $degrees_of_freedom
+## [1] 214
+## 
+## $ttable
+##       Estimate     SE t.value p.value
+## ar1     0.9156 0.0266 34.4589  0.0000
+## xmean   1.0473 0.5491  1.9075  0.0578
+## 
+## $AIC
+## [1] 2.20189
+## 
+## $AICc
+## [1] 2.202151
+## 
+## $BIC
+## [1] 2.248769</code></pre>
+<p><strong>AR(2):</strong><br />
+</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>## $fit
+## 
+## Call:
+## arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+##     xreg = xmean, include.mean = FALSE, transform.pars = trans, fixed = fixed, 
+##     optim.control = list(trace = trc, REPORT = 1, reltol = tol))
+## 
+## Coefficients:
+##          ar1      ar2   xmean
+##       1.1809  -0.2886  1.0449
+## s.e.  0.0650   0.0651  0.4212
+## 
+## sigma^2 estimated as 0.4677:  log likelihood = -225.42,  aic = 458.84
+## 
+## $degrees_of_freedom
+## [1] 213
+## 
+## $ttable
+##       Estimate     SE t.value p.value
+## ar1     1.1809 0.0650 18.1566  0.0000
+## ar2    -0.2886 0.0651 -4.4321  0.0000
+## xmean   1.0449 0.4212  2.4807  0.0139
+## 
+## $AIC
+## [1] 2.124238
+## 
+## $AICc
+## [1] 2.124762
+## 
+## $BIC
+## [1] 2.186743</code></pre>
+</div>
+<div id="cvičenie-modelovanie-dát-o-odchyte-rysov"
+class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Cvičenie: Modelovanie
+dát o odchyte rysov</h2>
+<p>V knižnici <code>astsa</code> je viacero zaujímavých časových radov,
+my sa teraz pozrieme na odchyt rysov:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> Lynx</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># podrobnejsi popis v helpe: ?Nile</span></span></code></pre></div>
+<p><strong>Úloha:</strong></p>
+<ul>
+<li>Zistite, či je AR(1) proces dobrým modelom pre tieto dáta</li>
+</ul>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Odhadnite aj AR(2) a AR(3) modely, zhodnoťte rezíduá. Porovnajte ich
+informačné kritériá.<br />
+<br />
+<strong>AR(2)</strong>
+<img src="Cvicenia2_new_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /><br />
+<strong>AR(3)</strong>
+<img src="Cvicenia2_new_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></li>
+</ul>
+</div>
+<div id="zapísanie-odhadnutého-modelu-na-základe-výstupu-z-r-ka"
+class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Zapísanie odhadnutého
+modelu na základe výstupu z R-ka</h2>
+<p>Vygenerujme si dáta - 100 hodnôt autoregresného procesu <span
+class="math inline">\(x_t=0.8x_{t−1}+u_t\)</span>, kde <span
+class="math inline">\(D[u_t]=2\)</span>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">model=</span><span class="fu">list</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">0.8</span>)), <span class="at">n=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(<span class="dv">2</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(x)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Odhadneme AR(1) model:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima</span>(x,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">details =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>## $fit
+## 
+## Call:
+## arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+##     xreg = xmean, include.mean = FALSE, transform.pars = trans, fixed = fixed, 
+##     optim.control = list(trace = trc, REPORT = 1, reltol = tol))
+## 
+## Coefficients:
+##          ar1   xmean
+##       0.7930  0.0204
+## s.e.  0.0609  0.5756
+## 
+## sigma^2 estimated as 1.518:  log likelihood = -163.27,  aic = 332.54
+## 
+## $degrees_of_freedom
+## [1] 98
+## 
+## $ttable
+##       Estimate     SE t.value p.value
+## ar1     0.7930 0.0609 13.0132  0.0000
+## xmean   0.0204 0.5756  0.0355  0.9717
+## 
+## $AIC
+## [1] 3.325426
+## 
+## $AICc
+## [1] 3.326664
+## 
+## $BIC
+## [1] 3.403582</code></pre>
+<p>Odhadnutý model je <span
+class="math display">\[x_t=δ+0.7930x_{t−1}+u_t\]</span></p>
+<p>kde <span class="math inline">\(δ\)</span> je taká konštanta, aby
+platilo, že <span class="math inline">\(E[x_t]=0.0204\)</span>
+(<code>xmean</code> z výstupu).</p>
+<p><strong>Úloha:</strong> Dopočítajte konštantu <span
+class="math inline">\(δ\)</span> (na kontrolu 0.0042228).</p>
+</div>
+</div>
+<div id="overovanie-stacionarity-ar-procesu-v-r-ku"
+class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Overovanie stacionarity
+AR procesu v R-ku</h1>
+<p>V prípade AR(1) procesu, je overovanie stacionarity zrejmé - stačí sa
+pozrieť na absolútnu hodnotu autoregresného koeficientu, musí byť v
+absolútnej hodnote menší ako 1.</p>
+<p>Pre všeobecný AR(p) proces je v prednáškach odvodená podmienka
+stacionarity: proces <span
+class="math inline">\((1−α_{1}L−α_{2}L^{2}−…α_{p}L^{p})x_t=δ+u_{t}\)</span>
+je stacionárny práve vtedy, keď sú všetky korene polynómu <span
+class="math inline">\(1−α_{1}L−α_{2}L^{2}−…α_{p}L^{p}\)</span> v
+absolútnej hodnote väčšie ako 1 (geometricky: mimo jednotkového
+kruhu).</p>
+<p><strong>Otázka:</strong> Ukážte, že toto kritériu je v súlade s tým,
+čo je povedané pre AR(1) proces o jeho autoregresnom koeficiente.</p>
+<p><strong>Funkcia v R-ku:</strong> Korene polynómu <span
+class="math inline">\(1−α_{1}L−α_{2}L^{2}−…α_{p}L^{p}\)</span> nájdeme
+pomocou funkcie polyroot.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">polyroot</span>(z)</span></code></pre></div>
+<p><code>z</code> - argument obsahujúci polynomiálne koeficienty v
+tvare: <span class="math display">\[z_1x^0 + z_2x^1 + z_3 x^2 + ... +
+z_n x^{n-1}\]</span></p>
+<div id="príklad-overenie-stacionarity-ar2-procesu"
+class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Príklad: Overenie
+stacionarity AR(2) procesu</h2>
+<p><strong>Zadanie:</strong> Zistíme, či je proces <span
+class="math inline">\((1−0.9L+0.6L^{2})x_t=u_t\)</span> stacionárny.</p>
+<p>Výpočet v R-ku: Hľadáme korene (a ich absolútne hodnoty) polynómu
+<span class="math inline">\((1−0.9L+0.6L^{2})\)</span>, teda:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">polyroot</span>(<span class="fu">c</span>(...)) <span class="co"># korene polynómu </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(<span class="fu">polyroot</span>(<span class="fu">c</span>(...))) <span class="co"># absolútne hodnoty koreňov polynómu</span></span></code></pre></div>
+<pre><code>## [1] 0.75+1.050793i 0.75-1.050793i</code></pre>
+<pre><code>## [1] 1.290994 1.290994</code></pre>
+<p><strong>Záver:</strong> Korene sú mimo jednotkového kruhu, lebo
+absolútna hodnota je pre každý koreň väčšia ako 1 ⇒ náš proces JE
+STACIONÁRNY</p>
+</div>
+<div
+id="cvičenie-overenie-stacionarity-ar-procesu-súčasť-kostry-na-skúške"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Cvičenie: Overenie
+stacionarity AR procesu (súčasť kostry na skúške)</h2>
+<p>Zistite, či sú stacionárne nasledovné AR procesy:</p>
+<ul>
+<li><span class="math inline">\((1−0.25L+0.8L^2)x_t=−3+u_t\)</span></li>
+<li><span
+class="math inline">\(x_t=2+0.8x_{t−1}−0.1x_{t−2}+u_t\)</span></li>
+<li><span
+class="math inline">\((1−0.25L+0.6L^2−0.55L^3)x_t=u_t\)</span></li>
+<li><span class="math inline">\((1+0.3L+0.2L^2)x_t=5+u_t\)</span></li>
+<li><span
+class="math inline">\(x_t=2+0.3x_{t−1}−0.3x_{t−2}+u_t\)</span></li>
+<li><span
+class="math inline">\(x_t=0.25+0.1x_{t−1}+0.2x_{t−3}+u_t\)</span></li>
+</ul>
+<p>Vypočítajte strednú hodnotu stacionárnych procesov.</p>
+</div>
+<div id="cvičenie-nájdenie-príkladu-procesu-s-danou-vlastnosťou"
+class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Cvičenie: Nájdenie
+príkladu procesu s danou vlastnosťou</h2>
+<p>Nájdite príklad</p>
+<ul>
+<li>stacionárneho AR(3) procesu,</li>
+<li>nestacionárneho AR(4) procesu,</li>
+<li>stacionárneho AR(2) procesu, ktorého stredná hodnota je rovná 10. V
+každom z týchto prípadov dokážte, že váš proces naozaj má požadovanú
+vlastnosť.</li>
+</ul>
+<p>Príklady tohto typu “nájdite príklad procesu, ktorý … a ukážte, že má
+požadovanú vlastnosť” budú aj na skúške, aj na domácej úlohe číslo
+2.</p>
+</div>
+</div>
+<div id="overenie-stacionarity-odhadnutého-ar-modelu"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Overenie stacionarity
+odhadnutého AR modelu</h1>
+<div id="pristupovanie-ku-koeficientom-modelu" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Pristupovanie ku
+koeficientom modelu</h2>
+<p>Samozrejme pri AR(1) modeli sme hneď videli, či je stacionárny alebo
+nie, pri modeloch vyššieho rádu použijeme funkciu
+<code>polyroot</code></p>
+<p>Hodnoty koeficientov však nemusíme odpisovať, tak by sme navyše
+dostali iba ich približné hodnoty</p>
+<p>Napríklad ak odhadneme model:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model.ar3 <span class="ot">&lt;-</span> <span class="fu">sarima</span>(spread, <span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">details=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Pozrite si <code>str(model.ar3)</code> - štruktúru objektu
+<code>model.ar3</code> - a potom vyberte z<code>model.ar3</code> vektor
+odhadnutých parametrov modelu.</p>
+<p>Z tohto chceme tie zložky vektora, ktorých názvy obsahujú
+<code>ar</code>:</p>
+<pre><code>##         ar1         ar2         ar3       xmean 
+##  1.18493093 -0.30509964  0.01391889  1.04510079</code></pre>
+<p>Dá sa spraviť <code>koef[1:p]</code>, ak je to AR(p) model</p>
+<p>Budeme mať aj všeobecnejšie modely (koeficienty budú s názvami
+<code>ma1</code>, <code>ma2</code>, … neskôr aj napríklad
+<code>sar1</code>, <code>sma1</code>), napríklad:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>koef.zlozitejsie</span></code></pre></div>
+<pre><code>##        ar1        ar2        ar3        ma1        ma2       sar1       sma1 
+##  1.3167189 -0.7961300  0.3590080 -0.1168011  0.3801231  0.9967049 -0.9797410 
+##      xmean 
+##  1.0584042</code></pre>
+<p>Počet členov jednotlivých typov je daný našou špecifikáciou modelu,
+takže sa znovu dá spočítať, ktoré zložky zodpovedajú členom
+<code>ar</code>, ktor <code>ma</code> atď. Alternatívou je použiť
+regulárne výrazy a automaticky vybrať napríklad zložky, ktorých názov
+začína <code>ar</code>, zložky, ktorých názov začína <code>ma</code>
+atď. Ak by sme chceli indexy tých, ktoré obsahujú <code>ma</code>,
+spravili by sme:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;ma&quot;</span>,                     <span class="co"># co sa ma hladat</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(koef.zlozitejsie))   <span class="co"># kde sa to ma hladat</span></span></code></pre></div>
+<pre><code>## [1] 4 5 7</code></pre>
+<p>My ale checeme iba tie, ktoré začínajú <code>ma</code> (lebo je tam
+aj <code>sma1</code> koeficient, ktorý necheme). Tu prichádzajú na rad
+regulárne výrazy:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^ma&quot;</span>,                     <span class="co"># co sa ma hladat</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(koef.zlozitejsie))   <span class="co"># kde sa to ma hladat</span></span></code></pre></div>
+<pre><code>## [1] 4 5</code></pre>
+<p>Príslušné koeficienty potom sú</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>koef.zlozitejsie[<span class="fu">grep</span>(<span class="st">&quot;^ma&quot;</span>,<span class="fu">names</span>(koef.zlozitejsie))]</span></code></pre></div>
+<pre><code>##        ma1        ma2 
+## -0.1168011  0.3801231</code></pre>
+<p>Viac o regulárnych výrazov v R-ku: <a
+href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions"
+class="uri">https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions</a></p>
+</div>
+<div id="cvičenie-ar2-model-pre-spread-overenie-stacionarity"
+class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Cvičenie: AR(2) model
+pre spread, overenie stacionarity</h2>
+<p>Na prednáške sme videli, že ak pre dáta v premennej
+<code>spread</code> odhadneme AR(2) model, bude mať dobré rezíduá.</p>
+<p><strong>Úloha:</strong> Overte stacionaritu získaného modelu.</p>
+</div>
+</div>
+<div id="konštrukcia-predikcií" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Konštrukcia
+predikcií</h1>
+<p>Cieľom modelovania je často konštrukcia predikcií do budúcnosti.</p>
+<p><strong>Funkcia v R-ku:</strong> <code>sarima.for</code></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima.for</span>(data, n, p, <span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># predikcie pre n pozorovani z AR(p) modelu</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sarima.for</span>(data, n, p, k, <span class="dv">0</span>)  <span class="co"># predikcie pre n pozorovani premennej data, ak jej k-te diferencie modelujeme ako AR(p) </span></span></code></pre></div>
+<p>Úloha: Pomocou AR(2) modelu pre dáta <code>spread</code> spravte
+predikcie na nasledujúce dva roky (máme kvartálne dáta, takže 2 roky
+predstavujú 8 pozorovaní)</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>## $pred
+##             Qtr1        Qtr2        Qtr3        Qtr4
+## 2006 -0.11864092  0.03883299  0.19265253  0.32884850
+## 2007  0.44528788  0.54348324  0.62583626  0.69474654
+## 
+## $se
+##           Qtr1      Qtr2      Qtr3      Qtr4
+## 2006 0.6838752 1.0582313 1.3006955 1.4585690
+## 2007 1.5627848 1.6325528 1.6798046 1.7120892</code></pre>
+<p>Ak uložíme výstup funkcie <code>sarima.for</code> napr. do premennej
+<code>predikcie</code>, tak máme prístup k predikciám a štandardným
+odchýlkam: <code>predikcie$pred</code>, <code>predikcie$se</code>. To je
+užitočné napríklad vtedy, keď chceme vynechať nejaké posledné dáta,
+odhadnúť model pomocou zostávajúcich a potom porovnať predikcie s tým,
+čo v skutočnosti nastalo.</p>
+<p><strong>Úloha:</strong></p>
+<ul>
+<li><p>Vynechajte z dát v premennej <code>spread</code> posledné dva
+roky.</p></li>
+<li><p>Zo zostávajúcich dát odhadnite AR(2) model. Overte jeho
+stacionaritu a či môžeme považovať rezíduá za biely šum.</p></li>
+<li><p>Spravte z tohto modelu predikcie na nasledujúce dva
+roky.</p></li>
+<li><p>Nakreslite do jedného grafu farebne odlíšené: dáta použité na
+odhadovanie modelu, predikcie, predikcie +/- 2 ′× štandardná odchýlka,
+skutočný vývoj v posledných dvoch rokoch. Na to sa dá dobre využiť
+funkcia <code>ts.plot</code>, môžeme spraviť napríklad:</p></li>
+</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ts.plot</span>(data1, data2, data3,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">gpars=</span><span class="fu">list</span>(<span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popis dat&quot;</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;black&quot;</span>))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Pritom jednotlivé dáta nemusia mať rovnaký rozsah časov, pre ktoré sú
+dostupné, R-ko sa postará aj o rozsah y-ovej osi (čo nie je zaručené pri
+kreslení pomocou <code>plot</code> a potom <code>lines</code>).</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Iný postup (len doplnenie dát do obrázku zo <code>sarima.for</code>):
+Po vykreslení grafu do neho štandardným spôsobom môžeme pridávať
+<code>lines</code>, <code>points</code> a pod.</p>
+<p><strong>Nepovinné rozšírenie:</strong> Zvoľte si vlastný rozsah
+použitých dát, ktoré chcete zobraziť (teda nie nutne 100, resp. všetky).
+Namiesto čiar, ktoré ohraničujú predikčné intervaly spravte vyfarbenú
+oblasť:</p>
+<p><strong>Návod:</strong> Dokreslovanie pre funkciu ts.plot <a
+href="https://stats.stackexchange.com/questions/154346/fitted-confidence-intervals-forecast-function-r"
+class="uri">https://stats.stackexchange.com/questions/154346/fitted-confidence-intervals-forecast-function-r</a></p>
+<p>Krajšie grafy pomocou funkcie <code>autoplot</code> a
+<code>autolayer</code>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pallete <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;gray&quot;</span>, <span class="st">&quot;gray&quot;</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>UB <span class="ot">&lt;-</span> predikcie<span class="sc">$</span>pred <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>predikcie<span class="sc">$</span>se</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>LB <span class="ot">&lt;-</span> predikcie<span class="sc">$</span>pred <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>predikcie<span class="sc">$</span>se</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">window</span>(spread, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1952</span>,<span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2003</span>,<span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(<span class="fu">window</span>(spread, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2004</span>,<span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2005</span>,<span class="dv">4</span>)), <span class="at">series=</span><span class="st">&quot;Data&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(predikcie<span class="sc">$</span>pred, <span class="at">series=</span><span class="st">&quot;Forecasts&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(UB, <span class="at">series=</span><span class="st">&quot;UB&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(LB, <span class="at">series=</span><span class="st">&quot;LB&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>pallete)<span class="sc">+</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /><br />
+Zoom:
+<img src="Cvicenia2_new_files/figure-html/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /><br />
+</p>
+<p>Vyfarbené intevaly spoľahlivosti:</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Cvičenie:</strong> Modelovali sme rýchlosť rastu HDP
+autoregresným procesom. Vynechajte teraz z dát posledných 5 rokov.
+Odhadnite vhodný model a použitím nájdeného modelu spravte predikcie
+pre:</p>
+<ul>
+<li>logaritmus HDP</li>
+<li>rýchlosť rastu HDP</li>
+<li>Spravte porovnanie s reálnymi hodnotami týchto premenných.</li>
+</ul>
+</div>
+<div id="autokorelačná-funkcia-ar-procesu" class="section level1"
+number="6">
+<h1><span class="header-section-number">6</span> Autokorelačná funkcia
+AR procesu</h1>
+<p>Nájdeme autokorelačnú funkciu AR(3) procesu <span
+class="math display">\[x_t=1.5x_{t−1}−0.8x_{t−2}+0.2x_{t−3}+u_t,\]</span>
+a to dvoma spôsobmi:</p>
+<ul>
+<li><p>priamo z Yule-Wolkerových rovníc a diferenčnej rovnice z
+prednášky</p></li>
+<li><p>pomocou funkcie v R-ku</p></li>
+</ul>
+<div id="z-yule-wolkerových-rovníc" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Z Yule Wolkerových
+rovníc</h2>
+<p>Postup:</p>
+<ul>
+<li><p>Vyriešime v R-ku Yule-Wolkerove rovnice - dostaneme ACF(k) pre
+k=1,2,3 (pozrite <code>?matrix</code>, <code>?solve</code>)</p></li>
+<li><p>V cykle vypočítame nasledjúce hodnoty ACF</p></li>
+</ul>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times=</span><span class="dv">10</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> ....                   <span class="co"># prve tri zlozky ako riesenie sustavy</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">10</span>) rho[i] <span class="ot">&lt;-</span> ... <span class="co"># z diferencnej rovnice</span></span></code></pre></div>
+<pre><code>##  [1] 0.9178082 0.7602740 0.6061644 0.4845890 0.3940068 0.3245719 0.2685702
+##  [8] 0.2219991 0.1830569 0.1507001</code></pre>
+</div>
+<div id="funkcia-v-r-ku" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Funkcia v R-ku</h2>
+<p>Použite funkciu <code>ARMAacf</code> pre náš proces</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(...), <span class="at">lag.max=</span><span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##         0         1         2         3         4         5         6         7 
+## 1.0000000 0.9178082 0.7602740 0.6061644 0.4845890 0.3940068 0.3245719 0.2685702 
+##         8         9        10 
+## 0.2219991 0.1830569 0.1507001</code></pre>
+<p>a porovnajte výsledky z oboch postupov. Funkcia <code>ARMAacf</code>
+by už nemala byť “čiernou skrinkou” ;-)</p>
+</div>
+</div>
+<div id="parciálna-autokorelačná-funkcia-ar-procesu"
+class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Parciálna autokorelačná
+funkcia AR procesu</h1>
+<div id="opakovanie-z-prednášky" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Opakovanie z
+prednášky</h2>
+<ul>
+<li><p>Čo je parciálna autokorelačná funkcia procesu?</p></li>
+<li><p>Čím je charakteristická PACF autoregresného procesu rádu p?
+Prečo? Ako to vyplýva z definície PACF?</p></li>
+</ul>
+</div>
+<div id="výpočet-v-r-ku" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Výpočet v R-ku</h2>
+<p>Nájdeme autokorelačnú funkciu AR(3) procesu <span
+class="math display">\[x_t=1.5x_{t−1}−0.8x_{t−2}+0.2x_{t−3}+u_t,\]</span>
+Podobne ako v prípade ACF, aj teraz použijeme funkciu
+<code>ARMAacf</code>, ale pridáme parameter <code>pacf=TRUE</code>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(...), <span class="at">lag.max=</span><span class="dv">10</span>, <span class="at">pacf=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="kontrolná-otázka" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Kontrolná otázka</h2>
+<p>ACF aj PACF sa v R-ku počítajú numericky.</p>
+<p>Ktoré z nasledujúcich postupností</p>
+<ul>
+<li><p>sa po určitom počte členov vynulujú (a teda tie malé čísla sú v
+skutočnosti nuly) a ktoré</p></li>
+<li><p>majú hodnoty, ktoré konvergujú k nule, ale neexistuje index, od
+ktorého by boli nulové?</p></li>
+</ul>
+<p><strong>Príklad 1</strong></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>acf.pr1 <span class="ot">&lt;-</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="sc">-</span><span class="fl">0.2</span>), <span class="at">lag.max=</span><span class="dv">10</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>acf.pr1</span></code></pre></div>
+<pre><code>##             0             1             2             3             4 
+##  1.0000000000  0.0416666667 -0.1979166667 -0.0182291667  0.0386718750 
+##             5             6             7             8             9 
+##  0.0055794271 -0.0074554036 -0.0014886556  0.0014166479  0.0003685635 
+##            10 
+## -0.0002649014</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>acf.pr1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">name=</span> <span class="fu">as.factor</span>(<span class="fu">as.numeric</span>(<span class="fu">names</span>(acf.pr1))) ,  </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">value=</span> acf.pr1 )</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span> acf.pr1, <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> value))<span class="sc">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Príklad 2</strong></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pacf.pr1 <span class="ot">&lt;-</span><span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">0.3</span>,<span class="fl">0.05</span>), <span class="at">lag.max=</span><span class="dv">10</span>, <span class="at">pacf=</span><span class="cn">TRUE</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>pacf.pr1</span></code></pre></div>
+<pre><code>##  [1]  3.157895e-01  5.000000e-02 -3.863413e-18  3.927096e-19 -4.622862e-19
+##  [6] -1.450362e-19 -4.829267e-20  6.640242e-20  5.131096e-20 -2.263719e-20</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>pacf.pr1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">name=</span> <span class="fu">as.factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(pacf.pr1)) ,  </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">value=</span> pacf.pr1 )</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span> pacf.pr1, <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> value))<span class="sc">+</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="výberová-pacf-z-dát" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Výberová PACF z
+dát</h2>
+<p>Môžeme</p>
+<ul>
+<li><p>použiť funkciu <code>pacf</code></p></li>
+<li><p>pomocou funkcie <code>acf2</code> z knižnice astsa vykresliť
+naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu
+pre lag 0, ktorá sa vždy rovná 1)</p></li>
+</ul>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># moznost 1</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(x)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># moznost 2</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(x)</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>##       [,1]  [,2] [,3]  [,4] [,5]  [,6] [,7] [,8]  [,9] [,10] [,11] [,12] [,13]
+## ACF  -0.09 -0.13 0.04 -0.20 0.08 -0.18 0.02 0.15 -0.06  0.17 -0.13 -0.03  0.14
+## PACF -0.09 -0.14 0.01 -0.22 0.05 -0.25 0.01 0.03 -0.01  0.12 -0.11  0.02  0.08
+##      [,14] [,15] [,16] [,17] [,18] [,19] [,20]
+## ACF  -0.10  0.15 -0.12 -0.08  0.02 -0.06 -0.01
+## PACF  0.03  0.13 -0.09 -0.04 -0.10  0.04 -0.13</code></pre>
+</div>
+</div>
+<div id="ďalšie-príklady" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Ďalšie príklady</h1>
+<div id="stacionarita-a-parameter-procesu" class="section level2"
+number="8.1">
+<h2><span class="header-section-number">8.1</span> Stacionarita a
+parameter procesu</h2>
+<p><strong>Zadanie:</strong> Urcte všetky hodnoty parametra
+<code>k</code>, pre ktoré je stacionárny AR(2) proces <span
+class="math inline">\(x_t=x_{t−1}+kx_{t−2}+u_t\)</span>.</p>
+<p><strong>Skúsime najskôr numericky:</strong> Pre nejaký rozsah
+parametra <code>k</code> nájdeme absolútnu hodnotu koreňov (pomocou
+<code>polyroot</code>).</p>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Otázky k nasledujúcemu obrázku:</strong></p>
+<ul>
+<li><p>Preco pre niektoré <code>k</code> je len jedna absolútna hodnota
+(napríklad <code>k = -1.5</code> - prerušovaná oranžová čiara), kým pre
+iné sú dve (<code>k = -0.2</code>,<code>k = 0.5</code> - prerušovaná
+zelená čiara)?</p></li>
+<li><p>Ktoré <code>k</code> vyhovovujú podmienke stacionarity a ktoré
+nie?</p></li>
+</ul>
+<p><strong>Analytický výpočet:</strong></p>
+<ul>
+<li>Odvoďte korene a ich absolútne hodnoty.</li>
+<li>Zistite, kedy je splnená podmienka stacionarity.</li>
+<li>Skontrolujte si, či sa vaše výpočty zhodujú s numerickými na
+predchádzajúcom obrázku</li>
+</ul>
+<p>Precvičenie programovania v R-ku: Spravte samostatne graf z
+predchádzajúceho obrázku.</p>
+</div>
+<div id="príklad-zmena-príkladu-kvôli-preklepu" class="section level2"
+number="8.2">
+<h2><span class="header-section-number">8.2</span> Príklad: Zmena
+príkladu kvôli preklepu</h2>
+<p>V jednej z domácich úloh je úlohou nájsť príklady z kurzov časových
+radov na zahraničných univerzitách a samostatne ich vyriešiť. Takto sa
+našlo aj nasledovné zadanie:</p>
+<p>Zistite, pre ktoré hodnoty parametra k je stacionárny proces <span
+class="math inline">\(x_t=x_{t−1}+kx_{t−2}+kx_{t−3}+u_t\)</span>.</p>
+<p>Zo vzorového riešenia vyplýva, že malo ísť o proces <span
+class="math inline">\(x_t=x_{t−1}+kx_{t−2}-kx_{t−3}+u_t\)</span>.</p>
+<p>Vyriešte obidve verzie zadania (preklepom sa úloha stala zložitejšou,
+ale podmienka stacionarity sa dá odvodiť analyticky aj pre prvý
+proces).</p>
+</div>
+<div
+id="simulačné-a-analytické-zistenie-podmienky-stacionarity-pre-ar2-proces"
+class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Simulačné a
+analytické zistenie podmienky stacionarity pre AR(2) proces</h2>
+<p>Uvažujme proces <span
+class="math inline">\(x_t=δ+α_1x_{t−1}+α_2x_{t−2}+u_t\)</span>. Má dva
+paramametre, takže ich môžeme znázorniť do roviny a odlíšiť tie, ktoré
+zodpovedajú stacionárnemu a tie, ktoré zodpovedajú nestacionárnemu AR(2)
+procesu.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>          <span class="co"># najskor menej, po odladeni napr. týchto 2000</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>alpha1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">max =</span> <span class="fl">2.5</span>) <span class="co"># rovnomerne na (min, max)</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>alpha2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">max =</span> <span class="fl">2.5</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>stationary <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,n)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(alpha1, alpha2, stationary)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<pre><code>##       alpha1      alpha2 stationary
+## 1 -1.0621124  0.49994480         NA
+## 2  1.4415257 -0.83588230         NA
+## 3 -0.4551154 -0.05693483         NA
+## 4  1.9150870  2.27236914         NA
+## 5  2.2023364 -0.08548801         NA
+## 6 -2.2722175  1.95175111         NA</code></pre>
+<p>Napíšte funkciu, ktorá rozhodne, či je AR(2) proces so zadanými
+parametrami stacionárny. Napríklad <code>stat.ar.2(c(1,1))</code> vráti
+<code>FALSE</code>.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>stat.ar<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(koef) <span class="co"># doplnte definiciu funkcie</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Nebudeme používať cyklus, ale využijeme funkciu
+<code>apply</code></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predpokladame fungujucu funkciu stac.ar.2, ktora ma ako vstup dvojzlozkovy vektor a vystup TRUE/FALSE</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(df[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],        <span class="co"># vstupne data = 1. a 2. stlpec df</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">MARGIN =</span> <span class="dv">1</span>,        <span class="co"># znamena, ze sa budu brat po riadkoch</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">FUN =</span> stac.ar<span class="fl">.2</span>)   <span class="co"># aplikuje sa funkcia stac.ar.2</span></span></code></pre></div>
+<p>Potom môžeme pomocou knižnice `ggplot2 kresliť:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(alpha1, alpha2, <span class="at">colour=</span>stationary, <span class="at">data=</span>df)<span class="sc">+</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;#009E73&quot;</span>))</span></code></pre></div>
+<p><img src="Cvicenia2_new_files/figure-html/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Sformulujte tvrdenie o podmienke stacionarity AR(2) procesu (dá sa
+vyjadriť pomocou troch nerovností pre parametre, ktoré musia súčasne
+platiť) a dokážte ho. Z grafu môžeme získať hypotézu, ako vyzerá
+podmienka stacionarity pre AR(2) proces a následne sa ju snažiť dokázať.
+Alebo ho môžeme použiť ako skúšku správnosti našich výpočtov.</p>
+</div>
+<div id="hľadanie-vhodného-autoregresného-modelu-pre-zadané-dáta"
+class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> Hľadanie vhodného
+autoregresného modelu pre zadané dáta</h2>
+<p>Všetky nasledujúce zadania sú zo starých skúšok. Úlohou je</p>
+<ul>
+<li><p>nájsť vhodný autoregresný model pre zadané dáta</p></li>
+<li><p>vysvetliť, prečo sú rezíduá vyhovujúce - skomentovať ACF rezíduí
+aj Ljung-Boxov test, pričom treba presne povedať, aká hypotéza sa
+testuje a či sa v tomto prípade zamieta alebo nie (a prečo sme s tým
+výsledkom spokojní)</p></li>
+<li><p>overiť stacionaritu získaného modelu (napísať polynóm, ktorého
+korene overujete, aké absolútne hodnoty koreňov vyšli a prečo sme s tým
+spokojní)</p></li>
+</ul>
+<p>Na skúške je súčasťou kostry zistenie, či môžeme pracovať priamo so
+zadanými dátami alebo s diferenciami (trend nie je jediným dôvodom
+diferencovannia - budeme sa tomu venovať neskôr). V týchto zadaniach je
+povedané, s akými dátami máte pri hľadaní AR modelu pracovať.</p>
+<p>Takisto je na skúške na výber širšia trieda modelov, ako sú AR
+modely. V niektorých prípadoch - vrátane týchto - však AR model
+stačí.</p>
+<p>Nájdite model pre premennú <code>x</code> tak, že budete jej
+diferencie modelovať AR procesom.</p>
+</div>
+<div id="nájdenie-procesu-s-danou-vlastnosťou" class="section level2"
+number="8.5">
+<h2><span class="header-section-number">8.5</span> Nájdenie procesu s
+danou vlastnosťou</h2>
+<p>Nájdite príklad procesov, ktoré majú nasledovné vlastnosti. Pre každý
+proces dokážte, že má naozaj požadovanú vlastnosť.</p>
+<ul>
+<li><p>Autoregrený proces, ktorého PACF pre lag 3 je nulová.</p></li>
+<li><p>Autoregrený proces prvého rádu, ktorého PACF pre lag 1 je rovná
+0.5.</p></li>
+<li><p>Autoregresný proces, ktorého ACF je vždy kladná.</p></li>
+<li><p>Autoregresný proces, ktorého ACF nie je monotónna.</p></li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

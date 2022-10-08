@@ -426,7 +426,9 @@ div.tocify {
     <li>
       <a href="Cvicenie1_new.html">Tutorial 1</a>
     </li>
-    <li class="dropdown-header">Tutorial 2</li>
+    <li>
+      <a href="Cvicenie2_new.html">Tutorial 2</a>
+    </li>
     <li class="dropdown-header">Tutorial 3</li>
     <li class="dropdown-header">Tutorial 4</li>
     <li class="dropdown-header">Tutorial 5</li>
@@ -472,7 +474,7 @@ AR(1)</h1>
 <p>Spustením nasledovného príkazu sa nainštalujú potrebné knižnice, ak
 nainštalované nie sú, a zároveň sa aj načítajú.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># názvy balíkov, ktoré budú potrebné pre cvičenie 1</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;quantmod&quot;</span>,<span class="st">&quot;astsa&quot;</span>,<span class="st">&quot;WDI&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;quantmod&quot;</span>,<span class="st">&quot;astsa&quot;</span>,<span class="st">&quot;reshape2&quot;</span>,<span class="st">&quot;WDI&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># inštalácia balíkov, ak nie sú nainštalované</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>installed_packages <span class="ot">&lt;-</span> packages <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>

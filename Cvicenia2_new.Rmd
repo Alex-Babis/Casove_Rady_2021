@@ -16,28 +16,43 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Potrebé knižnice pre cvičenie 2
-```{r include=FALSE, fig.align="center"}
-library(astsa)
-library(ggfortify)
-library(ggplot2)
-library(datasets)
-library(WDI)
-library(forecast)
-library(zoo)
+
+```{r include= FALSE}
+# Package names
+packages <- c("ggplot2","ggfortify","astsa","datasets","forecast","zoo")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages],dependencies=TRUE)
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
 ```
 
-```{r eval=FALSE, fig.align="center"}
-library(astsa)
-library(ggfortify)
-library(ggplot2)
-library(datasets)
-library(WDI)
-library(forecast)
-library(zoo)
+
+```{r eval= FALSE}
+# Package names
+packages <- c("ggplot2","ggfortify","astsa","datasets","forecast","zoo")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages],dependencies=TRUE)
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
 ```
+
+
 
 # Odhadovanie parametrov AR procesu 
-**Funkcia v R-ku:** Budeme používať funkciu `sarima` (AR proces je špeciálnym prípadom SARIMA procesu) z knižnice `astsa` (astsa = applied statistical time series analysis).
+
+Podobne ako na minulom cvičení, ale podrobnejšie:
+
+**Funkcia v R-ku:** Budeme používať funkciu `sarima` (AR proces je špeciálnym prípadom SARIMA procesu - sezónny proces, bude neskôr na tomto predmete) z knižnice `astsa` (astsa = applied statistical time series analysis).
 
 ## Príklad z prednášky: modelovanie spreadu
 Modelujeme rozdiel medzi dlhodobou a krátkodobou úrokovou mierou
@@ -49,35 +64,60 @@ r20 <- read.table("http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/R
 spread <- r20 - rs
 ```
 
-Z premennej `spread` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát
+Z premennej `spread` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na cvičení 1.
 Použijeme funkciu `ts`: 
 
+```{r eval = FALSE}
+ts(data = ..., 
+   frequency = ...,
+   delta = ...,
+   start = ...,
+   end = ..., 
+   class = ... )
+```
+
 Použitie funkcie `ts`:
-`ts(data, frequency, start, ...)`\
 `data` - naše pozorovania \
 `frequency` - frekvencia s akou naše dáta berieme (1 - ročné, 4 - kvartálne, 12 - mesačné, 356 - denné, ...)\
 `start = c()` - Buď jedno číslo - rok odkedy berieme pozorovania, alebo vektor velkosti 2 - prvá hodnota označuje rok začiatku našich pozorovaní, druhá hodnota označuje, kde v daný rok začať v závislosti od zvolenej frekvencie \
 Napríklad zoberieme mesačnú frekvenciu - `frequency = 12`, `start = c(2020, 3)` označuje čas prvého pozorovania rovný 01.03.2020 \
 (V prípade denných dát, frekvencia 356, špecifikujeme konkrétny deň, napríklad 19.10.2020 = c(2020,292) )
+`delta` - Alternatívne k `frequency` ako zlomok, teda 1/12 pre mesačné dáta, atď...
+`end` - Čas posledného pozorovania (nie je ale potrebné špecifikovať)
+`class` - Jedno z c("mts", "ts", "matrix"), `mts` predstavuje viacrozmerný časový rad, resp. viac časových radov, ktoré zdielajú rovnakú časovú štruktúru
 
-```{r, fig.align="center"}
+```{r, fig.align="center", echo = FALSE}
 spread <- ts(data = spread,             # data su premennej spread
              frequency = 4,        # su kvartalne
              start = c(1952,1))    # zacinaju v 1. kvartali roku 1952
 
+```
+
+
+```{r, eval=FALSE}
+spread <- ts(data = ,             # data su premennej spread
+             frequency = ,        # su kvartalne
+             start = )            # zacinaju v 1. kvartali roku 1952
+
 class(spread)  # budeme vidiet, ze uz je to casovy rad
 ```
 
+```{r echo = FALSE}
+class(spread)  
+```
+
 Vykreslíme teraz priebeh - na x-ovej osi budú správne časy:
-Knižnica `ggfortify` nám umožní kresliť grafy pre object `ts` pomocnou knižnice `ggplot2`. Funkcia `autoplot(ts)`
+Typ `ts` vieme kresliť rovno pomocou funkcie `plot(...)`. \
+Alternatívne vieme použiť knižnicu `ggfortify`, krorá nám umožní kresliť pekné grafy pre object `ts` pomocnou knižnice `ggplot2`. Funkcia `autoplot(ts)`
 
 ```{r, fig.align="center"}
 autoplot(spread)
 ```
-
+Okrem iného môžeme pomocou `autoplot()` vykresliť aj autokorelačnú funkciu a ďalšie rôzne grafy týkajúce sa časových radov, akými sú výstupy z `sarima` funckie a podobne (`?autoplot`). 
 **Úloha:** Zobrazte výberovú autokorelačnú funkciu.
-```{r echo = FALSE, fig.align="center"}
-acf1(spread)
+```{r fig.align="center"}
+autoplot(acf(spread, plot = FALSE)) 
+#acf1(spread)
 ```
 
 Na prednáške sme videli, že hoci sa podobá na ACF procesu AR(1), nie je to dobrý model pre dáta. Zopakujeme to - odhadneme model a skontrolujeme rezíduá.
@@ -88,7 +128,9 @@ sarima(data, p, k, 0) # AR(p) model pre k-te diferencie premennej data
 
 sarima(data, p, 0, 0)  # AR(p) model pre premennu data
 
-model <- sarima(data,p, 0, 0, details=FALSE)
+sarima(data, 0, 0, 0)  # Biely šum plus konštanta
+
+model <- sarima(data,p, 0, 0)
 ```
 
 **Výstup pri spustení funkcie `sarima`:**
@@ -98,8 +140,11 @@ model <- sarima(data,p, 0, 0, details=FALSE)
 + graficky rezíduá, ich ACF, p-hodnoty Ljung-Boxovej štatistiky
 
 **Výstup vypísaní objektu `model` (vytvorený s parametrom `details = FALSE)`:**
-
+```{r eval=FALSE, fig.align="center"}
+model <- sarima(data,p, 0, 0, details=FALSE)
+```
 + odhady parametrov, štandardné odchýlky, informačné kritériá
+
 
 **Úloha:**
 
@@ -120,25 +165,14 @@ mo2 = capture.output(sarima(spread,2,0,0))
 sarima(spread,2,0,0, details = FALSE)
 ```
 
-## Cvičenie: Modelovanie prietoku Nílu
-V knižnici `datasets` je viacero zaujímavých časových radov, my sa teraz pozrieme na prietok Nílu:
+## Cvičenie: Modelovanie dát o odchyte rysov
+V knižnici `astsa` je viacero zaujímavých časových radov, my sa teraz pozrieme na odchyt rysov:
 
 ```{r, fig.align="center"}
-x <- Nile
+x <- Lynx
 # podrobnejsi popis v helpe: ?Nile
 ```
 
-Konkrétne sa zameriame na vyznačenú časť tohto časového radu - od roku 1910 do roku 1960.
-
-```{r echo = FALSE, warning=FALSE, fig.align="center"}
-library(dygraphs)
-dygraph(x)  %>% dySeries(label="Annual flow", color="black") %>% dyRangeSelector()%>% dyShading(from = "1910-1-1", to = "1960-1-1",color = "#c5ffef") 
-```
-
-Aby sme získali časť časového radu, použijeme funkciu `window`:
-```{r, fig.align="center"}
-x <- window(x, start=1910, end=1960)
-```
 
 **Úloha:**
 
@@ -161,11 +195,6 @@ mo2 = capture.output(sarima(x,2,0,0))
 mo2 = capture.output(sarima(x,3,0,0))
 ```
 
-+ Zistite, či by nestačilo dáta modelovať bez akýchkoľvek autoregresných členov, t. j. ako konštantu plus biely šum.
-
-```{r echo = FALSE, fig.align="center"}
-mo2 = capture.output(sarima(x,0,0,0))
-```
 
 ## Zapísanie odhadnutého modelu na základe výstupu z R-ka
 Vygenerujme si dáta - 100 hodnôt autoregresného procesu $x_t=0.8x_{t−1}+u_t$, kde $D[u_t]=2$:
@@ -197,95 +226,6 @@ kde $δ$ je taká konštanta, aby platilo, že $E[x_t]=0.0204$ (`xmean` z výstu
 
 **Úloha:** Dopočítajte konštantu $δ$ (na kontrolu 0.0042228).
 
-# Dáta Svetovej banky a grafy pomocou balíka ggplot2
-
-Obsah tejto časti:
-
-+ prístup k dátam Svetovej banky priamo v R-ku
-+ príklad použitia knižnice ggplot2 na zostrojenie pekných grafov
-+ pripravíme si dáta, ktoré potom použijeme na modelovanie AR procesom
-
-## Dáta Svetovej banky
-
-Kničnica
-`WDI` - World Development Indicators, prístup k dátam budeme mať priamo v R
-`ggplot2` - pekné grafy :)
-
-## Vyhľadávanie dát vo WDI
-```{r eval=FALSE, fig.align="center"}
-# hladame indikatory, ktore maju v nazve gdp
-WDIsearch('gdp') 
-```
-
-Kto pozná regulárne výrazy (regular expressions)
-
-+ dajú sa používať aj tie
-+ na ukážku - hľadajme indikátory, ktoré hovoria o HDP na obyvateľa - vypíšme si tie, ktoré obsahujú gdp a capita
-
-```{r eval=FALSE, fig.align="center"}
-WDIsearch('gdp.*capita')
-```
-
-Ak je veľa výsledkov, môžeme chciet vypísať niekoľko prvých:
-```{r, fig.align="center"}
-WDIsearch('gdp.*capita')[1:3,]
-```
-
-## Načítanie dát
-Pomocou funkcie `WDI`, ukážka použitia:
-
-```{r, fig.align="center"}
-data.hdp <- WDI(indicator = 'NY.GNP.PCAP.CD',
-                country = c('FI','US','FR', 'DE'),
-                start = 1975)
-```
-
-+ `indicator` sme našli pomocou `WDIsearch`
-+ `country` vo formáte `iso2c`
-+ defaultný `start` je 1960 a defaultný `end` je 2020, môžeme ich takto zmeniť
-+ `iso2c` kódy štátov sa dajú nájsť napríklad tu: https://datahub.io/core/country-list alebo pomocou knižnice `countrycode` v R-ku (https://cran.r-project.org/web/packages/countrycode/)
-
-```{r, fig.align="center"}
-head(data.hdp)
-```
-
-## Graf pomocou ggplot
-```{r fig.align="center"}
-ggplot(data.hdp, aes(year, NY.GNP.PCAP.CD, color = country)) +
-    geom_line() +
-    xlab('Year') + ylab('GDP per capita') +
-    labs(title = 'GDP per capita (current USD)')
-```
-
-+ `data.hdp` je `data frame`, v ktorom sú naše premenné
-+ `year, NY.GNP.PCAP.CD` - z dát uložených v `data.hdp` bude na x-ovej osi premenná `year` a na y-ovej `NY.GNP.PCAP.CD`
-+ `color=country` - grafy budú odlíšené farebne (preto color) podľa premennej country
-
-## AR(1) model pre rýchlosť rastu HDP
-```{r, fig.align="center"}
-# GDP per capita (constant 2010 US$) 
-data <- WDI(indicator = 'NY.GNP.PCAP.KD',
-            country= c ('FR'),
-            start = 1975, end = 2019)
-
-# zoradime rastuco podla rokov
-data <- data[order(data$year),]
-
-# nasa premenna na modelovanie
-log.y <- log(data$NY.GNP.PCAP.KD)
-
-# doplnime casovu strukturu
-log.y <- ts(log.y, start = 1975, frequency = 1)
-```
-
-**Zadanie:**
-
-+ Z priebehu dát vidíme, ze nie sú stacionárne, pretovbudeme pracovat s diferenciami
-+ Zoberieme diferencie logaritmov - to je rýchlost rastu HDP.
-+ Vyskúšajte, či je AR(1) model dobrým modelom pre rýchlosť rastu HDP.
-+ Ak je AR(1) model dobrý, zistite, či je autoregresný člen nutný a či sa rýchlosť rastu nedá modelovať ako posunutý biely šum. 
-+ Ak AR(1) nevyhovuje, vyskúšajte AR modely vyššieho rádu.
-Zopakujte pre iný štát.
 
 # Overovanie stacionarity AR procesu v R-ku
 V prípade AR(1) procesu, je overovanie stacionarity zrejmé - stačí sa pozrieť na absolútnu hodnotu autoregresného koeficientu, musí byť v absolútnej hodnote menší ako 1.
@@ -294,7 +234,14 @@ Pre všeobecný AR(p) proces je v prednáškach odvodená podmienka stacionarity
 
 **Otázka:** Ukážte, že toto kritériu je v súlade s tým, čo je povedané pre AR(1) proces o jeho autoregresnom koeficiente.
 
-**Funkcia v R-ku:** Korene polynómu $1−α_{1}L−α_{2}L^{2}−…α_{p}L^{p}$ nájdeme pomocou funkcie polyroot, ktorá je vysvetlená v slajdoch z prenášky.
+**Funkcia v R-ku:** Korene polynómu $1−α_{1}L−α_{2}L^{2}−…α_{p}L^{p}$ nájdeme pomocou funkcie polyroot.
+
+```{r eval = FALSE}
+polyroot(z)
+```
+
+`z` - argument obsahujúci polynomiálne koeficienty v tvare: 
+$$z_1x^0 + z_2x^1 + z_3 x^2 + ... + z_n x^{n-1}$$
 
 ## Príklad: Overenie stacionarity AR(2) procesu
 **Zadanie:** Zistíme, či je proces $(1−0.9L+0.6L^{2})x_t=u_t$ stacionárny.
@@ -302,21 +249,24 @@ Pre všeobecný AR(p) proces je v prednáškach odvodená podmienka stacionarity
 Výpočet v R-ku: Hľadáme korene (a ich absolútne hodnoty) polynómu $(1−0.9L+0.6L^{2})$, teda:
 
 ```{r eval = FALSE, fig.align="center"}
+polyroot(c(...)) # korene polynómu 
+abs(polyroot(c(...))) # absolútne hodnoty koreňov polynómu
+```
+
+```{r echo = FALSE, fig.align="center"}
 polyroot(c(1, -0.9, 0.6))
 abs(polyroot(c(1, -0.9, 0.6)))
 ```
 
 **Záver:** Korene sú mimo jednotkového kruhu, lebo absolútna hodnota je pre každý koreň väčšia ako 1 ⇒ náš proces JE STACIONÁRNY
 
-**Cvičenie:** Zistite, či sú stacionárne nasledovné AR(2) procesy:
-
-+ $(1−0.25L+0.8L^2)x_t=−3+u_t$
-+ $x_t=2+0.8x_{t−1}−0.1x_{t−2}+u_t$
 
 ## Cvičenie: Overenie stacionarity AR procesu (súčasť kostry na skúške)
 
 Zistite, či sú stacionárne nasledovné AR procesy:
 
++ $(1−0.25L+0.8L^2)x_t=−3+u_t$
++ $x_t=2+0.8x_{t−1}−0.1x_{t−2}+u_t$
 + $(1−0.25L+0.6L^2−0.55L^3)x_t=u_t$
 + $(1+0.3L+0.2L^2)x_t=5+u_t$
 + $x_t=2+0.3x_{t−1}−0.3x_{t−2}+u_t$
@@ -755,22 +705,6 @@ Na skúške je súčasťou kostry zistenie, či môžeme pracovať priamo so zad
 
 Takisto je na skúške na výber širšia trieda modelov, ako sú AR modely. V niektorých prípadoch - vrátane týchto - však AR model stačí.
 
-## Ceny benzínu
-
-Dáta z knižnice `astsa`, z popisu v helpe: *New York Harbor conventional regular gasoline weekly spot price FOB (in cents per gallon) from 2000 to mid-2010*. Zoberieme dáta od roku 2006.
-```{r, fig.align="center"}
-gas <- astsa::gas
-x <- window(gas, start=c(2006,1))
-```
-Nájdite model pre premennú `x` tak, že budete jej diferencie modelovať AR procesom.
-
-## Indikátor od Boxa a Jenkinsa
-Dáta z knižnice `astsa`, z popisu v helpe: *Leading indicator, 150 months; taken from Box and Jenkins (1970)*.
-
-```{r, fig.align="center"}
-lead <- astsa::lead
-x <- lead
-```
 Nájdite model pre premennú `x` tak, že budete jej diferencie modelovať AR procesom.
 
 ## Nájdenie procesu s danou vlastnosťou
@@ -783,16 +717,6 @@ Nájdite príklad procesov, ktoré majú nasledovné vlastnosti. Pre každý pro
 + Autoregresný proces, ktorého ACF je vždy kladná.
 
 + Autoregresný proces, ktorého ACF nie je monotónna.
-
-
-
-
-
-
-
-
-
-
 
 
 

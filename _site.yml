@@ -9,7 +9,7 @@ navbar:
         - text: "Tutorial 1"
           href: Cvicenie1_new.html
         - text: "Tutorial 2"
-          #href: Cvicenie2.html
+          href: Cvicenie2_new.html
         - text: "Tutorial 3"
           #href: Cvicenie3.html
         - text: "Tutorial 4"
