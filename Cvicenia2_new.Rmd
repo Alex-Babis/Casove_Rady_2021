@@ -54,17 +54,15 @@ Podobne ako na minulom cvičení, ale podrobnejšie:
 
 **Funkcia v R-ku:** Budeme používať funkciu `sarima` (AR proces je špeciálnym prípadom SARIMA procesu - sezónny proces, bude neskôr na tomto predmete) z knižnice `astsa` (astsa = applied statistical time series analysis).
 
-## Príklad z prednášky: modelovanie spreadu
-Modelujeme rozdiel medzi dlhodobou a krátkodobou úrokovou mierou
+## Príklad 1: Modelovanie produkcie na Slovensku
+Modelujeme mesačnú produkciu "nondurable goods" (potraviny, oblečenie, atď) na Slovensku od začiatku roku 2006 po koniec roka 2022. Hodnoty sú udávané v zmysle T15, teda úmerné vzhľadom na referenčný rok 2015.
 
-Načítajte dáta a vytvorte premennú `spread`
+Načítajte dáta a vytvorte premennú `nd.goods`
 ```{r, fig.align="center"}
-rs <- read.table("http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/RSQ.txt")   # short term rate
-r20 <- read.table("http://www.iam.fmph.uniba.sk/institute/stehlikova/cr20/data/R20Q.txt") # 20Y rate
-spread <- r20 - rs
+nd.goods <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Non_durable_prod_06_22_SK.txt")   # 
 ```
 
-Z premennej `spread` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na cvičení 1.
+Z premennej `nd.goods` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na cvičení 1.
 Použijeme funkciu `ts`: 
 
 ```{r eval = FALSE}
@@ -87,23 +85,23 @@ Napríklad zoberieme mesačnú frekvenciu - `frequency = 12`, `start = c(2020, 3
 `class` - Jedno z c("mts", "ts", "matrix"), `mts` predstavuje viacrozmerný časový rad, resp. viac časových radov, ktoré zdielajú rovnakú časovú štruktúru
 
 ```{r, fig.align="center", echo = FALSE}
-spread <- ts(data = spread,             # data su premennej spread
-             frequency = 4,        # su kvartalne
-             start = c(1952,1))    # zacinaju v 1. kvartali roku 1952
+nd.goods <- ts(data = nd.goods,             # data su premennej nd.goods
+             frequency = 12,        # sú mesačné
+             start = c(2006,1))    # zacinaju v 1. kvartali roku 1952
 
 ```
 
 
 ```{r, eval=FALSE}
-spread <- ts(data = ,             # data su premennej spread
+nd.goods <- ts(data = ,             # data su premennej nd.goods
              frequency = ,        # su kvartalne
              start = )            # zacinaju v 1. kvartali roku 1952
 
-class(spread)  # budeme vidiet, ze uz je to casovy rad
+class(nd.goods)  # budeme vidiet, ze uz je to casovy rad
 ```
 
 ```{r echo = FALSE}
-class(spread)  
+class(nd.goods)  
 ```
 
 Vykreslíme teraz priebeh - na x-ovej osi budú správne časy:
@@ -111,16 +109,16 @@ Typ `ts` vieme kresliť rovno pomocou funkcie `plot(...)`. \
 Alternatívne vieme použiť knižnicu `ggfortify`, krorá nám umožní kresliť pekné grafy pre object `ts` pomocnou knižnice `ggplot2`. Funkcia `autoplot(ts)`
 
 ```{r, fig.align="center"}
-autoplot(spread)
+autoplot(nd.goods)
 ```
 Okrem iného môžeme pomocou `autoplot()` vykresliť aj autokorelačnú funkciu a ďalšie rôzne grafy týkajúce sa časových radov, akými sú výstupy z `sarima` funckie a podobne (`?autoplot`). 
 **Úloha:** Zobrazte výberovú autokorelačnú funkciu.
 ```{r fig.align="center"}
-autoplot(acf(spread, plot = FALSE)) 
-#acf1(spread)
+autoplot(acf(nd.goods, plot = FALSE)) 
+#acf1(nd.goods)
 ```
 
-Na prednáške sme videli, že hoci sa podobá na ACF procesu AR(1), nie je to dobrý model pre dáta. Zopakujeme to - odhadneme model a skontrolujeme rezíduá.
+Hoci sa podobá na ACF procesu AR(1), nie je to dobrý model pre dáta. Odhadneme AR(1) model a skontrolujeme rezíduá.
 
 **Použitie funkcie sarima:**
 ```{r eval=FALSE, fig.align="center"}
@@ -148,21 +146,21 @@ model <- sarima(data,p, 0, 0, details=FALSE)
 
 **Úloha:**
 
-+ Na prednáške sme si ukázali, že AR(1) proces nie je dobrým modelom pre tieto dáta. Odhadnite ho teraz samostatne pomocou uvedenej funkcie a vysvetlite, na základe čoho tento model zamietneme.
++ Ukázali sme si, že AR(1) proces nie je dobrým modelom pre tieto dáta. Odhadnite ho teraz samostatne pomocou uvedenej funkcie a vysvetlite, na základe čoho tento model zamietneme.
 + Potom odhadnite a skomentujte AR(2) model.\
 
 **AR(1):**\
 
 ```{r echo = FALSE, fig.align="center"}
-mo1 = capture.output(sarima(spread,1,0,0))
-sarima(spread,1,0,0, details = FALSE)
+mo1 = capture.output(sarima(nd.goods,1,0,0))
+sarima(nd.goods,1,0,0, details = FALSE)
 ```
 
 **AR(2):**\
 
 ```{r echo = FALSE, fig.align="center"}
-mo2 = capture.output(sarima(spread,2,0,0))
-sarima(spread,2,0,0, details = FALSE)
+mo2 = capture.output(sarima(nd.goods,2,0,0))
+sarima(nd.goods,2,0,0, details = FALSE)
 ```
 
 ## Cvičenie: Modelovanie dát o odchyte rysov
@@ -197,6 +195,8 @@ mo2 = capture.output(sarima(x,3,0,0))
 
 
 ## Zapísanie odhadnutého modelu na základe výstupu z R-ka
+
+Ako simulovať AR(p) procesy
 Vygenerujme si dáta - 100 hodnôt autoregresného procesu $x_t=0.8x_{t−1}+u_t$, kde $D[u_t]=2$:
 
 ```{r, fig.align="center"}
@@ -226,6 +226,23 @@ kde $δ$ je taká konštanta, aby platilo, že $E[x_t]=0.0204$ (`xmean` z výstu
 
 **Úloha:** Dopočítajte konštantu $δ$ (na kontrolu 0.0042228).
 
+Čo ak by sme chceli simulovať proces v tvare $x_t= 5 + 0.5x_{t−1}+u_t$? 
+
+R-ko simuluje iba zero-mean procesy.
+
+```{r, fig.align="center"}
+set.seed(123)
+x <- 10 + arima.sim(model=list(ar=c(0.5)), n=100, sd=sqrt(2))
+
+autoplot(x)
+```
+
+Odhadneme znova AR(1) model:
+
+```{r eval=FALSE , fig.align="center"}
+sarima(x,1,0,0, details = FALSE)
+```
+Dopočítame $\delta$, čo sa rovná $10.118*(1-0.5014)=5.044835$.
 
 # Overovanie stacionarity AR procesu v R-ku
 V prípade AR(1) procesu, je overovanie stacionarity zrejmé - stačí sa pozrieť na absolútnu hodnotu autoregresného koeficientu, musí byť v absolútnej hodnote menší ako 1.
@@ -291,10 +308,9 @@ Samozrejme pri AR(1) modeli sme hneď videli, či je stacionárny alebo nie, pri
 
 Hodnoty koeficientov však nemusíme odpisovať, tak by sme navyše dostali iba ich približné hodnoty
 
-Napríklad ak odhadneme model:
 
 ```{r, fig.align="center"}
-model.ar3 <- sarima(spread, 3,0,0, details=FALSE)
+model.ar3 <- sarima(nd.goods, 3,1,0, details=FALSE)
 ```
 
 Pozrite si `str(model.ar3)` - štruktúru objektu `model.ar3` - a potom vyberte z` model.ar3` vektor odhadnutých parametrov modelu.
@@ -337,11 +353,6 @@ koef.zlozitejsie[grep("^ma",names(koef.zlozitejsie))]
 
 Viac o regulárnych výrazov v R-ku: https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions
 
-## Cvičenie: AR(2) model pre spread, overenie stacionarity
-
-Na prednáške sme videli, že ak pre dáta v premennej `spread` odhadneme AR(2) model, bude mať dobré rezíduá.
-
-**Úloha:** Overte stacionaritu získaného modelu.
 
 # Konštrukcia predikcií
 
@@ -353,17 +364,42 @@ sarima.for(data, n, p, 0, 0)  # predikcie pre n pozorovani z AR(p) modelu
 sarima.for(data, n, p, k, 0)  # predikcie pre n pozorovani premennej data, ak jej k-te diferencie modelujeme ako AR(p) 
 ```
 
-Úloha: Pomocou AR(2) modelu pre dáta `spread` spravte predikcie na nasledujúce dva roky (máme kvartálne dáta, takže 2 roky predstavujú 8 pozorovaní)
+Úloha: 
+
+```{r, fig.align="center"}
+unmp_sk <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Unmp_SK.txt")   # 
+```
+
+```{r}
+unmp_sk <- ts(unmp_sk,
+             frequency = 12,
+             start = 1998 )
+```
+
+Máme dáta o mesačnej nezamestnanosti na Slovensku od roku 1998 po rok 2022. 
+
+```{r}
+autoplot(unmp_sk)
+```
+Dáta nie sú stacionárne, budeme pracovať s diferenciami.
+
+```{r}
+autoplot(diff(unmp_sk))
+```
+
+Nájdite vhodný model AR(p) pre naše dáta. 
+
+Pomocou tohto modelu pre dáta `unmp_sk` spravte predikcie na nasledujúce dva roky (máme mesačné dáta, takže 2 roky predstavujú 24 pozorovaní)
 
 ```{r echo = FALSE, fig.align="center"}
-sarima.for(spread, 8, 2, 0, 0)
+sarima.for(unmp_sk, 24, 4, 1, 0)
 ```
 
 Ak uložíme výstup funkcie `sarima.for` napr. do premennej `predikcie`, tak máme prístup k predikciám a štandardným odchýlkam: `predikcie$pred`, `predikcie$se`. To je užitočné napríklad vtedy, keď chceme vynechať nejaké posledné dáta, odhadnúť model pomocou zostávajúcich a potom porovnať predikcie s tým, čo v skutočnosti nastalo.
 
 **Úloha:**
 
-+ Vynechajte z dát v premennej `spread` posledné dva roky.
++ Vynechajte z dát v premennej `unmp_sk` posledné dva roky.
 
 + Zo zostávajúcich dát odhadnite AR(2) model. Overte jeho stacionaritu a či môžeme považovať rezíduá za biely šum.
 
@@ -380,9 +416,9 @@ Ak uložíme výstup funkcie `sarima.for` napr. do premennej `predikcie`, tak m�
 Pritom jednotlivé dáta nemusia mať rovnaký rozsah časov, pre ktoré sú dostupné, R-ko sa postará aj o rozsah y-ovej osi (čo nie je zaručené pri kreslení pomocou `plot` a potom `lines`).
 
 ```{r echo = FALSE, fig.align="center"}
-stare.data <- window(spread, start = c(1952,1), end = c(2003,4))
-nove.data <- window(spread, start = c(2004,1), end = c(2005,4))
-predikcie <- sarima.for(stare.data, 8, 2, 0, 0)
+stare.data <- window(unmp_sk, start = c(1998,1), end = c(2020,6))
+nove.data <- window(unmp_sk, start = c(2020,7), end = c(2022,6))
+predikcie <- sarima.for(stare.data, 24, 2, 1, 0)
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
 ```
@@ -405,8 +441,8 @@ Krajšie grafy pomocou funkcie `autoplot` a `autolayer`:
 pallete <-  c("#D55E00","#009E73", "gray", "gray")
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
-autoplot(window(spread, start = c(1952,1), end = c(2003,4))) +
-  autolayer(window(spread, start = c(2004,1), end = c(2005,4)), series="Data") +
+autoplot(window(unmp_sk, start = c(1998,1), end = c(2020,6))) +
+  autolayer(window(unmp_sk, start = c(2020,7), end = c(2022,6)), series="Data") +
   autolayer(predikcie$pred, series="Forecasts")+
   autolayer(UB, series="UB")+
   autolayer(LB, series="LB")+
@@ -421,8 +457,8 @@ Zoom:
 pallete <-  c("#D55E00","#009E73", "gray", "gray")
 UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
-autoplot(window(spread, start = c(1990,1), end = c(2003,4))) +
-  autolayer(window(spread, start = c(2004,1), end = c(2005,4)), series="Data") +
+autoplot(window(unmp_sk, start = c(1998,1), end = c(2020,6))) +
+  autolayer(window(unmp_sk, start = c(2020,7), end = c(2022,6)), series="Data") +
   autolayer(predikcie$pred, series="Forecasts")+
   autolayer(UB, series="UB")+
   autolayer(LB, series="LB")+
@@ -441,8 +477,8 @@ UB <- predikcie$pred + 2*predikcie$se
 LB <- predikcie$pred - 2*predikcie$se
 CI <- merge(x = as.zoo(LB), y = as.zoo(UB))
 
-autoplot(window(spread, start = c(1990,1), end = c(2003,4))) +
-  autolayer(window(spread, start = c(2004,1), end = c(2005,4)), series="Data") +
+autoplot(window(unmp_sk, start = c(1998,1), end = c(2020,6))) +
+  autolayer(window(unmp_sk, start = c(2020,7), end = c(2022,6)), series="Data") +
   autolayer(predikcie$pred, series="Forecasts")+
   autolayer(UB, series="UB")+
   autolayer(LB, series="LB")+
@@ -525,16 +561,6 @@ Podobne ako v prípade ACF, aj teraz použijeme funkciu `ARMAacf`, ale pridáme 
 ARMAacf(ar=c(...), lag.max=10, pacf=TRUE)
 ```
 
-##  Kontrolná otázka
-
-ACF aj PACF sa v R-ku počítajú numericky.
-
-Ktoré z nasledujúcich postupností
-
-+ sa po určitom počte členov vynulujú (a teda tie malé čísla sú v skutočnosti nuly)
-a ktoré
-
-+ majú hodnoty, ktoré konvergujú k nule, ale neexistuje index, od ktorého by boli nulové?
 
 **Príklad 1**
 ```{r, fig.align="center"}
@@ -573,17 +599,61 @@ Môžeme
 
 + pomocou funkcie `acf2` z knižnice astsa vykresliť naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu pre lag 0, ktorá sa vždy rovná 1)
 
-```{r, fig.align="center"}
-x <- rnorm(100)
+Budete modelovať mesačné dáta o produkcií "capital goods" (všetko, čo sa používa na výrobu iných tovarov) na Slovensku do začiatku roka 2000 do konca roka 2022.
 
-# moznost 1
-pacf(x)
+Načítajte dáta a vytvorte premennú `cap.goods`
+```{r, fig.align="center"}
+cap.goods <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Capital_good_prod_00_20_SK.txt")   # 
 ```
+
+Z premennej `cap.goods` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na cvičení 1.
+Použijeme funkciu `ts`: 
+
+
+```{r, fig.align="center", echo = FALSE}
+cap.goods <- ts(data = cap.goods,             # data su premennej cap.goods
+             frequency = 12,        # sú mesačné
+             start = c(2000,1))    # zacinaju v 1. kvartali roku 1952
+
+```
+
+
+```{r, eval=FALSE}
+cap.goods <- ts(data = ,             # data su premennej cap.goods
+             frequency = ,        # su kvartalne
+             start = )            # zacinaju v 1. kvartali roku 1952
+
+class(cap.goods)  # budeme vidiet, ze uz je to casovy rad
+```
+
+Vykreslíme teraz priebeh, napríklad:
+
+```{r, fig.align="center"}
+autoplot(cap.goods)
+```
+
+Vidíme v dátach rastúci trend, preto budeme pracovať s diferenciami časového radu.
+
+```{r, fig.align="center"}
+autoplot(diff(cap.goods))
+```
+
+
+Zobrazte výberovú parciálnu autokorelačnú funkciu, napríklad:
+```{r fig.align="center"}
+autoplot(pacf(diff(cap.goods), plot = FALSE)) 
+#acf1(cap.goods)
+```
+
+**Úloha:** nájdite vhodný AR(p) model pre naše dáta a ukážte, že daný proces je stacionárny.
+
 
 ```{r, fig.align="center"}
 # moznost 2
-acf2(x)
+acf2(diff(cap.goods))
 ```
+
+**Úloha:** nájdite vhodný AR(p) model pre naše dáta a ukážte, že daný proces je stacionárny.
 
 # Ďalšie príklady
 ## Stacionarita a parameter procesu
