@@ -1249,6 +1249,20 @@ proces dokážte, že má naozaj požadovanú vlastnosť.</p>
 </ul>
 </div>
 </div>
+<div id="eurostat" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> EUROSTAT</h1>
+<p>Stiahnutie knižnice:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;eurostat&quot;</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eurostat)</span></code></pre></div>
+<p>Stiahnutie sumárnej tabuľky s popisom dát a ich formátmi:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>toc <span class="ot">&lt;-</span> <span class="fu">get_eurostat_toc</span>()</span></code></pre></div>
+<p>Vyhľadávanie konkretného kódu:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">search_eurostat</span>(<span class="st">&quot;Unemployment - LFS adjusted series - historical data (1992-2020)&quot;</span>,</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">type =</span> <span class="st">&quot;folder&quot;</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>code[<span class="dv">1</span>]</span></code></pre></div>
+<p>Stiahnutie dát:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">get_eurostat</span>(<span class="st">&quot;une_rt_a&quot;</span>, <span class="at">time_format =</span> <span class="st">&quot;num&quot;</span>)</span></code></pre></div>
+</div>
 
 
 

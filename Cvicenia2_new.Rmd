@@ -789,10 +789,31 @@ Nájdite príklad procesov, ktoré majú nasledovné vlastnosti. Pre každý pro
 + Autoregresný proces, ktorého ACF nie je monotónna.
 
 
+# EUROSTAT
+
+Stiahnutie knižnice:
+```{r, eval=FALSE}
+install.packages("eurostat")
+library(eurostat)
+```
+
+Stiahnutie sumárnej tabuľky s popisom dát a ich formátmi:
+```{r eval=FALSE}
+toc <- get_eurostat_toc()
+```
 
 
+Vyhľadávanie konkretného kódu:
+```{r eval=FALSE}
+id <- search_eurostat("Unemployment - LFS adjusted series - historical data (1992-2020)",
+                      type = "folder"
+)$code[1]
+```
 
-
+Stiahnutie dát:
+```{r eval=FALSE}
+dat <- get_eurostat("une_rt_a", time_format = "num")
+```
 
 
 
