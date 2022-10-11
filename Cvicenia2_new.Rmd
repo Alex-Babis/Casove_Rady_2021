@@ -55,7 +55,7 @@ Podobne ako na minulom cvičení, ale podrobnejšie:
 **Funkcia v R-ku:** Budeme používať funkciu `sarima` (AR proces je špeciálnym prípadom SARIMA procesu - sezónny proces, bude neskôr na tomto predmete) z knižnice `astsa` (astsa = applied statistical time series analysis).
 
 ## Príklad 1: Modelovanie produkcie na Slovensku
-Modelujeme mesačnú produkciu "nondurable goods" (potraviny, oblečenie, atď) na Slovensku od začiatku roku 2006 po koniec roka 2022. Hodnoty sú udávané v zmysle T15, teda úmerné vzhľadom na referenčný rok 2015.
+Modelujeme mesačnú produkciu "nondurable goods" (potraviny, oblečenie, atď) na Slovensku od začiatku roku 2006 po koniec roka 2022. Hodnoty sú udávané v zmysle I15 (Consumer price index), teda úmerné vzhľadom na referenčný rok 2015.
 
 Načítajte dáta a vytvorte premennú `nd.goods`
 ```{r, fig.align="center"}
@@ -228,7 +228,7 @@ kde $δ$ je taká konštanta, aby platilo, že $E[x_t]=0.0204$ (`xmean` z výstu
 
 Čo ak by sme chceli simulovať proces v tvare $x_t= 5 + 0.5x_{t−1}+u_t$? 
 
-R-ko simuluje iba zero-mean procesy.
+R-ko simuluje iba zero-mean procesy. 
 
 ```{r, fig.align="center"}
 set.seed(123)

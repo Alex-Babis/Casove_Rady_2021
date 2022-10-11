@@ -492,8 +492,8 @@ class="section level2" number="2.1">
 Modelovanie produkcie na Slovensku</h2>
 <p>Modelujeme mesačnú produkciu “nondurable goods” (potraviny,
 oblečenie, atď) na Slovensku od začiatku roku 2006 po koniec roka 2022.
-Hodnoty sú udávané v zmysle T15, teda úmerné vzhľadom na referenčný rok
-2015.</p>
+Hodnoty sú udávané v zmysle I15 (Consumer price index), teda úmerné
+vzhľadom na referenčný rok 2015.</p>
 <p>Načítajte dáta a vytvorte premennú <code>nd.goods</code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nd.goods <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Non_durable_prod_06_22_SK.txt&quot;</span>)   <span class="co"># </span></span></code></pre></div>
 <p>Z premennej <code>nd.goods</code> vytvoríme object typu time-series,
@@ -890,22 +890,22 @@ pozorovaní)</p>
 <pre><code>## $pred
 ##           Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
 ## 2022                                                                        
-## 2023 11.95779 11.94995 11.94688 11.94743 11.95118 11.95757 11.96619 11.97668
-## 2024 12.04807 12.06487 12.08221 12.10001 12.11818 12.13668 12.15545 12.17444
+## 2023 5.746804 5.708881 5.674133 5.641604 5.611123 5.582289 5.554873 5.528626
+## 2024 5.409361 5.387097 5.365175 5.343540 5.322146 5.300954 5.279931 5.259049
 ##           Sep      Oct      Nov      Dec
-## 2022 12.05199 12.01512 11.99134 11.97079
-## 2023 11.98873 12.00208 12.01654 12.03192
+## 2022 5.939579 5.880503 5.833740 5.787664
+## 2023 5.503367 5.478933 5.455193 5.432033
 ## 2024                                    
 ## 
 ## $se
 ##            Jan       Feb       Mar       Apr       May       Jun       Jul
 ## 2022                                                                      
-## 2023 0.6884890 0.8204395 0.9501789 1.0767933 1.2000475 1.3196959 1.4356790
-## 2024 2.0582887 2.1510753 2.2411299 2.3286023 2.4136366 2.4963701 2.5769330
+## 2023 0.6884928 0.8204451 0.9501866 1.0768031 1.2000596 1.3197104 1.4356960
+## 2024 2.0583212 2.1511104 2.2411676 2.3286424 2.4136791 2.4964151 2.5769803
 ##            Aug       Sep       Oct       Nov       Dec
-## 2022           0.1637034 0.2908529 0.4237666 0.5551057
-## 2023 1.5479995 1.6567335 1.7619891 1.8639008 1.9626158
-## 2024 2.6554480</code></pre>
+## 2022           0.1637034 0.2908531 0.4237679 0.5551080
+## 2023 1.5480191 1.6567557 1.7620139 1.8639282 1.9626458
+## 2024 2.6554976</code></pre>
 <p>Ak uložíme výstup funkcie <code>sarima.for</code> napr. do premennej
 <code>predikcie</code>, tak máme prístup k predikciám a štandardným
 odchýlkam: <code>predikcie$pred</code>, <code>predikcie$se</code>. To je
