@@ -11,12 +11,16 @@ output:
     highlight: zenburn
 ---
 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library("htmltools")
+library("mime")
 ```
 
-Zadanie príkladov na stránke (iba prvé 4 príklady):\
-https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1.pdf
+Zadanie príkladov:
 
-Riešenie:\
-https://www.stat.berkeley.edu/~bartlett/courses/153-fall2010/hw/mt1solns.pdf
+```{r echo=FALSE}
+# a single file
+xfun::embed_file('casove_rady.pdf',text = "Zadanie pre cvičenie 3.")
+
+```

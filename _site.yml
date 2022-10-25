@@ -11,7 +11,7 @@ navbar:
         - text: "Tutorial 2"
           href: Cvicenia2_new.html
         - text: "Tutorial 3"
-          #href: Cvicenie3.html
+          href: Cvicenie3.html
         - text: "Tutorial 4"
           #href: Cvicenie4.html
         - text: "Tutorial 5"
@@ -23,7 +23,7 @@ navbar:
         - text: "Homework 1"
           href: Domaca_uloha1.html
         - text: "Homework 2"
-          #href: Domaca_uloha2.html
+          href: Domaca_uloha2.html
         - text: "Homework 3"
           #href: Domaca_uloha3.html
         - text: "Homework 4"
