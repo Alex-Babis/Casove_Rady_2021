@@ -1,0 +1,375 @@
+---
+title: "Cvičenie 4 - Zostavenie a testovanie ARIMA modelov"
+output:
+  html_document: 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
+    theme: flatly
+    highlight: zenburn
+---
+# Potrebé knižnice pre cvičenie 2
+
+```{r include= FALSE}
+# Package names
+packages <- c("ggplot2","ggfortify","astsa","datasets","forecast","zoo",
+              "urca")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages],dependencies=TRUE)
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+
+```{r eval= FALSE}
+# Package names
+packages <- c("ggplot2","ggfortify","astsa","datasets","forecast","zoo",
+              "urca")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages],dependencies=TRUE)
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+
+# Parciálna autokorelačná funkcia AR procesu
+
+## Opakovanie z prednášky
+
++ Čo je parciálna autokorelačná funkcia procesu?
+
++ Čím je charakteristická PACF autoregresného procesu rádu p? Prečo? Ako to vyplýva z definície PACF?
+
++ Čím je charakteristická PACF moving-average procesu rádu q? 
+
+## Výpočet v R-ku
+
+Podobne ako v prípade ACF, aj teraz použijeme funkciu `ARMAacf`, ale pridáme parameter `pacf=TRUE`:
+
+```{r eval = FALSE, fig.align="center"}
+ARMAacf(ar=c(...),ma=c(...), lag.max=10, pacf=TRUE)
+```
+
+
+Príklady: 
+
+**Príklad 1**
+```{r, fig.align="center"}
+pacf.pr1 <- ARMAacf(ar=c(0.05,-0.2), lag.max=10, pacf = TRUE)
+pacf.pr1
+```
+
+```{r, fig.align="center"}
+pacf.pr1 <- data.frame(
+  name= as.factor(1:length(pacf.pr1)) ,  
+  value= pacf.pr1 )
+
+ggplot(data= pacf.pr1, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+Porovnanie s ACF pre daný proces
+```{r, fig.align="center"}
+acf.pr1 <- ARMAacf(ar=c(0.05,-0.2), lag.max=10)
+acf.pr1
+```
+
+```{r, fig.align="center"}
+acf.pr1 <- data.frame(
+  name= as.factor(1:(length(acf.pr1)-1)) ,  
+  value= acf.pr1[-1] )
+
+ggplot(data= acf.pr1, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+**Príklad 2**
+```{r, fig.align="center"}
+pacf.pr2 <-ARMAacf(ma=c(-0.4,0.7), lag.max=10, pacf=TRUE)
+pacf.pr2
+```
+
+```{r, fig.align="center"}
+pacf.pr2 <- data.frame(
+  name= as.factor(1:length(pacf.pr2)) ,  
+  value= pacf.pr2 )
+
+ggplot(data= pacf.pr2, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+Porovnanie s ACF pre daný proces:
+```{r, fig.align="center"}
+acf.pr2 <-ARMAacf(ma=c(-0.4,0.7), lag.max=10)
+acf.pr2
+```
+
+```{r, fig.align="center"}
+acf.pr2 <- data.frame(
+  name= as.factor(1:(length(acf.pr2)-1)) ,  
+  value= acf.pr2[-1] )
+
+ggplot(data= acf.pr2, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+**Príklad 3**
+```{r, fig.align="center"}
+pacf.pr3 <-ARMAacf(ma=c(-0.4,0.7),ar=c(0.05,-0.2), lag.max=10, pacf=TRUE)
+pacf.pr3
+```
+
+```{r, fig.align="center"}
+pacf.pr3 <- data.frame(
+  name= as.factor(1:length(pacf.pr3)) ,  
+  value= pacf.pr3 )
+
+ggplot(data= pacf.pr3, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+Porovnanie s ACF pre daný proces:
+```{r, fig.align="center"}
+acf.pr3 <-ARMAacf(ma=c(-0.4,0.7),ar=c(0.05,-0.2), lag.max=10)
+acf.pr3
+```
+
+```{r, fig.align="center"}
+acf.pr3 <- data.frame(
+  name= as.factor(1:(length(acf.pr3)-1)) ,  
+  value= acf.pr3[-1] )
+
+ggplot(data= acf.pr3, aes(x = name, y = value))+
+geom_bar(stat = "identity")
+```
+
+Nájdeme parciálnu autokorelačnú funkciu AR(3) procesu
+$$x_t=1.5x_{t−1}−0.8x_{t−2}+0.2x_{t−3}+u_t,$$
+
+## Výberová PACF z dát
+Môžeme
+
++ použiť funkciu `pacf`
+
++ pomocou funkcie `acf2` z knižnice astsa vykresliť naraz výberovú ACF aj PACF (tu bude mať navyše ACF odstránenú hodnotu pre lag 0, ktorá sa vždy rovná 1)
+
+Budete modelovať mesačné dáta o produkcií "capital goods" (všetko, čo sa používa na výrobu iných tovarov) na Slovensku do začiatku roka 2000 do konca roka 2022.
+
+Načítajte dáta a vytvorte premennú `cap.goods`
+```{r, fig.align="center"}
+cap.goods <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Capital_good_prod_00_20_SK.txt")   # 
+```
+
+Z premennej `cap.goods` vytvoríme object typu time-series, ktorý bude obsahovať informáciu o časovej štruktúre dát, podobne ako na cvičení 1.
+Použijeme funkciu `ts`: 
+
+
+```{r, fig.align="center", echo = FALSE}
+cap.goods <- ts(data = cap.goods,             # data su premennej cap.goods
+             frequency = 12,        # sú mesačné
+             start = c(2000,1))    # zacinaju v 1. kvartali roku 1952
+
+```
+
+
+```{r, eval=FALSE}
+cap.goods <- ts(data = ,             # data su premennej cap.goods
+             frequency = ,        # su kvartalne
+             start = )            # zacinaju v 1. kvartali roku 1952
+
+class(cap.goods)  # budeme vidiet, ze uz je to casovy rad
+```
+
+Vykreslíme teraz priebeh, napríklad:
+
+```{r, fig.align="center"}
+autoplot(cap.goods)
+```
+
+Vidíme v dátach rastúci trend, preto budeme pracovať s diferenciami časového radu.
+
+```{r, fig.align="center"}
+autoplot(diff(cap.goods))
+```
+
+
+Zobrazte výberovú parciálnu autokorelačnú funkciu, napríklad:
+```{r fig.align="center"}
+autoplot(pacf(diff(cap.goods), plot = FALSE)) 
+#acf1(cap.goods)
+```
+
+**Úloha:** nájdite vhodný AR(p) model pre naše dáta.
+
+Určenie ACF aj PACF naraz:
+```{r, fig.align="center"}
+# moznost 2
+acf2(diff(cap.goods))
+```
+
+
+
+# Jednotkový koreň
+
+Cieľom tejto časti bude zistovanie rádu diferencovania časového radu. 
+
+Na predošlých cvičeniach sme mali, že časový rad môže obsahovať **deterministický** trend (napríklad lineárny v podobe $\mu t$), ktorý spôsobuje nestacionaritu. Vo väčšine prípadov ho vieme aproximovať polýnomom v premennej t rádu p. Následne pri ARMA modelovaní pracujeme s p-tými diferenciami časového radu. 
+
+Časový rad môže však vykazovať aj inú formu nestacionarity. Ďalším príkladom je výskyt jednotkového koreňa. Procesy s jednotkovým koreňom nazývame integrované procesy označujeme $I(d)$ (d je počet diferencovania pôvodného časového radu). To znamená, že pomocou d-tych diferencií vieme dostať stacionárny a invertovateľný proces z pôvodného procesu. $y_{t}$ je $I(1)$ ak sa dá zapísať v tvare:
+
+$$y_t = \delta + y_{t-1} + x_t,$$
+pričom $x_t$ je stacionarný a invertovateľný ARMA(p,q) proces. Vo Všeobecnosti, $y_{t}$ je $I(d)$, potom ho vieme zapísať ako:
+$$(1-L)^dy_t = \delta +  x_t,$$
+
+Tieto procesy sú charakterizované **stochastickým** trendom. Aj v tomto prípade bude treba pri ARMA modelovaní pracovať s diferenciami časového radu, ktoré sú schopné eliminovať stochastický trend. 
+
+Jednotkový koreň sa niekedy dá vydedukovať aj z grafu (ako intuícia, že sa v dátach môže vyskytovať), častokrát realizácie takéhoto procesu generujú značne hladku krivku.
+
+Na odhalenie prítomnosti jednotkového koreňa v časovom rade budeme používať štatistické testy z balíka `urca` (**Unit Root** and Cointegration Tests for Time Series Data).
+
+Konkrétne funckiu `ur.df` (Augmented-Dickey-Fuller Unit Root Test)
+
+```{r, eval = FALSE}
+ur.df(y = časový rad,
+      type = jedno z c("none", "drift", "trend"),
+      lags = maximálny počet lagov, ktorý uvažujeme,
+      selectlags = ako vybrať vyhovujúci model - c("Fixed", "AIC", "BIC"))
+```
+
+Parameter `type` zadávame podľa toho, či dáta obsahujú `="trend"` trend aj drift, `="drift"` ak dáta obsahujú drift ale neobsahujú trend alebo  `="none"`, ak sú dáta bez driftu a trendu.
+  
+
+## Príklad z minimálnej kostry na skúške
+
+Cieľom bude nájdenie vhodného ARIMA modelu pre dáta (na skúške bývajú dáta, ako tieto naše, ktoré sa dajú modelovať ako ARIMA proces, pričom p ani q nie sú väčšie ako 5). To znamená, že treba okrem správneho určenia parametrov p a q určiť aj parameter d (diferencie).
+
+Majme data o nezamestnanosti z knižnice `astsa`:
+```{r}
+y <- econ5[,"unemp"]
+autoplot(y)
+```
+
+Zadanie úlohy bude v nasledovnom tvare:
+
++ Vysvetlite koľko krát a prečo sa majú dáta diferencovať. Čiže pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, ...) napíšte, či ste dáta diferencovali a prečo. Skončite tým, že určitý časový rad nebude treba už viac diferencovať
++ Testovanie jednotkového koreňa. V poslednom kroku nastala situácia, že v dátach nebol trend, ani jednotkový koreň, a preto ich nebolo nutné diferencovať. Podrobne vysvetlite, čo sa tam dialo:\
+  Napíšte s akými parametrami ADF testu ste dáta testovali a aká regresia sa tam odhadla.
+  1. Aká hypotéza o koeficientoch regresie sa testuje?
+  2. Odvoďte, že táto hypotéza predstavuje hypotézu o jednotkovom koreni daného časového radu.
+  3. Kedy túto hypotézu zamietame (ako vyzerá kritériu založené na testovej štatistike a kritickej hodnote)?
+  4. Čo vyšlo v našom prípade (zamietame vs. nezamietame), čo to znamená pre diferencovanie nášho časového radu (diferencovať vs. nediferencovať)?
++ Nájdite vhodný ARIMA model pre dáta `y`. Požiadavky sú: stacionarita, invertovateľnosť a p-hodnoty Ljung-Boxovho testu nad 5%.
+
+Riešenie:
+
+
++ Dáta podľa grafu nevykazujú prítomnosť trendu. To znamená, že dáta `y` otestujeme už iba na prítomnosť jednotkového koreňa. Stredná hodnota dát vyzerá byť niekde v okolí hodnoty 5, preto zvolíme `type = "drift"`. Je dôležité zvoliť primeraný počet lagov,aby sa nám nestalo, že všetky lagy sa nám dostanú do výsledného modelu. V takom prípade nevieme, či je to najlepší možný model pre naše dáta podľa IC alebo sme ho dostali iba kvôli tomu, že sme väčší počet lagov nepovolili. V našom prípade zvolíme `lags = 4`. IC zvolíme napríklad `selectlags = "BIC"`.
+
+```{r}
+summary(ur.df(y, lags = 5, selectlags = "BIC", type = "drift"))
+```
+
++ V dátach teda nie je prítomný jednotkový koreň (test ho zamietol na hladine významnosti 5%), preto ich nebudeme ďalej diferencovať.
+
++ Regresia, ktorá sa odhadla v teste
+$$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
+
++ Hypotéza, ktorá sa testuje pre koeficienty z regresie
+$$ H_{0}: c_{1} = 0 \;vs\; H_{1}: c_{1} < 0 $$
+
++ Odvodenie, že hypotéza predstavuje aj hypotézu o jednotkovom koreni daného časového radu
+$$ \Delta z_{t} = \alpha + c_{1}z_{t-1}+c_{2}\Delta z_{t-1} + e_{t}$$
+$$ z_{t}- z_{t-1}= \alpha + c_{1}z_{t-1}+c_{2}(z_{t-1}-z_{t-2}) + e_{t}$$
+$$ z_{t}= \alpha + (1+c_{1}+c_{2})z_{t-1}+(-c_{2})z_{t-2} + e_{t}$$
+$$ [1-(1+c_{1}+c_{2})L+c_{2}L^{2}]z_{t}= \alpha + e_{t}$$
+
+Ak by daný polynóm $1-(1+c_{1}+c_{2})L+c_{2}L^{2}$ mal jednotkový koreň, platilo by 
+$$1-(1+c_{1}+c_{2})+c_{2} = 0 $$
+respektíve 
+$$-(1+c_{1}+c_{2})+c_{2} = -1 $$
+z čoho po úprave dostávame, že $c_{1} = 0$. Vidíme, že hypotéza o testovaní koeficientu $c_{1}$ z regresie, je totožná s hypotézou o testovaní jednotkového koreňa.
+
++ Hypotézu zamietame ak je testová štatistika (`test-statistic is: -3.4904`) menšia ako sú kritické hodnoty(pre náš prípad máme kritické hodnoty dané):\
+`##       1pct  5pct 10pct`\
+`## tau2 -3.51 -2.89 -2.58`\
+
++ V našom prípade výšlo, že testová štatistika je na hladine významnosti 5% menšia ako kritická hodnota, z toho dôvodu zamietame hypotézu $H_{0}$ a prijímame hypotézu $H_{1}$. Znamená to, že v dátach nie je prítomný jednotkový koreň, teda dáta nemusíme diferencovať.
+
++ Hľadanie vhodného ARIMA modelu
+```{r}
+acf2(y)
+```
+
++ Podľa ACF/PACF vyzerá, že vhodný model pre naše dáta by mohol byť AR(2). Dôvod je ten, že PACF(k), pre k > 2 vyzerá byť nulová a ACF je nenulová a postupne klesá.
+```{r}
+model.y <- capture.output(sarima(y,2,0,0)) # ked chceme iba grafy a nevypisovat konvergenciu ani summary modelu
+```
+
+```{r}
+model.y <- sarima(y,2,0,0, details = FALSE)
+model.y
+```
+P-hodnoty Ljung-Boxovho testu sú viac ako 5%. Invertovateľnosť netreba overovať, keďže nemáme MA členy. Overíme ešte stacionaritu.\
+
+Budeme počítať korene polynómu $1-1.3667L + 0.5336 L^{2} = 0$, pričom tieto musia byť mimo jednotkový kruh.
+
+```{r}
+polyroot(c(1,-1.3667,0.5336))
+abs(polyroot(c(1,-1.3667,0.5336)))
+```
+
+2 komplexne združené korene v absolútnej hodnote viac ako 1, máme stacionárny proces.
+
+
+## Rovnaký koreň pre oba polynómy
+Modelujme predchadzajúce dáta ako ARMA(3,1) proces
+```{r}
+model.y <- capture.output(sarima(y,3,0,1)) # ked chceme iba grafy a nevypisovat konvergenciu ani summary modelu
+```
+
+```{r}
+model.y <- sarima(y,3,0,1, details = FALSE)
+model.y
+```
+Tento proces môžeme zapísať v tvare
+$$(1-0.4827L - 0.6355 L^{2} +0.4290L^{3})y_{t} = \delta + (1+0.9453L)u_{t}$$
+
+Spočítajme si korene daných polynómov:
+```{r}
+# alpha(L)
+polyroot(c(1,-0.4827,-0.6355,0.4290))
+# beta(L)
+polyroot(c(1,0.9453))
+```
+
+Vykreslíme si ich do komplexnej roviny:
+```{r}
+phi <- seq(0, 2*pi, length.out = 100)
+cos.phi <- cos(phi)
+sin.phi <- sin(phi)
+
+ar.poly <- polyroot(c(1, -model.y$fit$coef[1:3]))
+ma.poly <- polyroot(c(1, model.y$fit$coef[4]))
+qplot(cos.phi, sin.phi, geom = "path")+
+  geom_point(aes(x = Re(ar.poly), y = Im(ar.poly)), color = "#D55E00")+
+  geom_point(aes(x = Re(ma.poly), y = Im(ma.poly)), color = "#009E73")+
+  geom_vline(xintercept = 0, linetype = "dashed")+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  xlab('Re') + ylab('Im')+
+  scale_y_continuous(limits = c(-2, 2))+
+  scale_x_continuous(limits = c(-2, 2))
+  
+```
+Korene AR a MA časti vyšli blízko seba, z toho vyplýva, že by sme mali o 1 znížiť rád AR aj MA členov.

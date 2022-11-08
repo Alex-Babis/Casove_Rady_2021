@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
 <style type="text/css">
@@ -76,42 +79,42 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    background-color: #2a211c;
-    color: #bdae9d;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #bdae9d;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
-  { color: #bdae9d; background-color: #2a211c; }
+  { color: #cccccc; background-color: #303030; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ffff00; } /* Alert */
-code span.an { color: #0066ff; font-weight: bold; font-style: italic; } /* Annotation */
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
 code span.at { } /* Attribute */
-code span.bn { color: #44aa43; } /* BaseN */
+code span.bn { color: #dca3a3; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #43a8ed; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #049b0a; } /* Char */
-code span.cn { } /* Constant */
-code span.co { color: #0066ff; font-weight: bold; font-style: italic; } /* Comment */
-code span.do { color: #0066ff; font-style: italic; } /* Documentation */
-code span.dt { text-decoration: underline; } /* DataType */
-code span.dv { color: #44aa43; } /* DecVal */
-code span.er { color: #ffff00; font-weight: bold; } /* Error */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
 code span.ex { } /* Extension */
-code span.fl { color: #44aa43; } /* Float */
-code span.fu { color: #ff9358; font-weight: bold; } /* Function */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
 code span.im { } /* Import */
-code span.in { color: #0066ff; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #43a8ed; font-weight: bold; } /* Keyword */
-code span.op { } /* Operator */
-code span.pp { font-weight: bold; } /* Preprocessor */
-code span.sc { color: #049b0a; } /* SpecialChar */
-code span.ss { color: #049b0a; } /* SpecialString */
-code span.st { color: #049b0a; } /* String */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
 code span.va { } /* Variable */
-code span.vs { color: #049b0a; } /* VerbatimString */
-code span.wa { color: #ffff00; font-weight: bold; } /* Warning */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 
 </style>
 <script>
@@ -300,6 +303,75 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -307,6 +379,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -382,8 +464,8 @@ $(document).ready(function () {
 </div>
 
 
-<div id="pokyny" class="section level1">
-<h1>Pokyny</h1>
+<div id="pokyny" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Pokyny</h1>
 <ul>
 <li><p>Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia
 ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy
@@ -391,7 +473,7 @@ alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, <strong>ktorí
 úlohu odpísali aj pre tých, ktorí ju dali odpísať.</strong></p></li>
 <li><p>Úlohu posielajte elektronicky na adresu <a
 href="mailto:alexbabis96@gmail.com"
-class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2021 -
+class="email">alexbabis96@gmail.com</a> s predmetom <strong>CR 2022 -
 DU3 - priezvisko/priezviská</strong></p></li>
 <li><p>Body za DÚ dostanete mailom. V prípade, že úlohu riešite v
 skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny,
@@ -423,8 +505,8 @@ href="https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7m
 class="uri">https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0</a></p></li>
 </ul>
 </div>
-<div id="zadanie" class="section level1">
-<h1>Zadanie</h1>
+<div id="zadanie" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Zadanie</h1>
 <p>Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste
 najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale
 použite ich na zhodnotenie kvality predikcií.</p>
@@ -512,6 +594,8 @@ začiatku z dát vynechali. Zhodnodte váš model. Čo si o ňom myslíte?</li>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -544,6 +628,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

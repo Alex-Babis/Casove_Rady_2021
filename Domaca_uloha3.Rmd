@@ -2,8 +2,13 @@
 title: "Domáca úloha 3"
 output:
   html_document:
-      theme: united
-      highlight: espresso
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
+    theme: united
+    highlight: zenburn
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Úlohu vypracováva každý samostatne alebo v dvojici. Komunikácia ohľadom riešenia, zdieľanie kódu a pod. je zakázaná. Pri odpísaní úlohy alebo jej časti je DÚ hodnotená 0 bodmi, a to aj pre tých, **ktorí úlohu odpísali aj pre tých, ktorí ju dali odpísať.**
 
-* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2021 - DU3 - priezvisko/priezviská** 
+* Úlohu posielajte elektronicky na adresu alexbabis96@gmail.com s predmetom **CR 2022 - DU3 - priezvisko/priezviská** 
 
 * Body za DÚ dostanete mailom. V prípade, že úlohu riešite v skupine, pri odovzdávaní pošlite kópiu mailu aj ostatným členom skupiny, aby aj oni dostali informáciu o hodnotení, keď ju budem posielať pomocou reply all. Ak to nespravíte, je vašou úlohou informovať kolegov o bodoch.
 

@@ -13,7 +13,7 @@ navbar:
         - text: "Tutorial 3"
           href: Cvicenie3.html
         - text: "Tutorial 4"
-          #href: Cvicenie4.html
+          #href: Cvicenie4_new.html
         - text: "Tutorial 5"
           #href: Cvicenie5.html
         - text: "Tutorial 6"

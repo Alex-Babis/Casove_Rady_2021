@@ -1,12 +1,14 @@
 ---
 title: "Domáca úloha 2"
 output:
+  pdf_document:
+    toc: yes
   html_document:
-    toc: true
+    toc: yes
     toc_float:
-      collapsed: false
-      smooth_scroll: false
-    number_sections: true
+      collapsed: no
+      smooth_scroll: no
+    number_sections: yes
     theme: united
     highlight: zenburn
 ---
