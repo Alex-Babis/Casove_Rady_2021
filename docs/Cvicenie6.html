@@ -495,11 +495,11 @@ výnosmi pre ceny akcií. Konkrétne sa pozrieme na výnosy akcie
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AAPL.tyzden)</span></code></pre></div>
 <pre><code>##            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
 ## 2016-01-08   25.6525   26.4625  24.1075    24.2400  1375160800      22.19128
-## 2016-01-15   24.7425   25.2975  23.8400    24.2825  1217348800      22.23018
+## 2016-01-15   24.7425   25.2975  23.8400    24.2825  1217348800      22.23019
 ## 2016-01-22   24.6025   25.3650  23.3550    25.3550   973536400      23.21204
-## 2016-01-29   25.3800   25.3825  23.0975    24.3350  1521346000      22.27824
+## 2016-01-29   25.3800   25.3825  23.0975    24.3350  1521346000      22.27825
 ## 2016-02-05   24.1175   24.3325  23.4225    23.5050   868619200      21.63516
-## 2016-02-12   23.2825   24.0875  23.1475    23.4975   924489200      21.62825</code></pre>
+## 2016-02-12   23.2825   24.0875  23.1475    23.4975   924489200      21.62826</code></pre>
 <p>Transformácia cien na logaritmické výnosy:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> AAPL.tyzden<span class="sc">$</span>AAPL.Adjusted</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
@@ -541,7 +541,7 @@ výnosmi pre ceny akcií. Konkrétne sa pozrieme na výnosy akcie
 ## F-statistic: 117.2 on 2 and 252 DF,  p-value: &lt; 2.2e-16
 ## 
 ## 
-## Value of test-statistic is: -10.084 
+## Value of test-statistic is: -10.0839 
 ## 
 ## Critical values for test statistics: 
 ##       1pct  5pct 10pct
@@ -588,13 +588,13 @@ konštanta + biely šum.</p>
 ## xmean   0.0068 0.0024  2.8339   0.005
 ## 
 ## $AIC
-## [1] -3.642205
+## [1] -3.642206
 ## 
 ## $AICc
-## [1] -3.642145
+## [1] -3.642146
 ## 
 ## $BIC
-## [1] -3.614815</code></pre>
+## [1] -3.614816</code></pre>
 <p>Porovnáme si ACF pre rezídua a pre ich druhé mocniny:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf1</span>(vynosy<span class="fl">.00</span><span class="sc">$</span>fit<span class="sc">$</span>residuals)</span></code></pre></div>
 <p><img src="Cvicenie6_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
@@ -634,7 +634,7 @@ nechceme)</li>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 0)
-## &lt;environment: 0x000000003fc82158&gt;
+## &lt;environment: 0x0000000008e23ea8&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -642,24 +642,24 @@ nechceme)</li>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1  
-## 0.01228098  0.00070833  0.82412714  
+## 0.01228098  0.00070833  0.82412845  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0122810   0.0016873    7.279 3.38e-13 ***
+## mu     0.0122810   0.0016873    7.279 3.37e-13 ***
 ## omega  0.0007083   0.0001052    6.731 1.68e-11 ***
-## alpha1 0.8241271   0.1836434    4.488 7.20e-06 ***
+## alpha1 0.8241285   0.1836432    4.488 7.20e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  490.2422    normalized:  1.885547 
+##  490.2424    normalized:  1.885548 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:42 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:37 2022 by user: alexb</code></pre>
 <p>Z výstupu môžeme vidieť odhady pre jednotlivé parametre:</p>
 <ul>
 <li><code>mu</code> - konštanta v rovnici pre strednú hodnotu</li>
@@ -686,7 +686,7 @@ neskôr.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 0)
-## &lt;environment: 0x000000003fc82158&gt;
+## &lt;environment: 0x0000000008e23ea8&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -694,41 +694,41 @@ neskôr.</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1  
-## 0.01228098  0.00070833  0.82412714  
+## 0.01228098  0.00070833  0.82412845  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0122810   0.0016873    7.279 3.38e-13 ***
+## mu     0.0122810   0.0016873    7.279 3.37e-13 ***
 ## omega  0.0007083   0.0001052    6.731 1.68e-11 ***
-## alpha1 0.8241271   0.1836434    4.488 7.20e-06 ***
+## alpha1 0.8241285   0.1836432    4.488 7.20e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  490.2422    normalized:  1.885547 
+##  490.2424    normalized:  1.885548 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:42 2022 by user: alexb 
+##  Mon Nov 14 21:13:37 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  11.77691  0.002771258
-##  Shapiro-Wilk Test  R    W      0.9830936 0.003547549
-##  Ljung-Box Test     R    Q(10)  6.68344   0.7549539  
-##  Ljung-Box Test     R    Q(15)  13.94918  0.5293869  
-##  Ljung-Box Test     R    Q(20)  17.52499  0.6186678  
-##  Ljung-Box Test     R^2  Q(10)  19.6778   0.03245171 
-##  Ljung-Box Test     R^2  Q(15)  21.81947  0.1126258  
-##  Ljung-Box Test     R^2  Q(20)  30.21379  0.06646284 
-##  LM Arch Test       R    TR^2   23.89058  0.02104932 
+##  Jarque-Bera Test   R    Chi^2  11.77693  0.002771225
+##  Shapiro-Wilk Test  R    W      0.9830934 0.003547229
+##  Ljung-Box Test     R    Q(10)  6.683468  0.7549513  
+##  Ljung-Box Test     R    Q(15)  13.94921  0.5293845  
+##  Ljung-Box Test     R    Q(20)  17.52502  0.6186657  
+##  Ljung-Box Test     R^2  Q(10)  19.6776   0.03245381 
+##  Ljung-Box Test     R^2  Q(15)  21.81925  0.1126317  
+##  Ljung-Box Test     R^2  Q(20)  30.21367  0.06646465 
+##  LM Arch Test       R    TR^2   23.89038  0.02105059 
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.748017 -3.706932 -3.748279 -3.731500</code></pre>
+## -3.748019 -3.706934 -3.748281 -3.731502</code></pre>
 <p>Vidíme, že stále ostáva istá autokorelácia medzi druhými mocninami
 rezíduí, aj keď samotné rezíduá nie sú korelované. Rovnako sa zamieta aj
 LM Arch test, teda zamietame hypotézu o homoskedasticite (konštantnosti
@@ -747,7 +747,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(2, 0)
-## &lt;environment: 0x00000000384b65f8&gt;
+## &lt;environment: 0x000000003a5cd110&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -755,7 +755,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2  
-## 0.01250833  0.00062618  0.73951519  0.10119522  
+## 0.01250833  0.00062618  0.73951587  0.10119517  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -764,16 +764,16 @@ disperzie v rezíduach).</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0125083   0.0017459    7.164 7.81e-13 ***
 ## omega  0.0006262   0.0001059    5.911 3.41e-09 ***
-## alpha1 0.7395152   0.1711367    4.321 1.55e-05 ***
-## alpha2 0.1011952   0.0733650    1.379    0.168    
+## alpha1 0.7395159   0.1711367    4.321 1.55e-05 ***
+## alpha2 0.1011952   0.0733652    1.379    0.168    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  491.8492    normalized:  1.891728 
+##  491.8494    normalized:  1.891729 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:37 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.20</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -784,7 +784,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(2, 0)
-## &lt;environment: 0x00000000384b65f8&gt;
+## &lt;environment: 0x000000003a5cd110&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -792,7 +792,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2  
-## 0.01250833  0.00062618  0.73951519  0.10119522  
+## 0.01250833  0.00062618  0.73951587  0.10119517  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -801,33 +801,33 @@ disperzie v rezíduach).</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0125083   0.0017459    7.164 7.81e-13 ***
 ## omega  0.0006262   0.0001059    5.911 3.41e-09 ***
-## alpha1 0.7395152   0.1711367    4.321 1.55e-05 ***
-## alpha2 0.1011952   0.0733650    1.379    0.168    
+## alpha1 0.7395159   0.1711367    4.321 1.55e-05 ***
+## alpha2 0.1011952   0.0733652    1.379    0.168    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  491.8492    normalized:  1.891728 
+##  491.8494    normalized:  1.891729 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb 
+##  Mon Nov 14 21:13:37 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  13.74905  0.001033787
-##  Shapiro-Wilk Test  R    W      0.9823756 0.002641115
-##  Ljung-Box Test     R    Q(10)  6.664346  0.7567071  
-##  Ljung-Box Test     R    Q(15)  14.25219  0.5064952  
-##  Ljung-Box Test     R    Q(20)  18.15388  0.5772723  
-##  Ljung-Box Test     R^2  Q(10)  21.72111  0.01659013 
-##  Ljung-Box Test     R^2  Q(15)  24.31935  0.059865   
-##  Ljung-Box Test     R^2  Q(20)  32.68253  0.03654685 
-##  LM Arch Test       R    TR^2   23.37488  0.02470674 
+##  Jarque-Bera Test   R    Chi^2  13.74906  0.001033782
+##  Shapiro-Wilk Test  R    W      0.9823754 0.002640815
+##  Ljung-Box Test     R    Q(10)  6.664367  0.7567052  
+##  Ljung-Box Test     R    Q(15)  14.25222  0.5064923  
+##  Ljung-Box Test     R    Q(20)  18.15391  0.5772699  
+##  Ljung-Box Test     R^2  Q(10)  21.72093  0.01659117 
+##  Ljung-Box Test     R^2  Q(15)  24.31917  0.05986781 
+##  Ljung-Box Test     R^2  Q(20)  32.68249  0.03654719 
+##  LM Arch Test       R    TR^2   23.37471  0.02470804 
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.752686 -3.697907 -3.753150 -3.730664</code></pre>
+## -3.752688 -3.697908 -3.753152 -3.730666</code></pre>
 <p>Vidíme, že koeficient <code>alpha2</code> vyšiel nesignifikantný,
 zároveň sa však zachovali nedostatky rezíduí z ARCH(1) procesu (v
 niektorých prípadoch dokonca horšie p hodnoty).</p>
@@ -845,7 +845,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(3, 0)
-## &lt;environment: 0x00000000388d6578&gt;
+## &lt;environment: 0x0000000008f7bf48&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -853,7 +853,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2      alpha3  
-## 0.01195432  0.00063826  0.57832422  0.07510205  0.07718488  
+## 0.01195435  0.00063827  0.57832733  0.07510155  0.07718409  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -862,17 +862,17 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0119543   0.0018873    6.334 2.39e-10 ***
 ## omega  0.0006383   0.0001131    5.643 1.68e-08 ***
-## alpha1 0.5783242   0.1733174    3.337 0.000848 ***
-## alpha2 0.0751020   0.0653501    1.149 0.250462    
-## alpha3 0.0771849   0.0560068    1.378 0.168162    
+## alpha1 0.5783273   0.1733180    3.337 0.000847 ***
+## alpha2 0.0751016   0.0653501    1.149 0.250466    
+## alpha3 0.0771841   0.0560067    1.378 0.168165    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.7704    normalized:  1.899117 
+##  493.7706    normalized:  1.899118 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:37 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.30</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -883,7 +883,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(3, 0)
-## &lt;environment: 0x00000000388d6578&gt;
+## &lt;environment: 0x0000000008f7bf48&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -891,7 +891,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2      alpha3  
-## 0.01195432  0.00063826  0.57832422  0.07510205  0.07718488  
+## 0.01195435  0.00063827  0.57832733  0.07510155  0.07718409  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -900,34 +900,34 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0119543   0.0018873    6.334 2.39e-10 ***
 ## omega  0.0006383   0.0001131    5.643 1.68e-08 ***
-## alpha1 0.5783242   0.1733174    3.337 0.000848 ***
-## alpha2 0.0751020   0.0653501    1.149 0.250462    
-## alpha3 0.0771849   0.0560068    1.378 0.168162    
+## alpha1 0.5783273   0.1733180    3.337 0.000847 ***
+## alpha2 0.0751016   0.0653501    1.149 0.250466    
+## alpha3 0.0771841   0.0560067    1.378 0.168165    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.7704    normalized:  1.899117 
+##  493.7706    normalized:  1.899118 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb 
+##  Mon Nov 14 21:13:37 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  10.59033  0.005015791
-##  Shapiro-Wilk Test  R    W      0.9834921 0.004185264
-##  Ljung-Box Test     R    Q(10)  6.596032  0.7629519  
-##  Ljung-Box Test     R    Q(15)  14.54146  0.4849223  
-##  Ljung-Box Test     R    Q(20)  18.83111  0.5328271  
-##  Ljung-Box Test     R^2  Q(10)  11.98885  0.2858036  
-##  Ljung-Box Test     R^2  Q(15)  15.82679  0.3936557  
-##  Ljung-Box Test     R^2  Q(20)  26.06806  0.1635759  
-##  LM Arch Test       R    TR^2   13.95793  0.3034028  
+##  Jarque-Bera Test   R    Chi^2  10.59035  0.005015729
+##  Shapiro-Wilk Test  R    W      0.983492  0.004185067
+##  Ljung-Box Test     R    Q(10)  6.596038  0.7629513  
+##  Ljung-Box Test     R    Q(15)  14.54146  0.4849225  
+##  Ljung-Box Test     R    Q(20)  18.83111  0.5328269  
+##  Ljung-Box Test     R^2  Q(10)  11.98886  0.2858024  
+##  Ljung-Box Test     R^2  Q(15)  15.82681  0.3936547  
+##  Ljung-Box Test     R^2  Q(20)  26.06821  0.1635708  
+##  LM Arch Test       R    TR^2   13.95794  0.3034024  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.759772 -3.691298 -3.760494 -3.732245</code></pre>
+## -3.759773 -3.691299 -3.760495 -3.732246</code></pre>
 <p>Opäť máme nesignifikantné koeficienty, no druhé mocniny rezíduí sú už
 bez výraznej autokorelácie, LM Arch test sa nezamietol, teda môžeme
 predpokladať konštatnú disperziu v rezíduách. Teda rezíduá môžeme
@@ -953,7 +953,7 @@ GARCH(1,1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x0000000038989e50&gt;
+## &lt;environment: 0x0000000036b01610&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -961,7 +961,7 @@ GARCH(1,1)</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1  
-## 0.01213423  0.00042425  0.56797886  0.28020750  
+## 0.01213425  0.00042425  0.56798217  0.28020544  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -970,16 +970,16 @@ GARCH(1,1)</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0121342   0.0018511    6.555 5.55e-11 ***
 ## omega  0.0004242   0.0001278    3.321 0.000897 ***
-## alpha1 0.5679789   0.1819402    3.122 0.001798 ** 
-## beta1  0.2802075   0.1435777    1.952 0.050985 .  
+## alpha1 0.5679822   0.1819404    3.122 0.001797 ** 
+## beta1  0.2802054   0.1435770    1.952 0.050985 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.2927    normalized:  1.89728 
+##  493.2929    normalized:  1.89728 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:37 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -990,7 +990,7 @@ GARCH(1,1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x0000000038989e50&gt;
+## &lt;environment: 0x0000000036b01610&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -998,7 +998,7 @@ GARCH(1,1)</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1  
-## 0.01213423  0.00042425  0.56797886  0.28020750  
+## 0.01213425  0.00042425  0.56798217  0.28020544  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -1007,33 +1007,33 @@ GARCH(1,1)</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0121342   0.0018511    6.555 5.55e-11 ***
 ## omega  0.0004242   0.0001278    3.321 0.000897 ***
-## alpha1 0.5679789   0.1819402    3.122 0.001798 ** 
-## beta1  0.2802075   0.1435777    1.952 0.050985 .  
+## alpha1 0.5679822   0.1819404    3.122 0.001797 ** 
+## beta1  0.2802054   0.1435770    1.952 0.050985 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.2927    normalized:  1.89728 
+##  493.2929    normalized:  1.89728 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb 
+##  Mon Nov 14 21:13:37 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  13.29982  0.001294137
-##  Shapiro-Wilk Test  R    W      0.9827873 0.003126545
-##  Ljung-Box Test     R    Q(10)  6.639314  0.7590004  
-##  Ljung-Box Test     R    Q(15)  14.93201  0.4563259  
-##  Ljung-Box Test     R    Q(20)  19.58094  0.4844026  
-##  Ljung-Box Test     R^2  Q(10)  15.76622  0.1065229  
-##  Ljung-Box Test     R^2  Q(15)  20.12279  0.1672727  
-##  Ljung-Box Test     R^2  Q(20)  29.89759  0.07153011 
-##  LM Arch Test       R    TR^2   17.71936  0.1244813  
+##  Jarque-Bera Test   R    Chi^2  13.29971  0.001294212
+##  Shapiro-Wilk Test  R    W      0.9827872 0.003126436
+##  Ljung-Box Test     R    Q(10)  6.639326  0.7589993  
+##  Ljung-Box Test     R    Q(15)  14.93204  0.4563233  
+##  Ljung-Box Test     R    Q(20)  19.58097  0.4844009  
+##  Ljung-Box Test     R^2  Q(10)  15.76617  0.1065247  
+##  Ljung-Box Test     R^2  Q(15)  20.12274  0.1672748  
+##  Ljung-Box Test     R^2  Q(20)  29.89771  0.07152808 
+##  LM Arch Test       R    TR^2   17.71929  0.1244836  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.763790 -3.709010 -3.764254 -3.741768</code></pre>
+## -3.763791 -3.709012 -3.764255 -3.741769</code></pre>
 <p>Všetky koeficienty vyšli signifikatné, aj keď koeficient
 <code>beta1</code> (koeficient pri <span
 class="math inline">\(\sigma_{t-1}^2\)</span>) vyšiel dosť nahrane. Čo
@@ -1058,7 +1058,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 2)
-## &lt;environment: 0x00000000376e3128&gt;
+## &lt;environment: 0x0000000035e21740&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1066,26 +1066,26 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1       beta2  
-## 0.01180015  0.00041398  0.55035062  0.14081897  0.14095845  
+## 0.01180016  0.00041398  0.55035301  0.14081945  0.14095545  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0118001   0.0018603    6.343 2.25e-10 ***
-## omega  0.0004140   0.0001282    3.229 0.001241 ** 
-## alpha1 0.5503506   0.1526748    3.605 0.000312 ***
-## beta1  0.1408190   0.1113736    1.264 0.206092    
-## beta2  0.1409584   0.1094364    1.288 0.197732    
+## mu     0.0118002   0.0018603    6.343 2.25e-10 ***
+## omega  0.0004140   0.0001282    3.229 0.001240 ** 
+## alpha1 0.5503530   0.1526754    3.605 0.000312 ***
+## beta1  0.1408195   0.1113737    1.264 0.206091    
+## beta2  0.1409554   0.1094357    1.288 0.197739    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  494.3286    normalized:  1.901264 
+##  494.3287    normalized:  1.901264 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:37 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.12</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1096,7 +1096,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 2)
-## &lt;environment: 0x00000000376e3128&gt;
+## &lt;environment: 0x0000000035e21740&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1104,54 +1104,54 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1       beta2  
-## 0.01180015  0.00041398  0.55035062  0.14081897  0.14095845  
+## 0.01180016  0.00041398  0.55035301  0.14081945  0.14095545  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0118001   0.0018603    6.343 2.25e-10 ***
-## omega  0.0004140   0.0001282    3.229 0.001241 ** 
-## alpha1 0.5503506   0.1526748    3.605 0.000312 ***
-## beta1  0.1408190   0.1113736    1.264 0.206092    
-## beta2  0.1409584   0.1094364    1.288 0.197732    
+## mu     0.0118002   0.0018603    6.343 2.25e-10 ***
+## omega  0.0004140   0.0001282    3.229 0.001240 ** 
+## alpha1 0.5503530   0.1526754    3.605 0.000312 ***
+## beta1  0.1408195   0.1113737    1.264 0.206091    
+## beta2  0.1409554   0.1094357    1.288 0.197739    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  494.3286    normalized:  1.901264 
+##  494.3287    normalized:  1.901264 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:43 2022 by user: alexb 
+##  Mon Nov 14 21:13:37 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  10.72812  0.004681853
-##  Shapiro-Wilk Test  R    W      0.9836594 0.004487594
-##  Ljung-Box Test     R    Q(10)  6.817912  0.7425161  
-##  Ljung-Box Test     R    Q(15)  14.68935  0.4740164  
-##  Ljung-Box Test     R    Q(20)  19.1932   0.5093019  
-##  Ljung-Box Test     R^2  Q(10)  11.40521  0.3268316  
-##  Ljung-Box Test     R^2  Q(15)  16.29616  0.3626462  
-##  Ljung-Box Test     R^2  Q(20)  26.57239  0.1477288  
-##  LM Arch Test       R    TR^2   13.27446  0.3494117  
+##  Jarque-Bera Test   R    Chi^2  10.72813  0.004681839
+##  Shapiro-Wilk Test  R    W      0.9836591 0.004487068
+##  Ljung-Box Test     R    Q(10)  6.817924  0.742515   
+##  Ljung-Box Test     R    Q(15)  14.68938  0.4740147  
+##  Ljung-Box Test     R    Q(20)  19.19322  0.5093001  
+##  Ljung-Box Test     R^2  Q(10)  11.40525  0.326829   
+##  Ljung-Box Test     R^2  Q(15)  16.29619  0.3626442  
+##  Ljung-Box Test     R^2  Q(20)  26.5726   0.1477224  
+##  LM Arch Test       R    TR^2   13.27447  0.3494105  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.764066 -3.695591 -3.764787 -3.736538</code></pre>
+## -3.764067 -3.695592 -3.764788 -3.736539</code></pre>
 <p>Vhodný model pre naše dáta môžeme zvoliť napríklad podľa informačných
 kritérií, ku ktorým vieme pristúpiť nasledovne.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.30</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># ARCH(3)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.759772 -3.691298 -3.760494 -3.732245</code></pre>
+## -3.759773 -3.691299 -3.760495 -3.732246</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.11</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># GARCH(1,1)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.763790 -3.709010 -3.764254 -3.741768</code></pre>
+## -3.763791 -3.709012 -3.764255 -3.741769</code></pre>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.12</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># GARCH(1,2)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.764066 -3.695591 -3.764787 -3.736538</code></pre>
+## -3.764067 -3.695592 -3.764788 -3.736539</code></pre>
 <p>Vidíme, že spomedzi troch modelov, ktoré boli pre naše dáta
 vyhovujúce, má najmenšie hodnoty informačných kritérií práve GARCH(1,1).
 Ten ďalej použijeme aj na predikcie z modelu.</p>
@@ -1338,7 +1338,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x0000000012bc62a8&gt;
+## &lt;environment: 0x0000000036e6cd70&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1364,7 +1364,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ##  3480.906    normalized:  4.544264 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:46 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:40 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">00.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1375,7 +1375,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x0000000012bc62a8&gt;
+## &lt;environment: 0x0000000036e6cd70&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1401,7 +1401,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ##  3480.906    normalized:  4.544264 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:46 2022 by user: alexb 
+##  Mon Nov 14 21:13:40 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1439,7 +1439,7 @@ GARCH(1,1) a AR(1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(1, 0) + garch(1, 1)
-## &lt;environment: 0x0000000038f4b1e8&gt;
+## &lt;environment: 0x0000000039615480&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1466,7 +1466,7 @@ GARCH(1,1) a AR(1)</p>
 ##  3481.532    normalized:  4.545081 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:46 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:41 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">10.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1478,7 +1478,7 @@ GARCH(1,1) a AR(1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(1, 0) + garch(1, 1)
-## &lt;environment: 0x0000000038f4b1e8&gt;
+## &lt;environment: 0x0000000039615480&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1505,7 +1505,7 @@ GARCH(1,1) a AR(1)</p>
 ##  3481.532    normalized:  4.545081 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:46 2022 by user: alexb 
+##  Mon Nov 14 21:13:41 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1539,7 +1539,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(2, 0) + garch(1, 1)
-## &lt;environment: 0x0000000035270bf0&gt;
+## &lt;environment: 0x0000000035bb45a8&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1567,7 +1567,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ##  3483.512    normalized:  4.547666 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:47 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:41 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">20.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1579,7 +1579,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(2, 0) + garch(1, 1)
-## &lt;environment: 0x0000000035270bf0&gt;
+## &lt;environment: 0x0000000035bb45a8&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1607,7 +1607,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ##  3483.512    normalized:  4.547666 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:47 2022 by user: alexb 
+##  Mon Nov 14 21:13:41 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1649,7 +1649,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(3, 1) + garch(1, 1)
-## &lt;environment: 0x0000000037f1f068&gt;
+## &lt;environment: 0x0000000038d44c20&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1681,7 +1681,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ##  3485.935    normalized:  4.550829 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:47 2022 by user: alexb</code></pre>
+##  Mon Nov 14 21:13:41 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">31.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1693,7 +1693,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(3, 1) + garch(1, 1)
-## &lt;environment: 0x0000000037f1f068&gt;
+## &lt;environment: 0x0000000038d44c20&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1725,7 +1725,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ##  3485.935    normalized:  4.550829 
 ## 
 ## Description:
-##  Mon Nov 14 21:06:47 2022 by user: alexb 
+##  Mon Nov 14 21:13:41 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:

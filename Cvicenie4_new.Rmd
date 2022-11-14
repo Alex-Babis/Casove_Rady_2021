@@ -376,3 +376,58 @@ Korene AR a MA časti vyšli blízko seba, z toho vyplýva, že by sme mali o 1 
 
 
 # Dáta na samostnatnú prácu
+
+```{r}
+unmp.sk <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt")
+```
+
+```{r, echo = FALSE}
+
+unmp.sk <- ts(unmp.sk[,1], start = c(1995,1))
+autoplot(unmp.sk)
+```
+
+
+```{r}
+Empl.exp.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt", sep = ",")
+```
+
+```{r, echo = FALSE}
+
+Empl.exp.ind.sk <- ts(Empl.exp.ind.sk[,1], start = c(2002,1))
+autoplot(Empl.exp.ind.sk)
+```
+
+
+```{r}
+Empl.exp.ind.hu<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt", sep = ",")
+```
+
+```{r, echo = FALSE}
+
+Empl.exp.ind.hu <- ts(Empl.exp.ind.hu[,1], start = c(2002,1))
+autoplot(Empl.exp.ind.hu)
+```
+
+
+```{r}
+con.conf.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt", sep = ",")
+```
+
+```{r, echo = FALSE}
+
+con.conf.ind.sk <- ts(con.conf.ind.sk[,1], start = c(2003,1))
+autoplot(con.conf.ind.sk)
+```
+
+
+```{r}
+fin.sit.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt", sep = ",")
+```
+
+```{r, echo = FALSE}
+
+fin.sit.sk <- ts(fin.sit.sk[,1], start = c(2003,1))
+autoplot(fin.sit.sk)
+```
+
