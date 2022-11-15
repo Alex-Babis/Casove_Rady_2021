@@ -946,31 +946,64 @@ class="math display">\[(1-0.4827L - 0.6355 L^{2} +0.4290L^{3})y_{t} =
 <p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-33-1.png" width="672" />
 Korene AR a MA časti vyšli blízko seba, z toho vyplýva, že by sme mali o
 1 znížiť rád AR aj MA členov.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cos.phi,sin.phi, <span class="at">type =</span><span class="st">&quot;l&quot;</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>), <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>), <span class="at">xlab =</span> <span class="st">&quot;Re&quot;</span>,</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Im&quot;</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">Re</span>(ar.poly), <span class="fu">Im</span>(ar.poly), <span class="at">col =</span> <span class="st">&quot;#D55E00&quot;</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">Re</span>(ma.poly), <span class="fu">Im</span>(ma.poly), <span class="at">col =</span> <span class="st">&quot;#009E73&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 </div>
 </div>
 <div id="dáta-na-samostnatnú-prácu" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Dáta na samostnatnú
 prácu</h1>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>unmp.sk <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt&quot;</span>)</span></code></pre></div>
+<p>Dáta o nezamestnanosti na Slovensku od roku 1995:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>unmp.sk <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in data.frame(y = as.numeric(object), x = as.numeric(time(object))): NAs
 ## introduced by coercion</code></pre>
-<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>Empl.exp.ind.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>Indikátor očakávania zamestnávateľov: Sumarizuje plány
+zamestnávateľov v štyroch skúmaných podnikateľských sektoroch
+(priemysel, služby, maloobchod, stavebníctvo) a poskytuje tak včasné
+informácie o zmenách očakávanej závislej zamestnanosti na úrovni
+členských štátov, EÚ a eurozóny. Ukazovateľ je konštruovaný ako vážený
+priemer očakávaní zamestnanosti manažérov vo všetkých štyroch skúmaných
+podnikateľských sektoroch. Po vypočítaní váženého priemeru všetkých
+štyroch štandardizovaných bilančných radov sa výsledný časový rad upraví
+tak, aby mal dlhodobý priemer 100 a štandardnú odchýlku 10. Hodnoty
+vyššie ako 100 naznačujú, že očakávania manažérov v oblasti
+zamestnanosti sú vysoké podľa historických štandardov, zatiaľ čo pre
+hodnoty pod 100 platí opak.</p>
+<p>Slovensko od roku 2002:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>Empl.exp.ind.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in data.frame(y = as.numeric(object), x = as.numeric(time(object))): NAs
 ## introduced by coercion</code></pre>
-<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>Empl.exp.ind.hu<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>Maďarsko od roku 2002:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>Empl.exp.ind.hu<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in data.frame(y = as.numeric(object), x = as.numeric(time(object))): NAs
 ## introduced by coercion</code></pre>
-<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>con.conf.ind.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p>Indikátor spotrebiteľskej dôvery poskytuje údaj o budúcom vývoji
+spotreby a úspor domácností na základe odpovedí týkajúcich sa ich
+očakávanej finančnej situácie, ich sentimentu o celkovej ekonomickej
+situácii, nezamestnanosti a možnosti úspor. Indikátor nad 100
+signalizuje zvýšenie dôvery spotrebiteľov v budúcu ekonomickú situáciu,
+v dôsledku čoho sú v nasledujúcich 12 mesiacoch menej náchylní na
+sporenie a viac inklinujú k míňaniu peňazí na veľké nákupy. Hodnoty pod
+100 naznačujú pesimistický postoj k budúcemu vývoju v ekonomike, čo môže
+viesť k tendencii viac šetriť a menej spotrebovávať.</p>
+<p>Slovensko od roku 1999:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>con.conf.ind.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in data.frame(y = as.numeric(object), x = as.numeric(time(object))): NAs
 ## introduced by coercion</code></pre>
-<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>fin.sit.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p>Finančná situácia domácnosti na Slovensku od 2003:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>fin.sit.sk<span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in data.frame(y = as.numeric(object), x = as.numeric(time(object))): NAs
 ## introduced by coercion</code></pre>
-<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Cvicenie4_new_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 
 

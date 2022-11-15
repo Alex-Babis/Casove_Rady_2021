@@ -374,9 +374,20 @@ qplot(cos.phi, sin.phi, geom = "path")+
 ```
 Korene AR a MA časti vyšli blízko seba, z toho vyplýva, že by sme mali o 1 znížiť rád AR aj MA členov.
 
+```{r}
+plot(cos.phi,sin.phi, type ="l", ylim = c(-2,2), xlim= c(-2,2), xlab = "Re",
+     ylab = "Im")
+abline(h = 0, lty = "dashed")
+abline(v = 0, lty = "dashed")
+points(Re(ar.poly), Im(ar.poly), col = "#D55E00")
+points(Re(ma.poly), Im(ma.poly), col = "#009E73")
+```
+
 
 # Dáta na samostnatnú prácu
 
+
+Dáta o nezamestnanosti na Slovensku od roku 1995:
 ```{r}
 unmp.sk <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt")
 ```
@@ -387,7 +398,10 @@ unmp.sk <- ts(unmp.sk[,1], start = c(1995,1))
 autoplot(unmp.sk)
 ```
 
+Indikátor očakávania zamestnávateľov:
+Sumarizuje plány zamestnávateľov v štyroch skúmaných podnikateľských sektoroch (priemysel, služby, maloobchod, stavebníctvo) a poskytuje tak včasné informácie o zmenách očakávanej závislej zamestnanosti na úrovni členských štátov, EÚ a eurozóny. Ukazovateľ je konštruovaný ako vážený priemer očakávaní zamestnanosti manažérov vo všetkých štyroch skúmaných podnikateľských sektoroch. Po vypočítaní váženého priemeru všetkých štyroch štandardizovaných bilančných radov sa výsledný časový rad upraví tak, aby mal dlhodobý priemer 100 a štandardnú odchýlku 10. Hodnoty vyššie ako 100 naznačujú, že očakávania manažérov v oblasti zamestnanosti sú vysoké podľa historických štandardov, zatiaľ čo pre hodnoty pod 100 platí opak.
 
+Slovensko od roku 2002:
 ```{r}
 Empl.exp.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt", sep = ",")
 ```
@@ -399,6 +413,7 @@ autoplot(Empl.exp.ind.sk)
 ```
 
 
+Maďarsko od roku 2002:
 ```{r}
 Empl.exp.ind.hu<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt", sep = ",")
 ```
@@ -409,7 +424,9 @@ Empl.exp.ind.hu <- ts(Empl.exp.ind.hu[,1], start = c(2002,1))
 autoplot(Empl.exp.ind.hu)
 ```
 
+Indikátor spotrebiteľskej dôvery poskytuje údaj o budúcom vývoji spotreby a úspor domácností na základe odpovedí týkajúcich sa ich očakávanej finančnej situácie, ich sentimentu o celkovej ekonomickej situácii, nezamestnanosti a možnosti úspor. Indikátor nad 100 signalizuje zvýšenie dôvery spotrebiteľov v budúcu ekonomickú situáciu, v dôsledku čoho sú v nasledujúcich 12 mesiacoch menej náchylní na sporenie a viac inklinujú k míňaniu peňazí na veľké nákupy. Hodnoty pod 100 naznačujú pesimistický postoj k budúcemu vývoju v ekonomike, čo môže viesť k tendencii viac šetriť a menej spotrebovávať.
 
+Slovensko od roku 1999:
 ```{r}
 con.conf.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt", sep = ",")
 ```
@@ -421,6 +438,7 @@ autoplot(con.conf.ind.sk)
 ```
 
 
+Finančná situácia domácnosti na Slovensku od 2003:
 ```{r}
 fin.sit.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt", sep = ",")
 ```
