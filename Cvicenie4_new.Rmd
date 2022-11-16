@@ -389,7 +389,7 @@ points(Re(ma.poly), Im(ma.poly), col = "#009E73")
 
 Dáta o nezamestnanosti na Slovensku od roku 1995:
 ```{r}
-unmp.sk <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt")
+unmp.sk <- read.table("https://alex-babis.github.io/Casove_Rady_2022/Unemployment_1995_SK.txt",header = TRUE)
 ```
 
 ```{r, echo = FALSE}
@@ -403,7 +403,7 @@ Sumarizuje plány zamestnávateľov v štyroch skúmaných podnikateľských sek
 
 Slovensko od roku 2002:
 ```{r}
-Empl.exp.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt", sep = ",")
+Empl.exp.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_SK.txt", sep = ",",header = TRUE)
 ```
 
 ```{r, echo = FALSE}
@@ -415,7 +415,7 @@ autoplot(Empl.exp.ind.sk)
 
 Maďarsko od roku 2002:
 ```{r}
-Empl.exp.ind.hu<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt", sep = ",")
+Empl.exp.ind.hu<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Employment_expectations_indicator_2002_HU.txt", sep = ",",header = TRUE)
 ```
 
 ```{r, echo = FALSE}
@@ -428,7 +428,7 @@ Indikátor spotrebiteľskej dôvery poskytuje údaj o budúcom vývoji spotreby 
 
 Slovensko od roku 1999:
 ```{r}
-con.conf.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt", sep = ",")
+con.conf.ind.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Consumer_confidence_indicator_1999_SK.txt", sep = ",",header = TRUE)
 ```
 
 ```{r, echo = FALSE}
@@ -440,7 +440,7 @@ autoplot(con.conf.ind.sk)
 
 Finančná situácia domácnosti na Slovensku od 2003:
 ```{r}
-fin.sit.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt", sep = ",")
+fin.sit.sk<- read.table("https://alex-babis.github.io/Casove_Rady_2022/Financial_situation_household_2003_SK.txt", sep = ",",header = TRUE)
 ```
 
 ```{r, echo = FALSE}
