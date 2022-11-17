@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Každá skupina si musí nájsť vlastné dáta, rezervácia dát na stránke (píšte svoje meno/mená, názov dát a link s cestou). 
 
-+ Podmienka na dáta je, že **nesmú byť modelovateľné ako biely šum posunutý o konštantu** + nemôžu to byť dáta, ktoré už boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené bolo. Navyše vaše **dáta musia byť bez pravidelnej sezónnosti.** Pravidelnú sezónnosť majú napríklad mesačné hodnoty teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP, dáta `AirPassengers` zo začiatku semestra a pod. - je to na grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale **mal dať nájsť nesezónny ARIMA model.** Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=0
++ Podmienka na dáta je, že **nesmú byť modelovateľné ako biely šum posunutý o konštantu** + nemôžu to byť dáta, ktoré už boli doposiaľ použité na prednáškach/cvičeniach alebo boli použité nejakou skupinou v rámci domácich úloh. Dôvod je taký, že budete pre dáta hladať vhodný model a to pre vyššie spomenutá dáta už spravené bolo. Navyše vaše **dáta musia byť bez pravidelnej sezónnosti.** Pravidelnú sezónnosť majú napríklad mesačné hodnoty teploty alebo prietoku riek, sezónne neočistené kvartálne hodnoty HDP, dáta `AirPassengers` zo začiatku semestra a pod. - je to na grafe s priebehom jasne viditeľné. Ak počas hľadania dát na takéto dáta narazíte, odložte si ich, zídu sa v nasledujúcej domácej úlohe. Ak neviete, či máte vhodné dáta, môžete sa opýtať. Pre dáta by sa ale **mal dať nájsť nesezónny ARIMA model.** Rezervácia tu: https://docs.google.com/spreadsheets/d/1gnfxc4rRPzlymTKibpxufYRg6SVtHchX7mZiKrp4s_o/edit#gid=2080334949
 
 # Zadanie
 Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste najmenej aspoň 10). Tieto nebudete používať pri hľadaní modelu, ale použite ich na zhodnotenie kvality predikcií.
@@ -38,7 +38,7 @@ Z vašich dát najskôr vynechajte niekoľko posledný pozorovaní (skúste najm
   \
 + 1 bod:
 
-  + Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená, že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, ...) napíšete či ste ich diferencovali a prečo. Skončíte tým, že určitý časový rad nebude už treba ďalej diferencovať. Štýl zdôvodnenia by mal byť v tvare napríklad: "Dáta sme diferencovali, pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie dát sme následne diferencovali, pretože obsahovali jednotkový koreň. Druhú diferencie už nebolo treba diferencovať, pretože neobsahovali ani trend, ani jednotkový koreň."\
+  + Napíšte koľko krát ste vaše dáta diferencovali a prečo. To znamená, že pre každý časový rad (pôvodné dáta, prvé diferencie, druhé diferencie, ...) napíšete či ste ich diferencovali a prečo. Skončíte tým, že určitý časový rad nebude už treba ďalej diferencovať. Štýl zdôvodnenia by mal byť v tvare napríklad: "Dáta sme diferencovali, pretože z grafu bolo vidieť, že obsahujú lineárny trend. Prvé diferencie dát sme následne diferencovali, pretože obsahovali jednotkový koreň. Druhé diferencie už nebolo treba diferencovať, pretože neobsahovali ani trend, ani jednotkový koreň."\
   \
 + 5 bodov: 
 
