@@ -29,5 +29,5 @@ navbar:
         - text: "Homework 4"
           href: Domaca_uloha4.html
         - text: "Homework 5"
-          #href: Domaca_uloha5.html
+          href: Domaca_uloha5.html
 output_dir: "docs"
