@@ -183,12 +183,13 @@ Keďže dáta modelujeme ako konštantu plus biely šum, predikcie do budúcnost
 
 Načítanie a úprava dáta na logaritmické výnosy. Dáta sú za obdobie 3 rokov, voľne dostupné na https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
 ```{r}
-load("XRdata.Rdata")
+data_ex <- read.table("https://alex-babis.github.io/Casove_Rady_2022/EX_data.txt",
+                      header = TRUE, sep = ",")
 ```
 
 Finálne dáta budú predstavovať stĺpec 7:
 ```{r}
-vynosy <- as.ts(data[,7])
+vynosy <- as.ts(data_ex[,7])
 ```
 
 Vykreslíme si dáta a skontrolujeme, či sa v nich nenachádza jednotkový koreň
