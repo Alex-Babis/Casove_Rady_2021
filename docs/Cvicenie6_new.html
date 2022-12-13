@@ -500,24 +500,24 @@ výnosmi pre ceny akcií. Konkrétne sa pozrieme na výnosy akcie
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>AAPL.tyzden <span class="ot">&lt;-</span> <span class="fu">to.weekly</span>(AAPL)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AAPL.tyzden)</span></code></pre></div>
 <pre><code>##            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume AAPL.Adjusted
-## 2016-01-08   25.6525   26.4625  24.1075    24.2400  1375160800      22.19127
-## 2016-01-15   24.7425   25.2975  23.8400    24.2825  1217348800      22.23019
+## 2016-01-08   25.6525   26.4625  24.1075    24.2400  1375160800      22.19128
+## 2016-01-15   24.7425   25.2975  23.8400    24.2825  1217348800      22.23018
 ## 2016-01-22   24.6025   25.3650  23.3550    25.3550   973536400      23.21204
 ## 2016-01-29   25.3800   25.3825  23.0975    24.3350  1521346000      22.27825
 ## 2016-02-05   24.1175   24.3325  23.4225    23.5050   868619200      21.63516
-## 2016-02-12   23.2825   24.0875  23.1475    23.4975   924489200      21.62826</code></pre>
+## 2016-02-12   23.2825   24.0875  23.1475    23.4975   924489200      21.62825</code></pre>
 <p>Transformácia cien na logaritmické výnosy:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> AAPL.tyzden<span class="sc">$</span>AAPL.Adjusted</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> vynosy[<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
 <p>Vykreslenie dát</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(vynosy, <span class="at">theme=</span><span class="fu">chartTheme</span>(<span class="st">&#39;white&#39;</span>,<span class="at">up.col=</span><span class="st">&quot;#009E73&quot;</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Skontrolujeme dáta, či v nich náhodou nie je jednotkový koreň:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(vynosy)<span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;green&quot;</span>)<span class="sc">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(vynosy), <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Obe čiary sú dosť pri sebe, použijeme type = “none”</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(vynosy, <span class="at">lags =</span> <span class="dv">5</span>, <span class="at">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="at">type =</span> <span class="st">&quot;none&quot;</span>))</span></code></pre></div>
 <pre><code>## 
@@ -533,7 +533,7 @@ výnosmi pre ceny akcií. Konkrétne sa pozrieme na výnosy akcie
 ## 
 ## Residuals:
 ##       Min        1Q    Median        3Q       Max 
-## -0.195832 -0.012565  0.008102  0.027572  0.138671 
+## -0.195832 -0.012566  0.008102  0.027572  0.138671 
 ## 
 ## Coefficients:
 ##            Estimate Std. Error t value Pr(&gt;|t|)    
@@ -556,7 +556,7 @@ výnosmi pre ceny akcií. Konkrétne sa pozrieme na výnosy akcie
 differencovať.</p>
 <p>Vykreslíme si ACF a PACF pre naše dáta</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(vynosy)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre><code>##      [,1] [,2] [,3] [,4]  [,5]  [,6]  [,7] [,8]  [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.01 0.05 0.06 0.01 -0.07 -0.01 -0.05 0.02 -0.01 -0.03 -0.02  0.03 -0.03
 ## PACF 0.01 0.05 0.06 0.01 -0.08 -0.01 -0.04 0.03  0.00 -0.03 -0.02  0.03 -0.02
@@ -569,7 +569,7 @@ differencovať.</p>
 <p>Vidíme, že podľa ACF aj PACF by sme dáta mohli modelovať ako
 konštanta + biely šum.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.00</span> <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.00</span> <span class="ot">&lt;-</span> <span class="fu">sarima</span>(vynosy,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">details =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.00</span></span></code></pre></div>
 <pre><code>## $fit
@@ -603,12 +603,12 @@ konštanta + biely šum.</p>
 ## [1] -3.614816</code></pre>
 <p>Porovnáme si ACF pre rezídua a pre ich druhé mocniny:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf1</span>(vynosy<span class="fl">.00</span><span class="sc">$</span>fit<span class="sc">$</span>residuals)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre><code>##  [1]  0.01  0.05  0.06  0.01 -0.07 -0.01 -0.05  0.02 -0.01 -0.03 -0.02  0.03
 ## [13] -0.03 -0.10 -0.04 -0.07 -0.01  0.04 -0.09 -0.08  0.00 -0.05 -0.10  0.04
 ## [25]  0.03  0.12  0.04</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf1</span>(vynosy<span class="fl">.00</span><span class="sc">$</span>fit<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
 <pre><code>##  [1]  0.08  0.04  0.32  0.07 -0.05  0.06  0.04 -0.05 -0.08 -0.05 -0.03 -0.03
 ## [13]  0.01 -0.04 -0.05  0.02 -0.06  0.00  0.15  0.05  0.00  0.10 -0.04  0.02
 ## [25]  0.03  0.03 -0.03</code></pre>
@@ -640,7 +640,7 @@ nechceme)</li>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 0)
-## &lt;environment: 0x00000000372ba5c0&gt;
+## &lt;environment: 0x000000003695ff28&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -648,7 +648,7 @@ nechceme)</li>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1  
-## 0.01228099  0.00070833  0.82412689  
+## 0.01228101  0.00070833  0.82412933  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -657,15 +657,15 @@ nechceme)</li>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0122810   0.0016873    7.279 3.37e-13 ***
 ## omega  0.0007083   0.0001052    6.731 1.68e-11 ***
-## alpha1 0.8241269   0.1836430    4.488 7.20e-06 ***
+## alpha1 0.8241293   0.1836434    4.488 7.20e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  490.2425    normalized:  1.885548 
+##  490.2424    normalized:  1.885548 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:22 2022 by user: alexb</code></pre>
 <p>Z výstupu môžeme vidieť odhady pre jednotlivé parametre:</p>
 <ul>
 <li><code>mu</code> - konštanta v rovnici pre strednú hodnotu</li>
@@ -692,7 +692,7 @@ neskôr.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 0)
-## &lt;environment: 0x00000000372ba5c0&gt;
+## &lt;environment: 0x000000003695ff28&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -700,7 +700,7 @@ neskôr.</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1  
-## 0.01228099  0.00070833  0.82412689  
+## 0.01228101  0.00070833  0.82412933  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -709,32 +709,32 @@ neskôr.</p>
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0122810   0.0016873    7.279 3.37e-13 ***
 ## omega  0.0007083   0.0001052    6.731 1.68e-11 ***
-## alpha1 0.8241269   0.1836430    4.488 7.20e-06 ***
+## alpha1 0.8241293   0.1836434    4.488 7.20e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  490.2425    normalized:  1.885548 
+##  490.2424    normalized:  1.885548 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb 
+##  Tue Dec 13 12:38:22 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  11.77668  0.002771574
-##  Shapiro-Wilk Test  R    W      0.9830936 0.003547596
-##  Ljung-Box Test     R    Q(10)  6.683472  0.754951   
-##  Ljung-Box Test     R    Q(15)  13.94927  0.52938    
-##  Ljung-Box Test     R    Q(20)  17.5251   0.6186603  
-##  Ljung-Box Test     R^2  Q(10)  19.67774  0.03245232 
-##  Ljung-Box Test     R^2  Q(15)  21.81935  0.1126289  
-##  Ljung-Box Test     R^2  Q(20)  30.21379  0.06646269 
-##  LM Arch Test       R    TR^2   23.89054  0.02104957 
+##  Jarque-Bera Test   R    Chi^2  11.77678  0.002771439
+##  Shapiro-Wilk Test  R    W      0.9830935 0.00354745 
+##  Ljung-Box Test     R    Q(10)  6.683431  0.7549547  
+##  Ljung-Box Test     R    Q(15)  13.94926  0.5293811  
+##  Ljung-Box Test     R    Q(20)  17.52502  0.6186658  
+##  Ljung-Box Test     R^2  Q(10)  19.67781  0.03245164 
+##  Ljung-Box Test     R^2  Q(15)  21.81943  0.1126268  
+##  Ljung-Box Test     R^2  Q(20)  30.21378  0.06646295 
+##  LM Arch Test       R    TR^2   23.89054  0.02104958 
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.748019 -3.706934 -3.748281 -3.731502</code></pre>
+## -3.748018 -3.706934 -3.748281 -3.731502</code></pre>
 <p>Vidíme, že stále ostáva istá autokorelácia medzi druhými mocninami
 rezíduí, aj keď samotné rezíduá nie sú korelované. Rovnako sa zamieta aj
 LM Arch test, teda zamietame hypotézu o homoskedasticite (konštantnosti
@@ -753,7 +753,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(2, 0)
-## &lt;environment: 0x00000000137df6a0&gt;
+## &lt;environment: 0x000000003fece2e0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -761,25 +761,25 @@ disperzie v rezíduach).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2  
-## 0.01250833  0.00062618  0.73951494  0.10119431  
+## 0.01250836  0.00062618  0.73951722  0.10119344  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0125083   0.0017459    7.164 7.81e-13 ***
+## mu     0.0125084   0.0017459    7.164 7.81e-13 ***
 ## omega  0.0006262   0.0001059    5.911 3.41e-09 ***
-## alpha1 0.7395149   0.1711365    4.321 1.55e-05 ***
-## alpha2 0.1011943   0.0733648    1.379    0.168    
+## alpha1 0.7395172   0.1711370    4.321 1.55e-05 ***
+## alpha2 0.1011934   0.0733648    1.379    0.168    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  491.8495    normalized:  1.891729 
+##  491.8494    normalized:  1.891728 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:22 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.20</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -790,7 +790,7 @@ disperzie v rezíduach).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(2, 0)
-## &lt;environment: 0x00000000137df6a0&gt;
+## &lt;environment: 0x000000003fece2e0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -798,42 +798,42 @@ disperzie v rezíduach).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2  
-## 0.01250833  0.00062618  0.73951494  0.10119431  
+## 0.01250836  0.00062618  0.73951722  0.10119344  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0125083   0.0017459    7.164 7.81e-13 ***
+## mu     0.0125084   0.0017459    7.164 7.81e-13 ***
 ## omega  0.0006262   0.0001059    5.911 3.41e-09 ***
-## alpha1 0.7395149   0.1711365    4.321 1.55e-05 ***
-## alpha2 0.1011943   0.0733648    1.379    0.168    
+## alpha1 0.7395172   0.1711370    4.321 1.55e-05 ***
+## alpha2 0.1011934   0.0733648    1.379    0.168    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  491.8495    normalized:  1.891729 
+##  491.8494    normalized:  1.891728 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb 
+##  Tue Dec 13 12:38:22 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  13.7488   0.001033916
-##  Shapiro-Wilk Test  R    W      0.9823756 0.002641123
-##  Ljung-Box Test     R    Q(10)  6.664379  0.756704   
-##  Ljung-Box Test     R    Q(15)  14.25227  0.5064889  
-##  Ljung-Box Test     R    Q(20)  18.15398  0.5772657  
-##  Ljung-Box Test     R^2  Q(10)  21.72104  0.01659054 
-##  Ljung-Box Test     R^2  Q(15)  24.31926  0.05986654 
-##  Ljung-Box Test     R^2  Q(20)  32.68255  0.03654664 
-##  LM Arch Test       R    TR^2   23.37484  0.02470709 
+##  Jarque-Bera Test   R    Chi^2  13.74897  0.00103383 
+##  Shapiro-Wilk Test  R    W      0.9823755 0.002640976
+##  Ljung-Box Test     R    Q(10)  6.664335  0.7567081  
+##  Ljung-Box Test     R    Q(15)  14.25226  0.5064898  
+##  Ljung-Box Test     R    Q(20)  18.15389  0.5772711  
+##  Ljung-Box Test     R^2  Q(10)  21.72116  0.01658988 
+##  Ljung-Box Test     R^2  Q(15)  24.31936  0.05986496 
+##  Ljung-Box Test     R^2  Q(20)  32.68253  0.03654687 
+##  LM Arch Test       R    TR^2   23.37485  0.02470698 
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.752688 -3.697908 -3.753152 -3.730666</code></pre>
+## -3.752687 -3.697908 -3.753151 -3.730665</code></pre>
 <p>Vidíme, že koeficient <code>alpha2</code> vyšiel nesignifikantný,
 zároveň sa však zachovali nedostatky rezíduí z ARCH(1) procesu (v
 niektorých prípadoch dokonca horšie p hodnoty).</p>
@@ -851,7 +851,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(3, 0)
-## &lt;environment: 0x0000000004849e00&gt;
+## &lt;environment: 0x00000000047ae2a0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -859,26 +859,26 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2      alpha3  
-## 0.01195435  0.00063826  0.57832645  0.07510139  0.07718335  
+## 0.01195436  0.00063827  0.57832824  0.07510059  0.07718356  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0119543   0.0018873    6.334 2.39e-10 ***
+## mu     0.0119544   0.0018873    6.334 2.39e-10 ***
 ## omega  0.0006383   0.0001131    5.643 1.68e-08 ***
-## alpha1 0.5783264   0.1733178    3.337 0.000847 ***
-## alpha2 0.0751014   0.0653499    1.149 0.250465    
-## alpha3 0.0771833   0.0560064    1.378 0.168168    
+## alpha1 0.5783282   0.1733182    3.337 0.000847 ***
+## alpha2 0.0751006   0.0653499    1.149 0.250470    
+## alpha3 0.0771836   0.0560064    1.378 0.168166    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.7706    normalized:  1.899118 
+##  493.7705    normalized:  1.899117 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:22 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.30</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -889,7 +889,7 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(3, 0)
-## &lt;environment: 0x0000000004849e00&gt;
+## &lt;environment: 0x00000000047ae2a0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -897,43 +897,43 @@ niektorých prípadoch dokonca horšie p hodnoty).</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1      alpha2      alpha3  
-## 0.01195435  0.00063826  0.57832645  0.07510139  0.07718335  
+## 0.01195436  0.00063827  0.57832824  0.07510059  0.07718356  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0119543   0.0018873    6.334 2.39e-10 ***
+## mu     0.0119544   0.0018873    6.334 2.39e-10 ***
 ## omega  0.0006383   0.0001131    5.643 1.68e-08 ***
-## alpha1 0.5783264   0.1733178    3.337 0.000847 ***
-## alpha2 0.0751014   0.0653499    1.149 0.250465    
-## alpha3 0.0771833   0.0560064    1.378 0.168168    
+## alpha1 0.5783282   0.1733182    3.337 0.000847 ***
+## alpha2 0.0751006   0.0653499    1.149 0.250470    
+## alpha3 0.0771836   0.0560064    1.378 0.168166    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.7706    normalized:  1.899118 
+##  493.7705    normalized:  1.899117 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb 
+##  Tue Dec 13 12:38:22 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  10.5903   0.005015858
-##  Shapiro-Wilk Test  R    W      0.9834921 0.004185325
-##  Ljung-Box Test     R    Q(10)  6.596061  0.7629492  
-##  Ljung-Box Test     R    Q(15)  14.54151  0.4849183  
-##  Ljung-Box Test     R    Q(20)  18.83119  0.532822   
-##  Ljung-Box Test     R^2  Q(10)  11.98895  0.2857966  
-##  Ljung-Box Test     R^2  Q(15)  15.82685  0.3936516  
-##  Ljung-Box Test     R^2  Q(20)  26.06823  0.1635704  
-##  LM Arch Test       R    TR^2   13.95805  0.3033951  
+##  Jarque-Bera Test   R    Chi^2  10.59034  0.005015749
+##  Shapiro-Wilk Test  R    W      0.983492  0.00418516 
+##  Ljung-Box Test     R    Q(10)  6.596011  0.7629538  
+##  Ljung-Box Test     R    Q(15)  14.54151  0.4849188  
+##  Ljung-Box Test     R    Q(20)  18.83111  0.5328273  
+##  Ljung-Box Test     R^2  Q(10)  11.98898  0.2857947  
+##  Ljung-Box Test     R^2  Q(15)  15.82688  0.3936498  
+##  Ljung-Box Test     R^2  Q(20)  26.06815  0.1635727  
+##  LM Arch Test       R    TR^2   13.95803  0.3033965  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.759774 -3.691299 -3.760495 -3.732246</code></pre>
+## -3.759773 -3.691298 -3.760494 -3.732245</code></pre>
 <p>Opäť máme nesignifikantné koeficienty, no druhé mocniny rezíduí sú už
 bez výraznej autokorelácie, LM Arch test sa nezamietol, teda môžeme
 predpokladať konštatnú disperziu v rezíduách. Teda rezíduá môžeme
@@ -959,7 +959,7 @@ GARCH(1,1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x00000000392e3228&gt;
+## &lt;environment: 0x00000000389cdd98&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -967,25 +967,25 @@ GARCH(1,1)</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1  
-## 0.01213425  0.00042425  0.56798057  0.28020501  
+## 0.01213426  0.00042425  0.56798082  0.28020628  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0121342   0.0018511    6.555 5.55e-11 ***
+## mu     0.0121343   0.0018511    6.555 5.55e-11 ***
 ## omega  0.0004242   0.0001278    3.321 0.000897 ***
-## alpha1 0.5679806   0.1819408    3.122 0.001798 ** 
-## beta1  0.2802050   0.1435784    1.952 0.050988 .  
+## alpha1 0.5679808   0.1819411    3.122 0.001798 ** 
+## beta1  0.2802063   0.1435788    1.952 0.050987 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.2929    normalized:  1.89728 
+##  493.2928    normalized:  1.89728 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:22 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -996,7 +996,7 @@ GARCH(1,1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x00000000392e3228&gt;
+## &lt;environment: 0x00000000389cdd98&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1004,42 +1004,42 @@ GARCH(1,1)</p>
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1  
-## 0.01213425  0.00042425  0.56798057  0.28020501  
+## 0.01213426  0.00042425  0.56798082  0.28020628  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
 ## 
 ## Error Analysis:
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
-## mu     0.0121342   0.0018511    6.555 5.55e-11 ***
+## mu     0.0121343   0.0018511    6.555 5.55e-11 ***
 ## omega  0.0004242   0.0001278    3.321 0.000897 ***
-## alpha1 0.5679806   0.1819408    3.122 0.001798 ** 
-## beta1  0.2802050   0.1435784    1.952 0.050988 .  
+## alpha1 0.5679808   0.1819411    3.122 0.001798 ** 
+## beta1  0.2802063   0.1435788    1.952 0.050987 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  493.2929    normalized:  1.89728 
+##  493.2928    normalized:  1.89728 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:07 2022 by user: alexb 
+##  Tue Dec 13 12:38:22 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  13.29966  0.001294239
-##  Shapiro-Wilk Test  R    W      0.9827873 0.003126598
-##  Ljung-Box Test     R    Q(10)  6.639348  0.7589974  
-##  Ljung-Box Test     R    Q(15)  14.93208  0.4563204  
-##  Ljung-Box Test     R    Q(20)  19.58104  0.4843968  
-##  Ljung-Box Test     R^2  Q(10)  15.76627  0.1065214  
-##  Ljung-Box Test     R^2  Q(15)  20.12282  0.1672718  
-##  Ljung-Box Test     R^2  Q(20)  29.89773  0.07152789 
-##  LM Arch Test       R    TR^2   17.71941  0.1244796  
+##  Jarque-Bera Test   R    Chi^2  13.29981  0.001294147
+##  Shapiro-Wilk Test  R    W      0.9827872 0.003126468
+##  Ljung-Box Test     R    Q(10)  6.639302  0.7590016  
+##  Ljung-Box Test     R    Q(15)  14.93209  0.4563201  
+##  Ljung-Box Test     R    Q(20)  19.58097  0.4844008  
+##  Ljung-Box Test     R^2  Q(10)  15.76632  0.1065199  
+##  Ljung-Box Test     R^2  Q(15)  20.12287  0.1672698  
+##  Ljung-Box Test     R^2  Q(20)  29.89769  0.07152854 
+##  LM Arch Test       R    TR^2   17.71938  0.1244806  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.763792 -3.709012 -3.764255 -3.741769</code></pre>
+## -3.763791 -3.709011 -3.764255 -3.741769</code></pre>
 <p>Všetky koeficienty vyšli signifikatné, aj keď koeficient
 <code>beta1</code> (koeficient pri <span
 class="math inline">\(\sigma_{t-1}^2\)</span>) vyšiel dosť nahrane. Čo
@@ -1064,7 +1064,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 2)
-## &lt;environment: 0x0000000035dc4320&gt;
+## &lt;environment: 0x0000000035536fd0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1072,7 +1072,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1       beta2  
-## 0.01180016  0.00041398  0.55035076  0.14081867  0.14095826  
+## 0.01180017  0.00041398  0.55035204  0.14081810  0.14095865  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -1081,17 +1081,17 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0118002   0.0018603    6.343 2.25e-10 ***
 ## omega  0.0004140   0.0001282    3.229 0.001241 ** 
-## alpha1 0.5503508   0.1526747    3.605 0.000312 ***
-## beta1  0.1408187   0.1113732    1.264 0.206091    
-## beta2  0.1409583   0.1094364    1.288 0.197733    
+## alpha1 0.5503520   0.1526751    3.605 0.000312 ***
+## beta1  0.1408181   0.1113731    1.264 0.206093    
+## beta2  0.1409586   0.1094361    1.288 0.197730    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  494.3288    normalized:  1.901264 
+##  494.3287    normalized:  1.901264 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:08 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:22 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy<span class="fl">.12</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1102,7 +1102,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 2)
-## &lt;environment: 0x0000000035dc4320&gt;
+## &lt;environment: 0x0000000035536fd0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1110,7 +1110,7 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ## 
 ## Coefficient(s):
 ##         mu       omega      alpha1       beta1       beta2  
-## 0.01180016  0.00041398  0.55035076  0.14081867  0.14095826  
+## 0.01180017  0.00041398  0.55035204  0.14081810  0.14095865  
 ## 
 ## Std. Errors:
 ##  based on Hessian 
@@ -1119,45 +1119,45 @@ class="math inline">\(u_{t-1}^2\)</span> a dva krát predošle hodnoty
 ##         Estimate  Std. Error  t value Pr(&gt;|t|)    
 ## mu     0.0118002   0.0018603    6.343 2.25e-10 ***
 ## omega  0.0004140   0.0001282    3.229 0.001241 ** 
-## alpha1 0.5503508   0.1526747    3.605 0.000312 ***
-## beta1  0.1408187   0.1113732    1.264 0.206091    
-## beta2  0.1409583   0.1094364    1.288 0.197733    
+## alpha1 0.5503520   0.1526751    3.605 0.000312 ***
+## beta1  0.1408181   0.1113731    1.264 0.206093    
+## beta2  0.1409586   0.1094361    1.288 0.197730    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Log Likelihood:
-##  494.3288    normalized:  1.901264 
+##  494.3287    normalized:  1.901264 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:08 2022 by user: alexb 
+##  Tue Dec 13 12:38:22 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
 ##                                 Statistic p-Value    
-##  Jarque-Bera Test   R    Chi^2  10.72804  0.004682045
-##  Shapiro-Wilk Test  R    W      0.9836594 0.004487557
-##  Ljung-Box Test     R    Q(10)  6.817952  0.7425124  
-##  Ljung-Box Test     R    Q(15)  14.68943  0.4740107  
-##  Ljung-Box Test     R    Q(20)  19.1933   0.5092952  
-##  Ljung-Box Test     R^2  Q(10)  11.40525  0.3268287  
-##  Ljung-Box Test     R^2  Q(15)  16.29619  0.3626445  
-##  Ljung-Box Test     R^2  Q(20)  26.57256  0.1477236  
-##  LM Arch Test       R    TR^2   13.2745   0.3494089  
+##  Jarque-Bera Test   R    Chi^2  10.7281   0.0046819  
+##  Shapiro-Wilk Test  R    W      0.9836593 0.004487339
+##  Ljung-Box Test     R    Q(10)  6.817897  0.7425175  
+##  Ljung-Box Test     R    Q(15)  14.68942  0.4740116  
+##  Ljung-Box Test     R    Q(20)  19.19322  0.5093006  
+##  Ljung-Box Test     R^2  Q(10)  11.40527  0.3268274  
+##  Ljung-Box Test     R^2  Q(15)  16.29623  0.3626422  
+##  Ljung-Box Test     R^2  Q(20)  26.57252  0.1477249  
+##  LM Arch Test       R    TR^2   13.27446  0.3494111  
 ## 
 ## Information Criterion Statistics:
 ##       AIC       BIC       SIC      HQIC 
-## -3.764067 -3.695593 -3.764789 -3.736540</code></pre>
+## -3.764067 -3.695592 -3.764788 -3.736539</code></pre>
 <p>Vhodný model pre naše dáta môžeme zvoliť napríklad podľa informačných
 kritérií, ku ktorým vieme pristúpiť nasledovne.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.30</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># ARCH(3)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.759774 -3.691299 -3.760495 -3.732246</code></pre>
+## -3.759773 -3.691298 -3.760494 -3.732245</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.11</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># GARCH(1,1)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.763792 -3.709012 -3.764255 -3.741769</code></pre>
+## -3.763791 -3.709011 -3.764255 -3.741769</code></pre>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.12</span><span class="sc">@</span>fit<span class="sc">$</span>ics <span class="co"># GARCH(1,2)</span></span></code></pre></div>
 <pre><code>##       AIC       BIC       SIC      HQIC 
-## -3.764067 -3.695593 -3.764789 -3.736540</code></pre>
+## -3.764067 -3.695592 -3.764788 -3.736539</code></pre>
 <p>Vidíme, že spomedzi troch modelov, ktoré boli pre naše dáta
 vyhovujúce, má najmenšie hodnoty informačných kritérií práve GARCH(1,1).
 Ten ďalej použijeme aj na predikcie z modelu.</p>
@@ -1167,7 +1167,7 @@ Ten ďalej použijeme aj na predikcie z modelu.</p>
 <p>Podobne ako pri Holt-Wintersovej metóde, predikcie budeme robiť
 pomocou funkcie <code>predict</code></p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>vynosy.pred11 <span class="ot">&lt;-</span> <span class="fu">predict</span>(vynosy<span class="fl">.11</span>, <span class="at">n.ahead =</span> <span class="dv">50</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Keďže dáta modelujeme ako konštantu plus biely šum, predikcie do
 budúcnosti bude tiež iba samotná konštanta. Na druhú stranu, môžeme
 vidieť, že podmienená postupne narastá a konverguje k nepodmienenej
@@ -1191,7 +1191,7 @@ jednotkový koreň</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(vynosy)<span class="sc">+</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;green&quot;</span>)<span class="sc">+</span></span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(vynosy), <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Obe čiary sú blízko pri sebe, teda použijeme
 <code>type = "none"</code>:</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(vynosy, <span class="at">lags =</span> <span class="dv">5</span>, <span class="at">selectlags =</span> <span class="st">&quot;BIC&quot;</span>, <span class="at">type =</span> <span class="st">&quot;none&quot;</span>))</span></code></pre></div>
@@ -1233,7 +1233,7 @@ diferencovať.</p>
 volatility.</p>
 <p>Pozrieme sa najskôr na ACF a PACF pre naše dáta</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf2</span>(vynosy)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <pre><code>##      [,1] [,2] [,3]  [,4] [,5]  [,6] [,7]  [,8] [,9] [,10] [,11] [,12] [,13]
 ## ACF  0.03 0.13 0.07  0.01 0.10 -0.07 0.03 -0.13 0.01 -0.06 -0.02 -0.01 -0.04
 ## PACF 0.03 0.13 0.06 -0.01 0.09 -0.08 0.01 -0.12 0.03 -0.04  0.00 -0.01 -0.01
@@ -1255,7 +1255,7 @@ volatility.</p>
 ## iter   1 value -5.828968
 ## final  value -5.828968 
 ## converged</code></pre>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
 <pre><code>## $fit
 ## 
 ## Call:
@@ -1294,27 +1294,27 @@ spolahlivosti. Rovnako nevychádzajú ani Ljung-Boxové testy.</p>
 ACF a PACF by sa mohlo zdať, že dobrý model by mohol byť AR(2), MA(3),
 MA(4) alebo nejaký zmiešaný model</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>vynosy.ar2 <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy, <span class="dv">2</span>, <span class="dv">0</span> ,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>vynosy.ar3 <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy, <span class="dv">3</span>, <span class="dv">0</span> ,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>vynosy.ma2 <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy, <span class="dv">0</span>, <span class="dv">0</span> ,<span class="dv">2</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>vynosy.ma3 <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy, <span class="dv">0</span>, <span class="dv">0</span> ,<span class="dv">3</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-25-4.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-25-4.png" width="672" /></p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.31</span> <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy, <span class="dv">3</span>, <span class="dv">0</span> ,<span class="dv">1</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-25-5.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-25-5.png" width="672" /></p>
 <p>Vidíme, že jediný vyhovujúci z tých, ktoré sme vyskúšali je
 ARMA(3,1). Poďme sa pozrieť, ako sú natom rezíduá a ich druhé
 mocniny.</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>vynosy<span class="fl">.31</span> <span class="ot">&lt;-</span> <span class="fu">sarima</span>(vynosy, <span class="dv">3</span>, <span class="dv">0</span> ,<span class="dv">1</span>,<span class="at">details =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf1</span>(vynosy<span class="fl">.31</span><span class="sc">$</span>fit<span class="sc">$</span>residuals)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre><code>##  [1]  0.00 -0.01 -0.01  0.05  0.04 -0.01 -0.03 -0.08 -0.01 -0.02 -0.03  0.01
 ## [13] -0.05 -0.02  0.04  0.00  0.00  0.01 -0.02  0.02 -0.01 -0.01 -0.01  0.02
 ## [25]  0.03 -0.05  0.02 -0.03 -0.02 -0.03 -0.01  0.01 -0.09  0.07 -0.03  0.04
 ## [37]  0.01  0.04</code></pre>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf1</span>(vynosy<span class="fl">.31</span><span class="sc">$</span>fit<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
 <pre><code>##  [1]  0.23  0.26  0.18  0.24  0.17  0.09  0.14  0.06  0.09  0.04  0.02  0.00
 ## [13]  0.08  0.07  0.07  0.00  0.00  0.00  0.02 -0.01  0.01  0.04  0.02  0.03
 ## [25] -0.01  0.02  0.11  0.07  0.08  0.04  0.05  0.09  0.06  0.07  0.05  0.01
@@ -1344,7 +1344,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x00000000368a38e8&gt;
+## &lt;environment: 0x0000000038b3ec10&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1370,7 +1370,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ##  3480.906    normalized:  4.544264 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:10 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:25 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">00.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1381,7 +1381,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ garch(1, 1)
-## &lt;environment: 0x00000000368a38e8&gt;
+## &lt;environment: 0x0000000038b3ec10&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1407,7 +1407,7 @@ class="math inline">\(u_{t-s}\)</span>.</p>
 ##  3480.906    normalized:  4.544264 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:10 2022 by user: alexb 
+##  Tue Dec 13 12:38:25 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1445,7 +1445,7 @@ GARCH(1,1) a AR(1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(1, 0) + garch(1, 1)
-## &lt;environment: 0x0000000035a55400&gt;
+## &lt;environment: 0x000000001d413c18&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1472,7 +1472,7 @@ GARCH(1,1) a AR(1)</p>
 ##  3481.532    normalized:  4.545081 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:25 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">10.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1484,7 +1484,7 @@ GARCH(1,1) a AR(1)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(1, 0) + garch(1, 1)
-## &lt;environment: 0x0000000035a55400&gt;
+## &lt;environment: 0x000000001d413c18&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1511,7 +1511,7 @@ GARCH(1,1) a AR(1)</p>
 ##  3481.532    normalized:  4.545081 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb 
+##  Tue Dec 13 12:38:25 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1545,7 +1545,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(2, 0) + garch(1, 1)
-## &lt;environment: 0x0000000036c6c3c0&gt;
+## &lt;environment: 0x000000003a252950&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1573,7 +1573,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ##  3483.512    normalized:  4.547666 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:25 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">20.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1585,7 +1585,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(2, 0) + garch(1, 1)
-## &lt;environment: 0x0000000036c6c3c0&gt;
+## &lt;environment: 0x000000003a252950&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1613,7 +1613,7 @@ opäť zamietnuté. Skúsme vyšší AR rad. AR(2)</p>
 ##  3483.512    normalized:  4.547666 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb 
+##  Tue Dec 13 12:38:25 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1637,7 +1637,7 @@ ich porovname s testami pre čisto s AR(2) proces, tak vidíme, že zatiaľ
 čo samotný AR(2) proces bol nevyhovujúci ako model, AR(2)+GARCH(1,1) je
 už vyhovujúcim modelom.</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>vynosy.ar2 <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sarima</span>(vynosy,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Skúsme ešte porovnať AR(2)+GARCH(1,1) s ARMA(3,1)+GARCH(1,1) (keďže
 ARMA(3,1) nám vyšiel ako možný kandidát na model pre dáta, zlyhal na
 korelovanosti druhých mocnín rezíduí)</p>
@@ -1655,7 +1655,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(3, 1) + garch(1, 1)
-## &lt;environment: 0x00000000371d6778&gt;
+## &lt;environment: 0x000000003868f7b0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1687,7 +1687,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ##  3485.935    normalized:  4.550829 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb</code></pre>
+##  Tue Dec 13 12:38:26 2022 by user: alexb</code></pre>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vynosy.<span class="fl">31.11</span>)</span></code></pre></div>
 <pre><code>## 
 ## Title:
@@ -1699,7 +1699,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ## 
 ## Mean and Variance Equation:
 ##  data ~ arma(3, 1) + garch(1, 1)
-## &lt;environment: 0x00000000371d6778&gt;
+## &lt;environment: 0x000000003868f7b0&gt;
 ##  [data = vynosy]
 ## 
 ## Conditional Distribution:
@@ -1731,7 +1731,7 @@ korelovanosti druhých mocnín rezíduí)</p>
 ##  3485.935    normalized:  4.550829 
 ## 
 ## Description:
-##  Tue Dec 13 12:38:11 2022 by user: alexb 
+##  Tue Dec 13 12:38:26 2022 by user: alexb 
 ## 
 ## 
 ## Standardised Residuals Tests:
@@ -1769,99 +1769,446 @@ GARCH časti dokopy.</p>
 výmenných kurzov 12 dní dopredu. Použijeme AR(2)+GARCH(1,1) proces.</p>
 <div class="sourceCode" id="cb105"><pre
 class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>vynosy.pred.<span class="fl">20.11</span> <span class="ot">&lt;-</span> <span class="fu">predict</span>(vynosy.<span class="fl">20.11</span>, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="at">nx =</span> <span class="dv">70</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 </div>
 </div>
-<div id="výpočet-var" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Výpočet VaR</h1>
+<div id="alternatívny-balíček-pre-garch-a-kamaráti"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Alternatívny balíček
+pre GARCH a kamaráti</h1>
+<div class="sourceCode" id="cb106"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rugarch)</span></code></pre></div>
+<pre><code>## Loading required package: parallel</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rugarch&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:fabletools&#39;:
+## 
+##     report</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     sigma</code></pre>
+<p>Odhadneme rovnaký model ale pomocou iného balíka, ktorý ponúka väčšiu
+flexibilitu.</p>
+<p>Najskôr zadefinujeme model:</p>
+<div class="sourceCode" id="cb111"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>spec.<span class="fl">20.11</span> <span class="ot">&lt;-</span> <span class="fu">ugarchspec</span>( <span class="at">variance.model =</span> <span class="fu">list</span>(<span class="at">model =</span> <span class="st">&quot;sGARCH&quot;</span>,</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">garchOrder  =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">submodel =</span> <span class="cn">NULL</span>),</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mean.model =</span> <span class="fu">list</span>(<span class="at">armaOrder =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>),</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">include.mean =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">archm =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">distribution.model =</span> <span class="st">&quot;norm&quot;</span>)</span></code></pre></div>
+<p>Fittovanie modelu:</p>
+<div class="sourceCode" id="cb112"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>fit.<span class="fl">20.11</span> <span class="ot">&lt;-</span> <span class="fu">ugarchfit</span>(<span class="at">spec =</span> spec.<span class="fl">20.11</span>, <span class="at">data =</span> vynosy)</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>fit.<span class="fl">20.11</span></span></code></pre></div>
+<pre><code>## 
+## *---------------------------------*
+## *          GARCH Model Fit        *
+## *---------------------------------*
+## 
+## Conditional Variance Dynamics    
+## -----------------------------------
+## GARCH Model  : sGARCH(1,1)
+## Mean Model   : ARFIMA(2,0,0)
+## Distribution : norm 
+## 
+## Optimal Parameters
+## ------------------------------------
+##         Estimate  Std. Error   t value Pr(&gt;|t|)
+## mu     -0.000048    0.000086 -0.559525 0.575803
+## ar1     0.039661    0.039341  1.008140 0.313387
+## ar2     0.066057    0.038985  1.694420 0.090186
+## omega   0.000000    0.000001  0.097344 0.922453
+## alpha1  0.135416    0.066971  2.022013 0.043175
+## beta1   0.863575    0.055403 15.587146 0.000000
+## 
+## Robust Standard Errors:
+##         Estimate  Std. Error   t value Pr(&gt;|t|)
+## mu     -0.000048    0.000335 -0.142869  0.88639
+## ar1     0.039661    0.136711  0.290110  0.77173
+## ar2     0.066057    0.043826  1.507270  0.13174
+## omega   0.000000    0.000051  0.002170  0.99827
+## alpha1  0.135416    2.760703  0.049051  0.96088
+## beta1   0.863575    2.309421  0.373936  0.70845
+## 
+## LogLikelihood : 3482.638 
+## 
+## Information Criteria
+## ------------------------------------
+##                     
+## Akaike       -9.0774
+## Bayes        -9.0410
+## Shibata      -9.0775
+## Hannan-Quinn -9.0634
+## 
+## Weighted Ljung-Box Test on Standardized Residuals
+## ------------------------------------
+##                         statistic p-value
+## Lag[1]                      0.529  0.4670
+## Lag[2*(p+q)+(p+q)-1][5]     2.124  0.9301
+## Lag[4*(p+q)+(p+q)-1][9]     5.321  0.3836
+## d.o.f=2
+## H0 : No serial correlation
+## 
+## Weighted Ljung-Box Test on Standardized Squared Residuals
+## ------------------------------------
+##                         statistic p-value
+## Lag[1]                    0.07441  0.7850
+## Lag[2*(p+q)+(p+q)-1][5]   3.54427  0.3166
+## Lag[4*(p+q)+(p+q)-1][9]   4.06572  0.5778
+## d.o.f=2
+## 
+## Weighted ARCH LM Tests
+## ------------------------------------
+##             Statistic Shape Scale P-Value
+## ARCH Lag[3]  0.007935 0.500 2.000  0.9290
+## ARCH Lag[5]  0.047412 1.440 1.667  0.9954
+## ARCH Lag[7]  0.153097 2.315 1.543  0.9984
+## 
+## Nyblom stability test
+## ------------------------------------
+## Joint Statistic:  236.7115
+## Individual Statistics:                
+## mu       0.04291
+## ar1      0.08976
+## ar2      0.15909
+## omega  114.21316
+## alpha1   0.14291
+## beta1    0.20886
+## 
+## Asymptotic Critical Values (10% 5% 1%)
+## Joint Statistic:          1.49 1.68 2.12
+## Individual Statistic:     0.35 0.47 0.75
+## 
+## Sign Bias Test
+## ------------------------------------
+##                    t-value   prob sig
+## Sign Bias           0.4833 0.6290    
+## Negative Sign Bias  0.1450 0.8848    
+## Positive Sign Bias  0.6578 0.5108    
+## Joint Effect        1.4716 0.6888    
+## 
+## 
+## Adjusted Pearson Goodness-of-Fit Test:
+## ------------------------------------
+##   group statistic p-value(g-1)
+## 1    20     39.64     0.003648
+## 2    30     42.90     0.046473
+## 3    40     60.42     0.015467
+## 4    50     65.98     0.053099
+## 
+## 
+## Elapsed time : 0.2187309</code></pre>
+<p>Predikcie modelu:</p>
+<div class="sourceCode" id="cb114"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>pred.<span class="fl">20.11</span> <span class="ot">&lt;-</span> <span class="fu">ugarchforecast</span>(fit.<span class="fl">20.11</span>, <span class="at">data =</span> <span class="cn">NULL</span>, <span class="at">n.ahead =</span> <span class="dv">12</span>)</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>pred.<span class="fl">20.11</span></span></code></pre></div>
+<pre><code>## 
+## *------------------------------------*
+## *       GARCH Model Forecast         *
+## *------------------------------------*
+## Model: sGARCH
+## Horizon: 12
+## Roll Steps: 0
+## Out of Sample: 0
+## 
+## 0-roll forecast [T0=0766-01-01]:
+##          Series    Sigma
+## T+1   3.587e-04 0.004575
+## T+2   1.780e-05 0.004585
+## T+3  -1.840e-05 0.004595
+## T+4  -4.236e-05 0.004605
+## T+5  -4.570e-05 0.004614
+## T+6  -4.741e-05 0.004624
+## T+7  -4.770e-05 0.004634
+## T+8  -4.783e-05 0.004644
+## T+9  -4.785e-05 0.004653
+## T+10 -4.786e-05 0.004663
+## T+11 -4.786e-05 0.004672
+## T+12 -4.786e-05 0.004682</code></pre>
+</div>
+<div id="výpočet-var-a-testovanie-var" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Výpočet VaR a
+testovanie VaR</h1>
 <p>Value at risk predstavuje mieru rizika, ktorá nám hovorí aké
 najväčšie straty s pravdepodonosťou <span class="math inline">\(1 -
 \alpha\)</span>, kde <span class="math inline">\(\alpha\)</span> je
-nejaká hladina pravdepodobnosti,môžeme očakávať. Označme X hodnotu
-portfólia. Potom <span class="math inline">\(VaR_{\alpha}\)</span> je
-taká hodnota, pre ktorú platí, že <span class="math display">\[P(X \leq
+nejaká hladina pravdepodobnosti,môžeme očakávať v nasledujúcom období
+(to si potom definujeme). Označme X hodnotu portfólia. Potom <span
+class="math inline">\(VaR_{\alpha}\)</span> je taká hodnota, pre ktorú
+platí, že <span class="math display">\[P(X \leq
 VaR_{\alpha})=\alpha\]</span> Teda, <span
 class="math inline">\(VaR_{\alpha}\)</span> predstavuje <span
 class="math inline">\(1 - \alpha\)</span> kvantil rozdelenia možných
-hodnôt X. Ak predpokladáme, normálne rozdelenie, tak to nie je nič iné
-ako <span class="math inline">\(1 - \alpha\)</span> kvantil normálneho
-rozdelenia.</p>
-<div id="var-pre-apple-akciu" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> VaR pre Apple
+hodnôt X. Ak predpokladáme normálne rozdelenie pre naše dáta, tak to nie
+je nič iné ako <span class="math inline">\(1 - \alpha\)</span> kvantil
+normálneho rozdelenia.</p>
+<div id="var-pre-apple-akciu" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> VaR pre Apple
 akciu</h2>
 <p>Data pre ceny akcie</p>
-<div class="sourceCode" id="cb106"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> AAPL.tyzden<span class="sc">$</span>AAPL.Adjusted</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> vynosy[<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>ceny <span class="ot">&lt;-</span> AAPL.tyzden<span class="sc">$</span>AAPL.Adjusted</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(ceny))</span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> vynosy[<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
 <p>Model použijeme GARCH(1,1). Budeme počítať VaR iteračne. Každý deň
 budeme fitovať GARCH(1,1) proces pre naše dáta a spravíme pridkciu
 volatility na ďalší deň. Odhadovať budeme vždy z posledných 50
 pozorovaní.</p>
 <p>Zadefinujeme si prázdny VaR vektor:</p>
-<div class="sourceCode" id="cb107"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>var.aaple <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(vynosy) <span class="sc">-</span> N <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(var.aaple))</span>
-<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a>  data.aapl <span class="ot">&lt;-</span> vynosy[i<span class="sc">:</span>(i<span class="sc">+</span>N<span class="dv">-1</span>)]</span>
-<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a>  garch.aapl <span class="ot">&lt;-</span> <span class="fu">garchFit</span>(<span class="sc">~</span><span class="fu">garch</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">data =</span> data.aapl, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>  aapl.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(garch.aapl, <span class="at">n.ahead =</span> <span class="dv">1</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb107-8"><a href="#cb107-8" aria-hidden="true" tabindex="-1"></a>  var.aaple[i] <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.05</span>, <span class="at">mean =</span> aapl.pred[<span class="dv">1</span>,<span class="dv">1</span>],<span class="at">sd =</span> aapl.pred[<span class="dv">1</span>,<span class="dv">3</span>])</span>
-<span id="cb107-9"><a href="#cb107-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>var.aaple <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(vynosy) <span class="sc">-</span> N <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(var.aaple))</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>  data.aapl <span class="ot">&lt;-</span> vynosy[i<span class="sc">:</span>(i<span class="sc">+</span>N<span class="dv">-1</span>)]</span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>  garch.aapl <span class="ot">&lt;-</span> <span class="fu">garchFit</span>(<span class="sc">~</span><span class="fu">garch</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">data =</span> data.aapl, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>  aapl.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(garch.aapl, <span class="at">n.ahead =</span> <span class="dv">1</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>  var.aaple[i] <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.05</span>, <span class="at">mean =</span> aapl.pred[<span class="dv">1</span>,<span class="dv">1</span>],<span class="at">sd =</span> aapl.pred[<span class="dv">1</span>,<span class="dv">3</span>])</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Vytvoríme z výsnosov aj VaR časové rady. VaR začína až od N+1
 dňa.</p>
-<div class="sourceCode" id="cb108"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">ts</span>(vynosy)</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>var.aaple <span class="ot">&lt;-</span> <span class="fu">ts</span>(var.aaple, <span class="at">start =</span> N <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>vynosy <span class="ot">&lt;-</span> <span class="fu">ts</span>(vynosy)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>var.aaple <span class="ot">&lt;-</span> <span class="fu">ts</span>(var.aaple, <span class="at">start =</span> N <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>Vykreslíme do jedného grafu</p>
-<div class="sourceCode" id="cb109"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pallete <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;black&quot;</span>)</span>
-<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(vynosy, <span class="at">series =</span> <span class="st">&quot;Vynosy applu&quot;</span>)<span class="sc">+</span></span>
-<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(var.aaple, <span class="at">series =</span> <span class="st">&quot;VaR 95%&quot;</span>)<span class="sc">+</span></span>
-<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>pallete)<span class="sc">+</span></span>
-<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Porovanie vynosov a VaR na 5% hladine&quot;</span>)</span></code></pre></div>
-<p><img src="Cvicenie6_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<div class="sourceCode" id="cb119"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>pallete <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;#D55E00&quot;</span>,<span class="st">&quot;black&quot;</span>)</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(vynosy, <span class="at">series =</span> <span class="st">&quot;Vynosy applu&quot;</span>)<span class="sc">+</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(var.aaple, <span class="at">series =</span> <span class="st">&quot;VaR 95%&quot;</span>)<span class="sc">+</span></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>pallete)<span class="sc">+</span></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Porovanie vynosov a VaR na 5% hladine&quot;</span>)</span></code></pre></div>
+<p><img src="Cvicenie6_new_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>Vypočítame si % prekročení VaR</p>
-<div class="sourceCode" id="cb110"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>pocet <span class="ot">&lt;-</span> <span class="fu">sum</span>(vynosy[(N <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(vynosy)] <span class="sc">&lt;</span> var.aaple[<span class="sc">-</span><span class="fu">length</span>(var.aaple)])</span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>pocet</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>pocet <span class="ot">&lt;-</span> <span class="fu">sum</span>(vynosy[(N <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(vynosy)] <span class="sc">&lt;</span> var.aaple[<span class="sc">-</span><span class="fu">length</span>(var.aaple)])</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>pocet</span></code></pre></div>
 <pre><code>## [1] 16</code></pre>
-<div class="sourceCode" id="cb112"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>perc <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">*</span>pocet<span class="sc">/</span><span class="fu">length</span>(var.aaple[<span class="sc">-</span><span class="fu">length</span>(var.aaple)])</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>perc</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>perc <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">*</span>pocet<span class="sc">/</span><span class="fu">length</span>(var.aaple[<span class="sc">-</span><span class="fu">length</span>(var.aaple)])</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>perc</span></code></pre></div>
 <pre><code>## [1] 7.619048</code></pre>
-<p>Vidíme, že frekvencia prekorčení je odosť viac ako 5% (dá sa testovať
-napríklad Kupiecov test), teda náš model nie je úplne najvhodnejší na
-výpočet value at risk (očividne sa príliš pomaly prispôsbuje zmenám v
-disperzíi)). Rovnako by ešte trebalo testovať, či sú jednotlivé
-prekročenia od seba nezávislé (opäť existuje test Christoffersenov
-test).</p>
+<p>Vidíme, že frekvencia prekorčení je viac ako 5%, teda náš model
+nemusí byť úplne najvhodnejší na výpočet value at risk . Rovnako by ešte
+trebalo testovať, či sú jednotlivé prekročenia od seba nezávislé.</p>
+</div>
+<div id="testovanie-value-at-risk" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Testovanie Value at
+risk</h2>
+<div id="kupiecov-test" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Kupiecov test</h3>
+<p>Chceme vedieť, či frekvencia prekročení je zhodná s predefinovanou
+hľadinou VAR. Ak sme správne odhadli VaR, potom by sa mali rovnať.
+Definujme si funkciu <span class="math inline">\(I(\alpha) =
+\sum_{t=0}^{n}I_{t}(\alpha)\)</span>, kde <span
+class="math inline">\(I_{t}(\alpha)\)</span> je rovné 1 ak <span
+class="math inline">\(r_{t} &lt; VaR_{t}(\alpha)\)</span>, 0 inak.
+Pozorovanú frekvenciu prekročení vieme potom spočítať ako <span
+class="math inline">\(\hat{\alpha}=\frac{I(\alpha)}{n}.\)</span> Ďalej
+predpokladáme, že prekročenia sú nezávislé z Alternativného rozdelenia s
+parametrom <span class="math inline">\(\alpha\)</span>.Potom počet
+prekročení má Binomické rozdelenia. Myšlienka Kupiecovho testu: <span
+class="math display">\[H_{0}: \alpha = \hat{\alpha} \quad vs \quad H1:
+\alpha \neq \hat{\alpha}.\]</span> Ak platí nulová hypotéza potom
+likelihoodratio štatistika má hodnotu <span
+class="math display">\[LR_{uc}=2\ln((\frac{1-\hat{\alpha}}{1-\alpha})^{n-I(\alpha)}(\frac{\hat{\alpha}}{\alpha})^{I(\alpha)})
+\sim \chi^{2}_{1}.\]</span></p>
+<p>Testujte pomocou Kupiecovho testu prekročenia Value at Risk:</p>
+<div class="sourceCode" id="cb124"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>pocet <span class="ot">&lt;-</span> ?</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>freq <span class="ot">&lt;-</span> ?</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>celkovy.pocet <span class="ot">&lt;-</span> ?</span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>LRuc <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">log</span>( ? )</span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(?, <span class="at">df =</span> ?, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 16</code></pre>
+<pre><code>## [1] 0.07619048</code></pre>
+<pre><code>## [1] 210</code></pre>
+<pre><code>## [1] 0.1047381</code></pre>
 </div>
 </div>
-<div id="poznámky" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Poznámky</h1>
+<div id="christoffersen" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Christoffersen</h2>
+<p>Aj sériovo závislé prekročenia nám robia problém. Zhlukovanie
+prekročení môže spôsobiť, že dva dni po sebe budeme pozorovať straty, na
+ktoré nebudeme kapitálovo pripravení. Preto je dôležité aby platila
+nezávislosť prekročení. Majme proces prekročení <span
+class="math inline">\(I_{t}\)</span>, ktorý môžeme modelovať ako
+Markovoský reťazec <span
+class="math inline">\(\pi_{ij}=Pr(I_{t}(\alpha)=j \vert
+I_{t-1}(\alpha)=i)\)</span>. Nech <span
+class="math inline">\(N_{ij}\)</span> je počet pozorovaní v stave <span
+class="math inline">\(j\)</span> ak v predošlej perióde boli v stave
+<span class="math inline">\(i\)</span> a označme <span
+class="math inline">\(N_{0}=N_{00}+N_{10}\)</span>, <span
+class="math inline">\(N_{1}=N_{11}+N_{01}\)</span>. Ďalej označme odhad
+pravdepodobností prechodu zo stavov ako: <span
+class="math inline">\(\pi_{01},\pi_{11}\)</span>, ktoré vieme spočítať
+nasledovne <span
+class="math inline">\(\hat{\pi}_{01}=\frac{N_{01}}{N_{01}+N_{00}}\)</span>
+a <span
+class="math inline">\(\hat{\pi}_{11}=\frac{N_{11}}{N_{11}+N_{10}}\)</span>
+respektívne. Hypotézu o nezávisloti vieme sformulovať ako <span
+class="math display">\[H_{0}: \pi_{01}=\pi_{11}=\pi \quad vs \quad H1:
+\pi_{01} \neq \pi_{11}.\]</span> Za platností nulovej hypotézy dostávame
+likelihood štatistiku: <span
+class="math display">\[LR_{ind}=-2\ln(  \frac{(1-\pi)^{N_{0}}\pi^{N_{1}}}{(1-\pi_{01})^{N_{00}}\pi_{01}^{N_{01}}(1-\pi_{11})^{N_{10}}\pi_{11}^{N_{11}}}
+) \sim \chi^{2}_{1},\]</span> kde <span
+class="math inline">\(\pi\)</span> môžeme odhadnúť ako <span
+class="math inline">\(\hat{\pi}=\frac{N_{01}+N_{11}}{N_{00}+N_{01}+N_{10}+N_{11}}\)</span>.</p>
+<div class="sourceCode" id="cb129"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>prekrocenia <span class="ot">&lt;-</span> (vynosy[(N <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(vynosy)] <span class="sc">&lt;</span> var.aaple[<span class="sc">-</span><span class="fu">length</span>(var.aaple)])<span class="sc">*</span><span class="dv">1</span></span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 x 0 za sebou</span></span>
+<span id="cb129-4"><a href="#cb129-4" aria-hidden="true" tabindex="-1"></a>N00 <span class="ot">&lt;-</span> <span class="fu">sum</span>( ? )</span>
+<span id="cb129-5"><a href="#cb129-5" aria-hidden="true" tabindex="-1"></a>N01 <span class="ot">&lt;-</span> <span class="fu">sum</span>( ? )</span>
+<span id="cb129-6"><a href="#cb129-6" aria-hidden="true" tabindex="-1"></a>N10 <span class="ot">&lt;-</span> <span class="fu">sum</span>( ? )</span>
+<span id="cb129-7"><a href="#cb129-7" aria-hidden="true" tabindex="-1"></a>N11 <span class="ot">&lt;-</span> <span class="fu">sum</span>( ? )</span>
+<span id="cb129-8"><a href="#cb129-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-9"><a href="#cb129-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-10"><a href="#cb129-10" aria-hidden="true" tabindex="-1"></a>N0 <span class="ot">&lt;-</span> ?</span>
+<span id="cb129-11"><a href="#cb129-11" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> ?</span>
+<span id="cb129-12"><a href="#cb129-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-13"><a href="#cb129-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-14"><a href="#cb129-14" aria-hidden="true" tabindex="-1"></a>p01 <span class="ot">&lt;-</span> ?</span>
+<span id="cb129-15"><a href="#cb129-15" aria-hidden="true" tabindex="-1"></a>p11 <span class="ot">&lt;-</span> ?</span>
+<span id="cb129-16"><a href="#cb129-16" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> ?</span>
+<span id="cb129-17"><a href="#cb129-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-18"><a href="#cb129-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-19"><a href="#cb129-19" aria-hidden="true" tabindex="-1"></a>LRind <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">log</span>( ? )</span>
+<span id="cb129-20"><a href="#cb129-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-21"><a href="#cb129-21" aria-hidden="true" tabindex="-1"></a>LRind</span>
+<span id="cb129-22"><a href="#cb129-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-23"><a href="#cb129-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-24"><a href="#cb129-24" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(?, <span class="at">df =</span> ?, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4971309</code></pre>
+<pre><code>## [1] 0.4807635</code></pre>
+</div>
+<div id="spojený-test" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Spojený test</h2>
+<p>Pre silnejší test vieme obe testy dokopy (teda testovať nezávislosť
+aj frekvenciu naraz), čím dostaneme novú testovú štatistiku, ktorá má
+ale rozdelenie <span class="math inline">\(\chi^{2}_{2}\)</span>.</p>
+<div class="sourceCode" id="cb132"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>( ? , <span class="at">df =</span> ? , <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2091922</code></pre>
+</div>
+<div id="iné-dynamiky-volatility" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Iné dynamiky
+volatility</h2>
+<div id="igarch-process---integrovaný-garch" class="section level3"
+number="5.5.1">
+<h3><span class="header-section-number">5.5.1</span> IGARCH process -
+Integrovaný GARCH</h3>
+<p>Môžeme vyjadriť rovnicu pre varianciu ako ARCH proces s nekonečným
+rádom <span
+class="math display">\[\sigma_{t}^{2}=\omega(1-\beta(L))^{-1} +
+\alpha(L)(1-\beta(L))^{-1}e_{t}^{2},\]</span> <span
+class="math display">\[\sigma_{t}^{2}=\omega(1-\beta(L))^{-1} +
+\lambda(L)e_{t}^{2}\]</span> Môžeme si ďalej všimnúť, že podmienky
+stacionarity implikujú, že efekt minulých kvadratických inovácií na
+varianciu v čase <span class="math inline">\(t\)</span> klesá
+exponenciálne so zvyšujúcou sa dĺžkou lagu. Autori niektorých článkov
+detekovali, že polynóm <span class="math inline">\(\alpha(L) +
+\beta(L)\)</span> má koreň blízky <span
+class="math inline">\(1\)</span>. Toto inšpirovalo odvodenie IGARCH
+procesu. Ak preusporiadáme GARCH proces do formy <span
+class="math inline">\(ARMA(m,p)\)</span> v neznámej <span
+class="math inline">\(e_{t}^{2}\)</span> <span
+class="math display">\[(1-\alpha(L)-\beta(L))e_{t}^{2}=\omega
++(1-\beta(L))\nu_{t},\]</span> kde <span
+class="math inline">\(m=max(p,q)\)</span> a <span
+class="math inline">\(\nu_{t}= e_{t}^{2}- \sigma_{t}^{2}\)</span> je
+nezávislý so strednou hodnotou 1. Proces <span
+class="math inline">\(\{\nu_{t} \}\)</span> môžeme vnímať ako inovácie
+pre podmienenú varianciu. Ak má polynóm <span
+class="math inline">\(1-\alpha(L)-\beta(L)\)</span> má jednotkový koreň,
+potom hovoríme, že je integrovaný vo variancií. To taktiež znamená, že
+efekt druhých mocnín rezíduí má signifikantný vplyv na varianciu v
+každom čase. <span class="math inline">\(IGARCH(p,q)\)</span> môžeme
+zapísať ako <span class="math display">\[\phi(L)(1-L)e_{t}^{2}= \omega +
+(1-\beta(L))\nu_{t},\]</span> kde <span
+class="math inline">\(\phi(L)=(1-\alpha(L)-\beta(L))(1-L)^{-1}\)</span>
+je rádu <span class="math inline">\(m-1\)</span>.</p>
+</div>
+<div id="figarch-proces---zlomkovo-integrovaný" class="section level3"
+number="5.5.2">
+<h3><span class="header-section-number">5.5.2</span> FIGARCH proces -
+Zlomkovo integrovaný</h3>
+<p>Môžeme nahradiť rád diferencovania <span
+class="math inline">\(1-L\)</span> v IGARCH rovnici s operátorom
+zlomkového diferencovania <span
+class="math inline">\((1-L)^{d}\)</span>. <span
+class="math inline">\(FIGARCH(p,d,q)\)</span> vieme zapísať ako <span
+class="math display">\[\phi(L)(1-L)^{d}e_{t}^{2}=\omega+(1-\beta(L))\nu_{t},\]</span>
+kde opäť <span class="math inline">\(\nu_{t}= e_{t}^{2}-
+\sigma_{t}^{2}\)</span> a <span
+class="math inline">\(0&lt;d&lt;1\)</span>. GARCH proces je stacionárny
+vo variancií, keoficienty ale klesajú exponenciálne, a IGARCH je proces
+s nekonečným vplyvom predošlých druhých mocnín rezíduí na súčasnú
+volatilitu, pre FIGARCH proces efekt predošlých inovácií klesá veľmi
+pomaly so zvyšujúcim sa lagom, teda niečo medzi GARCH a IGARCH
+procesom.</p>
+</div>
+<div id="egarch-proces" class="section level3" number="5.5.3">
+<h3><span class="header-section-number">5.5.3</span> EGARCH proces</h3>
+<p>Exponenciálny GARCH proces, <span
+class="math inline">\(EGARCH(p,q)\)</span>,definovaný ako <span
+class="math display">\[\ln(\sigma^{2}_{t})= \omega +
+\sum_{j=1}^{p}g_{j}(z_{t-j}) +
+\sum_{j=1}^{q}\beta_{j}\ln(\sigma^{2}_{t-j}),\]</span> s <span
+class="math inline">\(g_{j}(z_{t-j}) = \alpha_{j}z_{t-j} +
+\psi_{j}(\vert z_{t-j}\vert -E[z_{t-j}]),\)</span> pre <span
+class="math inline">\(j=1,...,p\)</span>, nám umožnuje pracovať bez
+obmedzení na parametre, keďže volatilita je vždy kladná, <span
+class="math inline">\(\sigma_{t}^{2}\)</span>. Parametre <span
+class="math inline">\(\alpha_{j}\)</span> pre <span
+class="math inline">\(j=1,...,p\)</span> nám dovoľujú zakomponovať
+asymetrickú informáciu na “šoky” v dynamike volatility .</p>
+</div>
+<div id="gjr-garch-proces" class="section level3" number="5.5.4">
+<h3><span class="header-section-number">5.5.4</span> GJR-GARCH
+proces</h3>
+<p>Ďalší proces, ktorý nám dovoľuje zakomponovať asymetrickú informáciu,
+alebo pákový efekt, je Glosten, Jagannathan and Runkle GARCH proces
+(GJR-GARCH). V <span class="math inline">\(GJR-GARCH\)</span> procese,
+asymetrická informácia je zakomponovaná pomocou indikátorovej funkcie.
+Vo všeobecnosti vieme <span
+class="math inline">\(GJR-GARCH(p,q)\)</span> proces vieme zapísať ako
+<span class="math display">\[\sigma_{t}^{2}=\omega +
+\sum_{j=1}^{p}\{\alpha_{j} + \delta_{j}I_{\{e_{t-j}&gt;0\}}\}e_{t-j}^{2}
++ \sum_{j=1}^{q}  \beta_{j}\sigma_{t-j}^{2},\]</span> kde <span
+class="math inline">\(I_{\{e_{t-j}&gt;0\}}\)</span> je spomínaná
+indikátorová funkcia.</p>
+</div>
+<div id="tgarch-proces---treshold" class="section level3"
+number="5.5.5">
+<h3><span class="header-section-number">5.5.5</span> TGARCH proces -
+Treshold</h3>
+<p>TGARCH, naproti GJR-GARCH procesu, modeluje podmienenú štandardnú
+odchýlku namiesto podmienenej disperzie. Dynamiku vieme zapísať ako
+<span class="math display">\[\sigma_{t}= \omega +
+\sum_{j=1}^{p}\{\alpha_{j} + \delta_{j}I_{\{e_{t-j}&gt;0\}}\}\lvert
+e_{t-j} \rvert + \sum_{j=1}^{q}  \beta_{j}\sigma_{t-j},\]</span>
+kde<span class="math inline">\(I_{\{e_{t-j}&gt;0\}}\)</span> je rovnaká
+indikátorová funkcia ako v <span
+class="math inline">\(GJR-GARCH\)</span> procese. Rovnica popisuje
+štandardný <span class="math inline">\(TGARCH(p,q)\)</span> proces
+Rovnako je výhodou, že ak modelujeme štandardnú odchýlku, tak
+nepotrebujeme opäť uvažovať reštrikciu parametrov pretože podmienená
+variancia <span class="math inline">\(\sigma_{t}^{2}\)</span> je
+nezáporná už pri konštruovaní.</p>
+</div>
+</div>
+</div>
+<div id="poznámky" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Poznámky</h1>
 <ul>
-<li><p>Dájú sa odhadovať aj iné ako normálne rozdelenia. Napríklad pre
-finančné časové rady platí, že ich rozdelenia majú ťažšie chvosty ako
-normálne rozdelenie, zaroveň môžu pochádzať zo šikmého rozdelenia
-(záporne hodnoty nastavajú častejšie ako kladné). V
-<code>garchFit</code> sa dá vložiť aj parameter <code>cond.dist</code>,
-ktorý špecifikuje aké rozdelenie chceme fitovať. Napríklad
-<code>"std"</code> alebo <code>"sstd"</code>, čo značí štandardné
-studentovo a zošikmené studenentovo rozdelenie.</p></li>
-<li><p>Funkcia <code>garchFit</code> z balíka <code>fGarch</code> ponúka
-fitovať aj iný typ GARCH modelov, tak ako je to spomenuté na konci
-prednášky. Konkrétne môžete fitovať APARCH, čo je skratka pre assymetric
-power GARCH model. Do funcie sa to vklada na, tak ako GARCH model, teda
-<code>~ apaarch(1,1)</code> napríklad.</p></li>
-<li><p>Na odhadovanie GARCHOV v R máme viac balíkov. Taký, ktoré je asi
-najviac používaný je <code>rugarch</code>, pre jednorozmerné,
-<code>rmgarch</code> pre viacrozmerné GARCH modely. Okrem iného v tomto
-balíku je možnosť fitovať väčšie množstvo rozdielnych zovšeobecnení
-GARCH modelov ako sú <code>“sGARCH”</code>, <code>“fGARCH”</code>,
-<code>“eGARCH”</code>, <code>“gjrGARCH”</code>, <code>“apARCH”</code>
-and <code>“iGARCH”</code> and <code>“csGARCH”</code>.</p></li>
 <li><p>Value at Risk má svoje nedostatky, ako bolo spomenuté na
 prednáške. Existujú aj iné, lepšie miery rizika ako napríklad Expected
 Shortfall.</p></li>

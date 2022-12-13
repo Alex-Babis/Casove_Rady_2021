@@ -290,12 +290,46 @@ Rovnako ako pri výnosoch akcií spravíme predikcie pre výnosy výmenných kur
 vynosy.pred.20.11 <- predict(vynosy.20.11, n.ahead = 12, plot = TRUE, nx = 70)
 ```
 
-# Výpočet VaR 
+# Alternatívny balíček pre GARCH a kamaráti
+```{r warning=FALSE}
+library(rugarch)
+```
+
+Odhadneme rovnaký model ale pomocou iného balíka, ktorý ponúka väčšiu flexibilitu.
+
+Najskôr zadefinujeme model:
+```{r}
+spec.20.11 <- ugarchspec( variance.model = list(model = "sGARCH",
+                                          garchOrder  = c(1,1),
+                                          submodel = NULL),
+                      mean.model = list(armaOrder = c(2,0),
+                                        include.mean = TRUE,
+                                        archm = FALSE),
+                      distribution.model = "norm")
+```
+
+Fittovanie modelu:
+```{r}
+fit.20.11 <- ugarchfit(spec = spec.20.11, data = vynosy)
+
+fit.20.11
+```
+
+
+Predikcie modelu:
+```{r}
+pred.20.11 <- ugarchforecast(fit.20.11, data = NULL, n.ahead = 12)
+
+pred.20.11
+```
+
+
+# Výpočet VaR a testovanie VaR
 
 Value at risk predstavuje mieru rizika, ktorá nám hovorí aké najväčšie straty s pravdepodonosťou $1 - \alpha$, kde $\alpha$
-je nejaká hladina pravdepodobnosti,môžeme očakávať. Označme X hodnotu portfólia. Potom $VaR_{\alpha}$ je taká hodnota, pre ktorú platí, že
+je nejaká hladina pravdepodobnosti,môžeme očakávať v nasledujúcom období (to si potom definujeme). Označme X hodnotu portfólia. Potom $VaR_{\alpha}$ je taká hodnota, pre ktorú platí, že
 $$P(X \leq VaR_{\alpha})=\alpha$$
-Teda, $VaR_{\alpha}$ predstavuje $1 - \alpha$ kvantil rozdelenia možných hodnôt X. Ak predpokladáme, normálne rozdelenie, tak to nie je nič iné ako $1 - \alpha$ kvantil normálneho rozdelenia.
+Teda, $VaR_{\alpha}$ predstavuje $1 - \alpha$ kvantil rozdelenia možných hodnôt X. Ak predpokladáme normálne rozdelenie pre naše dáta, tak to nie je nič iné ako $1 - \alpha$ kvantil normálneho rozdelenia.
 
 ## VaR pre Apple akciu
 Data pre ceny akcie
@@ -343,16 +377,152 @@ perc <- 100*pocet/length(var.aaple[-length(var.aaple)])
 perc
 ```
 
-Vidíme, že frekvencia prekorčení je odosť viac ako 5% (dá sa testovať napríklad Kupiecov test), teda náš model nie je úplne najvhodnejší na výpočet value at risk (očividne sa príliš pomaly prispôsbuje zmenám v disperzíi)). Rovnako by ešte trebalo testovať, či sú jednotlivé prekročenia od seba nezávislé (opäť existuje test Christoffersenov test).
+Vidíme, že frekvencia prekorčení je  viac ako 5%, teda náš model nemusí byť úplne najvhodnejší na výpočet value at risk . Rovnako by ešte trebalo testovať, či sú jednotlivé prekročenia od seba nezávislé.
+
+## Testovanie Value at risk 
+
+### Kupiecov test
+Chceme vedieť, či frekvencia prekročení je zhodná s predefinovanou hľadinou VAR. Ak sme správne odhadli VaR, potom by sa mali rovnať.
+Definujme si funkciu $I(\alpha) = \sum_{t=0}^{n}I_{t}(\alpha)$, kde $I_{t}(\alpha)$ je rovné 1 ak $r_{t} < VaR_{t}(\alpha)$, 0 inak. Pozorovanú frekvenciu prekročení vieme potom spočítať ako $\hat{\alpha}=\frac{I(\alpha)}{n}.$ Ďalej predpokladáme, že prekročenia sú nezávislé z Alternativného rozdelenia s parametrom $\alpha$.Potom počet prekročení má Binomické rozdelenia. Myšlienka Kupiecovho testu:
+$$H_{0}: \alpha = \hat{\alpha} \quad vs \quad H1: \alpha \neq \hat{\alpha}.$$ 
+Ak platí nulová hypotéza potom likelihoodratio štatistika má hodnotu
+$$LR_{uc}=2\ln((\frac{1-\hat{\alpha}}{1-\alpha})^{n-I(\alpha)}(\frac{\hat{\alpha}}{\alpha})^{I(\alpha)}) \sim \chi^{2}_{1}.$$
+
+Testujte pomocou Kupiecovho testu prekročenia Value at Risk:
+```{r eval = FALSE}
+pocet <- ?
+freq <- ?
+celkovy.pocet <- ?
+
+LRuc <- 2*log( ? )
+
+pchisq(?, df = ?, lower.tail = FALSE)
+
+```
+
+
+```{r echo = FALSE}
+pocet <- sum(vynosy[(N + 1):length(vynosy)] < var.aaple[-length(var.aaple)])
+pocet
+freq <- pocet/length(var.aaple[-length(var.aaple)])
+freq
+celkovy.pocet <- length(var.aaple[-length(var.aaple)])
+celkovy.pocet
+
+
+LRuc <- 2*log( ((1-freq)/(1-0.05))^(celkovy.pocet-pocet)*(freq/0.05)^pocet )
+
+pchisq(LRuc, df = 1, lower.tail = FALSE)
+
+```
+
+
+## Christoffersen
+Aj sériovo závislé prekročenia nám robia problém. Zhlukovanie prekročení môže spôsobiť, že dva dni po sebe budeme pozorovať straty, na ktoré nebudeme kapitálovo pripravení. Preto je dôležité aby platila nezávislosť prekročení. Majme proces prekročení $I_{t}$, ktorý môžeme modelovať ako Markovoský reťazec $\pi_{ij}=Pr(I_{t}(\alpha)=j \vert I_{t-1}(\alpha)=i)$. Nech $N_{ij}$ je počet pozorovaní v stave $j$ ak v predošlej perióde boli v stave $i$ a označme $N_{0}=N_{00}+N_{10}$, $N_{1}=N_{11}+N_{01}$. Ďalej označme odhad pravdepodobností prechodu zo stavov ako: $\pi_{01},\pi_{11}$, ktoré vieme spočítať nasledovne $\hat{\pi}_{01}=\frac{N_{01}}{N_{01}+N_{00}}$ a $\hat{\pi}_{11}=\frac{N_{11}}{N_{11}+N_{10}}$ respektívne. Hypotézu o nezávisloti vieme sformulovať ako
+$$H_{0}: \pi_{01}=\pi_{11}=\pi \quad vs \quad H1: \pi_{01} \neq \pi_{11}.$$
+Za platností nulovej hypotézy dostávame likelihood štatistiku:
+$$LR_{ind}=-2\ln(  \frac{(1-\pi)^{N_{0}}\pi^{N_{1}}}{(1-\pi_{01})^{N_{00}}\pi_{01}^{N_{01}}(1-\pi_{11})^{N_{10}}\pi_{11}^{N_{11}}} ) \sim \chi^{2}_{1},$$ kde $\pi$ môžeme odhadnúť ako $\hat{\pi}=\frac{N_{01}+N_{11}}{N_{00}+N_{01}+N_{10}+N_{11}}$. 
+
+```{r eval=FALSE}
+prekrocenia <- (vynosy[(N + 1):length(vynosy)] < var.aaple[-length(var.aaple)])*1
+
+# 2 x 0 za sebou
+N00 <- sum( ? )
+N01 <- sum( ? )
+N10 <- sum( ? )
+N11 <- sum( ? )
+
+
+N0 <- ?
+N1 <- ?
+
+
+p01 <- ?
+p11 <- ?
+p <- ?
+
+
+LRind <- -2*log( ? )
+
+LRind
+
+
+pchisq(?, df = ?, lower.tail = FALSE)
+```
+
+```{r echo=FALSE}
+prekrocenia <- (vynosy[(N + 1):length(vynosy)] < var.aaple[-length(var.aaple)])*1
+
+# 2 x 0 za sebou
+N00 <- sum( (prekrocenia[-1] + prekrocenia[-length(prekrocenia)]) == 0)
+N01 <- sum( (prekrocenia[-1] - prekrocenia[-length(prekrocenia)]) == -1)
+N10 <- sum( (prekrocenia[-1] - prekrocenia[-length(prekrocenia)]) == 1)
+N11 <- sum( (prekrocenia[-1] + prekrocenia[-length(prekrocenia)]) == 2)
+
+
+N0 <- N00 + N10
+N1 <- N11 + N01
+
+
+p01 <- N01/(N01 + N00)
+p11 <- N11/(N11 + N10)
+p <- (N01+N11)/(N00 + N01 + N10 + N11)
+
+
+LRind <- -2*log(  ((1-p)^N0*p^N1) / ( (1-p01)^N00*p01^N01*(1-p11)^N10*p11^N11 )   )
+
+LRind
+
+
+pchisq(LRind, df = 1, lower.tail = FALSE)
+```
+
+
+## Spojený test
+Pre silnejší test vieme obe testy dokopy (teda testovať nezávislosť aj frekvenciu naraz), čím dostaneme novú testovú štatistiku, ktorá má ale rozdelenie $\chi^{2}_{2}$.
+
+```{r eval=FALSE}
+pchisq( ? , df = ? , lower.tail = FALSE)
+```
+
+```{r echo=FALSE}
+pchisq(LRuc + LRind, df = 2, lower.tail = FALSE)
+```
+
+## Iné dynamiky volatility
+### IGARCH process - Integrovaný GARCH
+Môžeme vyjadriť rovnicu pre varianciu ako ARCH proces s nekonečným rádom
+$$\sigma_{t}^{2}=\omega(1-\beta(L))^{-1} + \alpha(L)(1-\beta(L))^{-1}e_{t}^{2},$$
+$$\sigma_{t}^{2}=\omega(1-\beta(L))^{-1} + \lambda(L)e_{t}^{2}$$
+Môžeme si ďalej všimnúť, že podmienky stacionarity implikujú, že efekt minulých kvadratických inovácií na varianciu v čase $t$ klesá exponenciálne so zvyšujúcou sa dĺžkou lagu. Autori niektorých článkov detekovali, že polynóm  $\alpha(L) + \beta(L)$ má koreň blízky $1$. Toto inšpirovalo odvodenie IGARCH procesu. Ak preusporiadáme GARCH proces do formy $ARMA(m,p)$ v neznámej $e_{t}^{2}$
+$$(1-\alpha(L)-\beta(L))e_{t}^{2}=\omega +(1-\beta(L))\nu_{t},$$
+kde $m=max(p,q)$ a $\nu_{t}= e_{t}^{2}- \sigma_{t}^{2}$ je nezávislý so strednou hodnotou 1. Proces $\{\nu_{t} \}$ môžeme vnímať ako inovácie pre podmienenú varianciu. Ak má polynóm $1-\alpha(L)-\beta(L)$ má jednotkový koreň, potom hovoríme, že je integrovaný vo variancií. To taktiež znamená, že efekt druhých mocnín rezíduí má signifikantný vplyv na varianciu v každom čase. $IGARCH(p,q)$ môžeme zapísať ako
+$$\phi(L)(1-L)e_{t}^{2}= \omega + (1-\beta(L))\nu_{t},$$
+kde $\phi(L)=(1-\alpha(L)-\beta(L))(1-L)^{-1}$ je rádu $m-1$.
+
+### FIGARCH proces - Zlomkovo integrovaný
+Môžeme nahradiť rád diferencovania $1-L$ v IGARCH rovnici s operátorom zlomkového diferencovania $(1-L)^{d}$. $FIGARCH(p,d,q)$ vieme zapísať ako
+$$\phi(L)(1-L)^{d}e_{t}^{2}=\omega+(1-\beta(L))\nu_{t},$$
+kde opäť $\nu_{t}= e_{t}^{2}- \sigma_{t}^{2}$ a $0<d<1$. GARCH proces je stacionárny vo variancií, keoficienty ale klesajú exponenciálne, a IGARCH je proces s nekonečným vplyvom predošlých druhých mocnín rezíduí na súčasnú volatilitu, pre FIGARCH proces efekt predošlých inovácií klesá veľmi pomaly so zvyšujúcim sa lagom, teda niečo medzi GARCH a IGARCH procesom. 
+
+
+### EGARCH proces
+Exponenciálny  GARCH proces, $EGARCH(p,q)$,definovaný ako 
+$$\ln(\sigma^{2}_{t})= \omega + \sum_{j=1}^{p}g_{j}(z_{t-j}) + \sum_{j=1}^{q}\beta_{j}\ln(\sigma^{2}_{t-j}),$$
+s $g_{j}(z_{t-j}) = \alpha_{j}z_{t-j} + \psi_{j}(\vert z_{t-j}\vert -E[z_{t-j}]),$ pre $j=1,...,p$, nám umožnuje pracovať bez obmedzení na parametre, keďže volatilita je vždy kladná, $\sigma_{t}^{2}$. Parametre $\alpha_{j}$ pre $j=1,...,p$ nám dovoľujú zakomponovať asymetrickú informáciu na "šoky" v dynamike volatility .
+
+### GJR-GARCH proces
+Ďalší proces, ktorý nám dovoľuje zakomponovať asymetrickú informáciu, alebo pákový efekt, je Glosten, Jagannathan and Runkle GARCH proces (GJR-GARCH). V $GJR-GARCH$ procese, asymetrická informácia je zakomponovaná pomocou indikátorovej funkcie. Vo všeobecnosti vieme $GJR-GARCH(p,q)$ proces vieme zapísať ako
+$$\sigma_{t}^{2}=\omega + \sum_{j=1}^{p}\{\alpha_{j} + \delta_{j}I_{\{e_{t-j}>0\}}\}e_{t-j}^{2} + \sum_{j=1}^{q}  \beta_{j}\sigma_{t-j}^{2},$$
+kde $I_{\{e_{t-j}>0\}}$ je spomínaná indikátorová funkcia. 
+
+
+### TGARCH proces - Treshold
+TGARCH, naproti GJR-GARCH procesu, modeluje podmienenú štandardnú odchýlku namiesto podmienenej disperzie. Dynamiku vieme zapísať ako
+$$\sigma_{t}= \omega + \sum_{j=1}^{p}\{\alpha_{j} + \delta_{j}I_{\{e_{t-j}>0\}}\}\lvert e_{t-j} \rvert + \sum_{j=1}^{q}  \beta_{j}\sigma_{t-j},$$
+kde$I_{\{e_{t-j}>0\}}$ je rovnaká indikátorová funkcia ako v $GJR-GARCH$ procese. Rovnica popisuje štandardný $TGARCH(p,q)$ proces Rovnako je výhodou, že ak modelujeme štandardnú odchýlku, tak nepotrebujeme opäť uvažovať reštrikciu parametrov pretože podmienená variancia $\sigma_{t}^{2}$ je nezáporná už pri konštruovaní.
 
 # Poznámky
-
-* Dájú sa odhadovať aj iné ako normálne rozdelenia. Napríklad pre finančné časové rady platí, že ich rozdelenia majú ťažšie chvosty ako normálne rozdelenie, zaroveň môžu pochádzať zo šikmého rozdelenia (záporne hodnoty nastavajú častejšie ako kladné). V `garchFit` sa dá vložiť aj parameter `cond.dist`, ktorý špecifikuje aké rozdelenie chceme fitovať. Napríklad `"std"` alebo `"sstd"`, čo značí štandardné studentovo a zošikmené studenentovo rozdelenie.
-
-* Funkcia `garchFit` z balíka `fGarch` ponúka fitovať aj iný typ GARCH modelov, tak ako je to spomenuté na konci prednášky. Konkrétne môžete fitovať APARCH, čo je skratka pre assymetric power GARCH model. Do funcie sa to vklada na, tak ako GARCH model, teda `~ apaarch(1,1)` napríklad.
-
-* Na odhadovanie GARCHOV v R máme viac balíkov. Taký, ktoré je asi najviac používaný je `rugarch`, pre jednorozmerné, `rmgarch` pre viacrozmerné GARCH modely. Okrem iného v tomto balíku je možnosť fitovať väčšie množstvo rozdielnych zovšeobecnení GARCH modelov ako sú `“sGARCH”`, `“fGARCH”`, `“eGARCH”`, `“gjrGARCH”`, `“apARCH”` and `“iGARCH”` and `“csGARCH”`.
-
 * Value at Risk má svoje nedostatky, ako bolo spomenuté na prednáške. Existujú aj iné, lepšie miery rizika ako napríklad Expected Shortfall.
 
 * Pri výpočte VaR nie je nutné aby sa každý deň rekalibroval model. Treba ale potom pri predikovaní volatilty použiť skutočné hodnoty pre $u_{t}$, ktoré získame tak, že použijeme pozorovanú hodnotu pre časový rad v daný deň.
